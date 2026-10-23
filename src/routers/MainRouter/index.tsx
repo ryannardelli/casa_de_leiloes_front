@@ -1,89 +1,59 @@
 import {
   BrowserRouter,
-  Routes,
-  Route,
+  useRoutes,
+  type RouteObject,
 } from "react-router-dom";
 
-import MainTemplate from "../../templates/MainTemplate";
+import { Home } from "../../pages/Public/Home";
+import { AuctionRoom } from "../../pages/Public/AuctionRoom";
+import { Audit } from "../../pages/Public/Audit";
+import { Lots } from "../../pages/Public/Lots";
 
 import { Forbidden } from "../../pages/Auth/Forbidden";
 import NotFound from "../../pages/Auth/NotFound";
 
-import { Home } from "../../pages/Public/Home";
-import { Lots } from "../../pages/Public/Lots";
-import { AuctionRoom } from "../../pages/Public/AuctionRoom";
-import { Audit } from "../../pages/Public/Audit";
-import { MyLots } from "../../pages/Auctioneer/MyLots";
-import { MyBids } from "../../pages/Bidder/MyBids";
-import { Results } from "../../pages/Auctioneer/Results";
-import { Wallet } from "../../pages/Bidder/Wallet";
-import { MyWins } from "../../pages/Bidder/MyWins";
-import { CreateLot } from "../../pages/Auctioneer/CreateLot";
-import { Dashboard } from "../../pages/Bidder/Dashboard";
-import { Profile } from "../../pages/Bidder/Profile";
+import { AuctioneerRoutes } from "../ProfileRouter/AuctioneerRoutes";
+import { BidderRoutes } from "../ProfileRouter/BidderRoutes";
+
+const publicRoutes: RouteObject[] = [
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/auctions",
+    element: <Lots />,
+  },
+  {
+    path: "/auctions/:id",
+    element: <AuctionRoom />,
+  },
+  {
+    path: "/auctions/:id/audit",
+    element: <Audit />,
+  },
+  {
+    path: "/forbidden",
+    element: <Forbidden />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
+];
+
+function AppRoutes() {
+  return useRoutes([
+    ...publicRoutes,
+    ...BidderRoutes,
+    ...AuctioneerRoutes,
+  ]);
+}
 
 export function MainRouter() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-
-        <Route path="/auctions" element={<Lots />} />
-
-        <Route path="/auctions/:id" element={<AuctionRoom />} />
-
-        <Route path="/auctions/:id/audit" element={<Audit />} />
-
-        <Route element={<MainTemplate />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-
-           {/* Auctioneer */}
-          <Route
-            path="/dashboard/lots"
-            element={<MyLots />}
-          />
-
-          <Route
-            path="/dashboard/lots/new"
-            element={<CreateLot />}
-          />
-          
-          <Route
-            path="/dashboard/active-auctions"
-            element={<Lots />}
-          />
-
-          <Route
-            path="/dashboard/results"
-            element={<Results />}
-          />
-
-          {/* Bidder */}
-          <Route
-            path="/dashboard/my-bids"
-            element={<MyBids />}
-          />
-
-          <Route
-            path="/dashboard/wallet"
-            element={<Wallet />}
-          />
-
-          <Route
-            path="/dashboard/my-wins"
-            element={<MyWins />}
-          />
-
-          <Route
-            path="/dashboard/profile"
-            element={<Profile />}
-          />
-        </Route>
-
-        <Route path="/forbidden" element={<Forbidden />} />
-        <Route path="*" element={<NotFound />} />
-
-      </Routes>
+      <AppRoutes />
     </BrowserRouter>
   );
 }

@@ -33,32 +33,32 @@ export const profileMenus: Record<UserRole, ProfileMenu> = {
     items: [
       {
         label: "Visão geral",
-        path: "/dashboard",
+        path: "/auctioneer/dashboard",
         icon: LayoutDashboard,
       },
       {
         label: "Meus lotes",
-        path: "/dashboard/lots",
+        path: "/auctioneer/lots",
         icon: Package,
       },
       {
         label: "Criar lote",
-        path: "/dashboard/lots/new",
+        path: "/auctioneer/lots/new",
         icon: PlusCircle,
       },
       {
         label: "Leilões ativos",
-        path: "/dashboard/active-auctions",
+        path: "/auctioneer/active-auctions",
         icon: Gavel,
       },
       {
         label: "Resultados",
-        path: "/dashboard/results",
+        path: "/auctioneer/results",
         icon: History,
       },
       {
         label: "Meu perfil",
-        path: "/dashboard/profile",
+        path: "/auctioneer/profile",
         icon: UserRound,
       },
     ],
@@ -71,29 +71,27 @@ export const profileMenus: Record<UserRole, ProfileMenu> = {
     items: [
       {
         label: "Visão geral",
-        path: "/dashboard",
+        path: "/bidder/dashboard",
         icon: LayoutDashboard,
       },
-      
       {
         label: "Meus lances",
-        path: "/dashboard/my-bids",
+        path: "/bidder/my-bids",
         icon: Gavel,
       },
       {
         label: "Minha carteira",
-        path: "/dashboard/wallet",
+        path: "/bidder/wallet",
         icon: Wallet,
       },
       {
         label: "Meus arremates",
-        path: "/dashboard/my-wins",
+        path: "/bidder/my-wins",
         icon: Trophy,
       },
-
       {
         label: "Meu perfil",
-        path: "/dashboard/profile",
+        path: "/bidder/profile",
         icon: UserRound,
       },
     ],
