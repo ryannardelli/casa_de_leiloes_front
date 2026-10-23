@@ -1,4 +1,4 @@
-import { Search, Heart, Globe, ChevronDown, Crown } from 'lucide-react';
+import { Search, Heart, Crown } from 'lucide-react';
 
 export function Header() {
   return (
@@ -17,11 +17,6 @@ export function Header() {
                 </span>
             </div>
             </a>
-
-          <button className="hidden md:flex items-center gap-1.5 font-medium text-sm text-text hover:text-accent transition-colors">
-            Categorias
-            <ChevronDown className="w-4 h-4 text-text-muted" />
-          </button>
         </div>
 
         <div className="flex-1 max-w-xl relative">
@@ -45,11 +40,6 @@ export function Header() {
 
           <button className="p-1.5 text-text hover:text-accent transition-colors rounded-full hover:bg-muted">
             <Heart className="w-5 h-5" />
-          </button>
-
-          <button className="flex items-center gap-1 p-1.5 text-text hover:text-accent transition-colors">
-            <Globe className="w-5 h-5" />
-            <span className="text-xs font-semibold">PT</span>
           </button>
 
           <button className="bg-accent hover:opacity-90 text-surface font-semibold px-4 py-2 rounded-md transition-all shadow-sm cursor-pointer">
