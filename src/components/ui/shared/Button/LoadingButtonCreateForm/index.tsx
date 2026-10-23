@@ -15,7 +15,7 @@ export default function LoadingButtonEditForm({
   return (
     <button
       disabled={isLoading || disabled}
-      className={`flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2 font-medium text-surface transition-all hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      className={`flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2 font-medium text-surface transition-all hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer ${className}`}
       {...props}
     >
       {isLoading ? (

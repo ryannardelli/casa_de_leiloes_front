@@ -1,8 +1,8 @@
-import { Clock, Flame, Landmark, Palette, TrendingUp } from 'lucide-react';
+import { Flame, Landmark, Palette, ShieldCheck, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 const categories = [
-  { id: "recentes", label: "Recém-adicionados", icon: Clock },
+  { id: "auditoria", label: "Auditoria pública", icon: ShieldCheck },
   { id: "popular", label: "Mais disputados", icon: TrendingUp },
   { id: "destaques", label: "Destaques", icon: Flame },
   { id: "pinturas", label: "Pinturas", icon: Palette },
