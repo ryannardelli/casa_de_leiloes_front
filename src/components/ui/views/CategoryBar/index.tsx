@@ -1,18 +1,12 @@
+import { Clock, Flame, Landmark, Palette, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
-import { Calendar, Sparkles, Radio, TrendingUp, Gavel, Flame, Frame, Armchair, Gem, Watch, ShoppingBag } from 'lucide-react';
 
 const categories = [
-  { id: 'semana', label: 'Esta semana', icon: Calendar },
-  { id: 'para-si', label: 'Para si', icon: Sparkles },
-  { id: 'direto', label: 'Emissões em direto', icon: Radio },
-  { id: 'popular', label: 'Popular', icon: TrendingUp },
-  { id: 'leiloes', label: 'Leilões', icon: Gavel },
-  { id: 'destaques', label: 'Destaques', icon: Flame },
-  { id: 'arte', label: 'Arte', icon: Frame },
-  { id: 'interiores', label: 'Interiores', icon: Armchair },
-  { id: 'joalharia', label: 'Joalharia', icon: Gem },
-  { id: 'relogios', label: 'Relógios', icon: Watch },
-  { id: 'moda', label: 'Moda', icon: ShoppingBag },
+  { id: "recentes", label: "Recém-adicionados", icon: Clock },
+  { id: "popular", label: "Mais disputados", icon: TrendingUp },
+  { id: "destaques", label: "Destaques", icon: Flame },
+  { id: "pinturas", label: "Pinturas", icon: Palette },
+  { id: "esculturas", label: "Esculturas", icon: Landmark },
 ];
 
 export function CategoryBar() {
