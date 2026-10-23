@@ -20,7 +20,7 @@ import { Wallet } from "../../pages/Bidder/Wallet";
 import { MyWins } from "../../pages/Bidder/MyWins";
 import { CreateLot } from "../../pages/Auctioneer/CreateLot";
 import { Dashboard } from "../../pages/Bidder/Dashboard";
-import { Profile } from "../../pages/Auctioneer/Profile";
+import { Profile } from "../../pages/Bidder/Profile";
 
 export function MainRouter() {
   return (
