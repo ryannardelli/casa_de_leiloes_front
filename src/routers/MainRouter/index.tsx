@@ -7,13 +7,13 @@ import {
 import { Home } from "../../pages/Public/Home";
 import { AuctionRoom } from "../../pages/Public/AuctionRoom";
 import { Audit } from "../../pages/Public/Audit";
-import { Lots } from "../../pages/Public/Lots";
 
 import { Forbidden } from "../../pages/Auth/Forbidden";
 import NotFound from "../../pages/Auth/NotFound";
 
 import { AuctioneerRoutes } from "../ProfileRouter/AuctioneerRoutes";
 import { BidderRoutes } from "../ProfileRouter/BidderRoutes";
+import { Lots } from "../../pages/Public/Lots";
 
 const publicRoutes: RouteObject[] = [
   {

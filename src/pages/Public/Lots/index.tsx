@@ -1,5 +1,5 @@
 export function Lots() {
     return(
-        <p>Page Lots</p>
+        <p>This is a Page Lots</p>
     );
 }

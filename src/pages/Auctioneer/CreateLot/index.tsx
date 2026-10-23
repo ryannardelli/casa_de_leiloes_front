@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { artworksMock } from "../../../mocks/auctioneer/artworks.mock";
+import { artworksMock, type Artwork } from "../../../mocks/auctioneer/artworks.mock";
 import { CreateLotForm, type CreateLotData } from "../../../components/domain/Auctioneer/createLots/CreateLotForm";
 import { CreateLotHeader } from "../../../components/domain/Auctioneer/createLots/CreateLotHeader";
 import { ArtworkSearch } from "../../../components/domain/Auctioneer/createLots/ArtworkSearch";

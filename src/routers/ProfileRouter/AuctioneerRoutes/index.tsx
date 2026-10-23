@@ -6,8 +6,8 @@ import { Dashboard } from "../../../pages/Auctioneer/Dashboard";
 import { MyLots } from "../../../pages/Auctioneer/MyLots";
 import { CreateLot } from "../../../pages/Auctioneer/CreateLot";
 import { Results } from "../../../pages/Auctioneer/Results";
-import { Lots } from "../../../pages/Public/Lots";
 import { Profile } from "../../../pages/Auctioneer/Profile";
+import { ActiveLots } from "../../../pages/Auctioneer/ActiveLots";
 
 export const AuctioneerRoutes: RouteObject[] = [
   {
@@ -27,7 +27,7 @@ export const AuctioneerRoutes: RouteObject[] = [
       },
       {
         path: "/auctioneer/active-auctions",
-        element: <Lots />,
+        element: <ActiveLots />,
       },
       {
         path: "/auctioneer/results",
