@@ -19,7 +19,7 @@ import { Results } from "../../pages/Auctioneer/Results";
 import { Wallet } from "../../pages/Bidder/Wallet";
 import { MyWins } from "../../pages/Bidder/MyWins";
 import { CreateLot } from "../../pages/Auctioneer/CreateLot";
-import { Dashboard } from "../../pages/Auctioneer/Dashboard";
+import { Dashboard } from "../../pages/Bidder/Dashboard";
 import { Profile } from "../../pages/Auctioneer/Profile";
 
 export function MainRouter() {
