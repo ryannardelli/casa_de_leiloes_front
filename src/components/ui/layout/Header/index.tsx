@@ -1,4 +1,5 @@
-import { Search, Heart, Crown } from 'lucide-react';
+import { Search, Heart, Gavel } from 'lucide-react';
+import { AuthButton } from '../../../domain/Auth/AuthButton';
 
 export function Header() {
   return (
@@ -8,7 +9,7 @@ export function Header() {
         <div className="flex items-center gap-6">
             <a href="/" className="flex items-center gap-2">
             <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-lg font-extrabold text-gold">
-                <Crown />
+                <Gavel size={32} strokeWidth={1.1} />
             </div>
 
             <div className="flex flex-col">
@@ -42,9 +43,7 @@ export function Header() {
             <Heart className="w-5 h-5" />
           </button>
 
-          <button className="bg-accent hover:opacity-90 text-surface font-semibold px-4 py-2 rounded-md transition-all shadow-sm cursor-pointer">
-            Iniciar sessão
-          </button>
+           <AuthButton />
         </div>
 
       </div>
