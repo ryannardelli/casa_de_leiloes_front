@@ -9,10 +9,6 @@ export function MyBidsHeader() {
         </div>
 
         <div>
-          <p className="text-sm text-text-muted">
-            Área do licitante
-          </p>
-
           <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
             Meus lances
           </h1>
