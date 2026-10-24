@@ -1,0 +1,44 @@
+export interface MuseumWork {
+    id: number;
+    title: string;
+    artist: string;
+    category: string;
+    image: string;
+    date: string;
+    department: string;
+}
+
+export interface MuseumCategory {
+    id: number;
+    name: string;
+}
+
+export interface PublicCollectionState {
+    featuredWorks: MuseumWork[];
+    curatedWorks: MuseumWork[];
+    categories: MuseumCategory[];
+    loadingCollection: boolean;
+    errorCollection: string | null;
+}
+
+export type PublicCollectionAction =
+    | {
+          type: "SET_FEATURED_WORKS";
+          payload: MuseumWork[];
+      }
+    | {
+          type: "SET_CURATED_WORKS";
+          payload: MuseumWork[];
+      }
+    | {
+          type: "SET_CATEGORIES";
+          payload: MuseumCategory[];
+      }
+    | {
+          type: "SET_LOADING_COLLECTION";
+          payload: boolean;
+      }
+    | {
+          type: "SET_ERROR_COLLECTION";
+          payload: string;
+      };

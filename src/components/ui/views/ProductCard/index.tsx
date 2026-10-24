@@ -1,5 +1,6 @@
 
 import { Heart } from "lucide-react";
+import { usePublicCollection } from "../../../../hooks/usePublicCollection";
 
 type ProductCardProps = {
   title: string;
@@ -14,6 +15,10 @@ export function ProductCard({
   imageUrl,
   currentBid,
 }: ProductCardProps) {
+
+  const { statePublicCollection } = usePublicCollection();
+  console.log(statePublicCollection);
+
   return (
     <div className="group relative overflow-hidden rounded-lg border border-border bg-surface shadow-sm transition-all hover:shadow-md">
       <div className="relative aspect-square overflow-hidden bg-muted">
