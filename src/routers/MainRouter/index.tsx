@@ -24,7 +24,6 @@ const publicRoutes: RouteObject[] = [
     path: "/",
     element: <Home />,
   },
-
   {
     path: "/auctions",
     element: <Lots />,
@@ -54,11 +53,7 @@ function AppRoutes() {
   const loading = state.loading;
   const role: ProfileName | null = state.user?.profile?.name ?? null;
 
-  if (loading) {
-    return <LoadingAuth message="Aguarde enquanto estamos preparando tudo..." />;
-  }
-  
-  return useRoutes([
+  const element = useRoutes([
     ...publicRoutes,
     {
       element: (
@@ -83,6 +78,12 @@ function AppRoutes() {
       children: AuctioneerRoutes,
     },
   ]);
+
+  if (loading) {
+    return <LoadingAuth message="Aguarde enquanto estamos preparando tudo..." />;
+  }
+
+  return element;
 }
 
 export function MainRouter() {
