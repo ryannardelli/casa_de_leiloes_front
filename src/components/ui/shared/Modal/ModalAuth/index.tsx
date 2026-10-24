@@ -1,8 +1,9 @@
-import { useState, type FormEvent } from "react";
-import { X, Gavel, Mail, Lock, UserRound } from "lucide-react";
+import { useState } from "react";
+import { Gavel, X } from "lucide-react";
 import { AnimationPresenceMotion } from "../../Motion/AnimationPresenceMotion";
-import { MotionContainer } from "../../Motion/MotionContainer";
-import LoadingButtonCreateForm from "../../Button/LoadingButtonCreateForm";
+import { MotionContainer } from "../../Motion/MotionContainer";import { LoginForm } from "../../../../domain/Auth/LoginForm";
+import { RegisterForm } from "../../../../domain/Auth/RegisterForm";
+;
 
 interface ModalAuthProps {
   isOpen: boolean;
@@ -25,26 +26,11 @@ export function ModalAuth({
   isLoading = false,
 }: ModalAuthProps) {
   const [mode, setMode] = useState<"login" | "register">("login");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const isRegister = mode === "register";
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    onSubmit({
-      ...(isRegister && { name: name.trim() }),
-      email: email.trim(),
-      password,
-      mode,
-    });
-  }
-
   function handleClose() {
     if (isLoading) return;
-
     onClose();
   }
 
@@ -52,7 +38,7 @@ export function ModalAuth({
     if (isLoading) return;
 
     setMode((current) =>
-      current === "login" ? "register" : "login",
+      current === "login" ? "register" : "login"
     );
   }
 
@@ -108,123 +94,36 @@ export function ModalAuth({
               </p>
             </header>
 
-            <form onSubmit={handleSubmit} className="px-6 pb-6">
-              {isRegister && (
-                <div className="mb-4">
-                  <label
-                    htmlFor="auth-name"
-                    className="mb-2 block text-sm font-medium text-text"
-                  >
-                    Nome completo
-                  </label>
-
-                  <div className="relative">
-                    <UserRound
-                      size={18}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
-                    />
-
-                    <input
-                      id="auth-name"
-                      type="text"
-                      autoComplete="name"
-                      placeholder="Seu nome completo"
-                      value={name}
-                      onChange={(event) => setName(event.target.value)}
-                      required
-                      disabled={isLoading}
-                      className="w-full rounded-lg border border-border bg-background py-3 pl-10 pr-3 text-sm text-text outline-none transition placeholder:text-text-muted/70 focus:border-accent focus:ring-2 focus:ring-accent/15 disabled:opacity-60"
-                    />
-                  </div>
-                </div>
-              )}
-
-              <div className="mb-4">
-                <label
-                  htmlFor="auth-email"
-                  className="mb-2 block text-sm font-medium text-text"
-                >
-                  E-mail
-                </label>
-
-                <div className="relative">
-                  <Mail
-                    size={18}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
-                  />
-
-                  <input
-                    id="auth-email"
-                    type="email"
-                    autoComplete="email"
-                    placeholder="voce@exemplo.com"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    required
-                    disabled={isLoading}
-                    className="w-full rounded-lg border border-border bg-background py-3 pl-10 pr-3 text-sm text-text outline-none transition placeholder:text-text-muted/70 focus:border-accent focus:ring-2 focus:ring-accent/15 disabled:opacity-60"
-                  />
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="auth-password"
-                  className="mb-2 block text-sm font-medium text-text"
-                >
-                  Senha
-                </label>
-
-                <div className="relative">
-                  <Lock
-                    size={18}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
-                  />
-
-                  <input
-                    id="auth-password"
-                    type="password"
-                    autoComplete={
-                      isRegister ? "new-password" : "current-password"
-                    }
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    minLength={8}
-                    required
-                    disabled={isLoading}
-                    className="w-full rounded-lg border border-border bg-background py-3 pl-10 pr-3 text-sm text-text outline-none transition placeholder:text-text-muted/70 focus:border-accent focus:ring-2 focus:ring-accent/15 disabled:opacity-60"
-                  />
-                </div>
-
-                <p className="mt-2 text-xs text-text-muted">
-                  {isRegister
-                    ? "Sua senha deve ter pelo menos 8 caracteres."
-                    : "Informe a senha cadastrada na sua conta."}
-                </p>
-              </div>
-
-              <LoadingButtonCreateForm
+            {isRegister ? (
+              <RegisterForm
                 isLoading={isLoading}
-                onClick={() => {}}
-              >
-                {isRegister ? "Criar minha conta" : "Entrar"}
-              </LoadingButtonCreateForm>
+                onSubmit={(data) =>
+                  onSubmit({ ...data, mode: "register" })
+                }
+              />
+            ) : (
+              <LoginForm
+                isLoading={isLoading}
+                onSubmit={(data) =>
+                  onSubmit({ ...data, mode: "login" })
+                }
+              />
+            )}
 
-              <p className="mt-5 text-center text-sm text-text-muted">
-                {isRegister
-                  ? "Já possui uma conta?"
-                  : "Ainda não possui uma conta?"}{" "}
-                <button
-                  type="button"
-                  onClick={handleModeChange}
-                  disabled={isLoading}
-                  className="font-semibold text-accent transition-colors hover:text-primary hover:underline disabled:opacity-50 cursor-pointer"
-                >
-                  {isRegister ? "Fazer login" : "Registrar-se"}
-                </button>
-              </p>
-            </form>
+            <div className="px-6 pb-5 text-center text-sm text-text-muted">
+              {isRegister
+                ? "Já possui uma conta?"
+                : "Ainda não possui uma conta?"}{" "}
+
+              <button
+                type="button"
+                onClick={handleModeChange}
+                disabled={isLoading}
+                className="font-semibold text-accent transition-colors hover:text-primary hover:underline disabled:opacity-50 cursor-pointer"
+              >
+                {isRegister ? "Fazer login" : "Registrar-se"}
+              </button>
+            </div>
 
             <footer className="border-t border-border bg-muted/40 px-6 py-3">
               <p className="text-center text-xs text-text-muted">
