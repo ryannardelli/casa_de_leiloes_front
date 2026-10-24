@@ -1,12 +1,12 @@
 import { Gavel } from "lucide-react";
 
 interface SidebarHeaderProps {
-  role: "LEILOEIRO" | "LICITANTE";
+  role: "AUCTIONEER" | "BIDDER";
 }
 
 export function SidebarHeader({ role }: SidebarHeaderProps) {
   const subtitle =
-    role === "LEILOEIRO"
+    role === "AUCTIONEER"
       ? "Painel do Leiloeiro"
       : "Painel do Licitante";
 

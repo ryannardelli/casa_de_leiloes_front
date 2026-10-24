@@ -1,6 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-
-import type { UserRole } from "../../mocks/navigation.mock";
+import type { UserRole } from "../../../mocks/navigation.mock";
 
 interface ProtectedRouteProps {
   role: UserRole;

@@ -1,16 +1,25 @@
 import { useState } from "react";
 import { ModalAuth, type AuthFormData } from "../../../ui/shared/Modal/ModalAuth";
+import { LoadingAuth } from "../../../ui/shared/Loading/LoadingAuth";
 
 export function AuthButton() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleAuthSubmit(data: AuthFormData) {
-    if (data.mode === "login") {
-      console.log("Login:", data.email);
-      return;
+   async function handleAuthSubmit(data: AuthFormData) {
+      setIsLoading(true);
+
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 4000));
+
+        console.log("Dados enviados:", data);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
-    console.log("Cadastro:", data.name, data.email);
+   if (isLoading) {
+    return <LoadingAuth message="Aguarde enquanto preparamos tudo..." />;
   }
 
   return (
@@ -18,7 +27,7 @@ export function AuthButton() {
       <button
         type="button"
         onClick={() => setIsAuthOpen(true)}
-        className="cursor-pointer rounded-md bg-accent px-4 py-2 font-semibold text-surface shadow-sm transition-all hover:opacity-90 cursor-pointer"
+        className="rounded-md bg-accent px-4 py-2 font-semibold text-surface shadow-sm transition-all hover:opacity-90 cursor-pointer"
       >
         Iniciar sessão
       </button>
