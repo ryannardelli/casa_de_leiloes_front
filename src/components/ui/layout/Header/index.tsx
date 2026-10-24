@@ -1,7 +1,17 @@
 import { Search, Heart, Gavel } from 'lucide-react';
 import { AuthButton } from '../../../domain/Auth/AuthButton';
+import { useAuth } from '../../../../hooks/useAuth';
+import { RouterLinks } from '../../shared/Links/RouterLinks';
+import { getDashboardRoute } from '../../../../utils/getDashboardRoute';
 
 export function Header() {
+  const { state } = useAuth();
+  const isAuth = state.isAuthenticated;
+
+  const profileName = state.user?.profile?.name;
+
+  const dashboardRoute = getDashboardRoute(profileName);
+
   return (
     <header className="w-full bg-surface border-b border-border text-text">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
@@ -43,7 +53,17 @@ export function Header() {
             <Heart className="w-5 h-5" />
           </button>
 
-           <AuthButton />
+          {isAuth ? (
+            <RouterLinks 
+              href={dashboardRoute}
+              className="flex items-center gap-2 bg-primary text-surface px-4 py-2 rounded-md text-sm font-semibold hover:bg-primary/90 transition-colors"
+            >
+              <span>Dashboard</span>
+            </RouterLinks>
+          ) : (
+            <AuthButton />
+          )}
+
         </div>
 
       </div>
