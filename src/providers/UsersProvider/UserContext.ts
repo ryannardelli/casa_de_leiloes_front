@@ -1,0 +1,29 @@
+import { createContext } from "react";
+import type { UpdateUserPayload, UserAction, UserState } from "../../models/User";
+import { initialStateUser } from "../../reducers/userReducer";
+
+type UserContextType = {
+  stateUser: UserState;
+  dispatchUser: (action: UserAction) => void;
+
+  loadUsers: () => Promise<void>;
+  deleteUser: (id: number) => Promise<{ message: string }>;
+  updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload & { message: string }>
+};
+
+export const UserContext = createContext<UserContextType>({
+  stateUser: initialStateUser,
+  dispatchUser: () => undefined,
+
+  loadUsers: async () => {
+    throw new Error("loadUsers not implemented");
+  },
+
+  deleteUser: async () => {
+    throw new Error("deleteUser not implemented");
+  },
+
+   updateUser: async () => {
+    throw new Error("updateUser not implemented");
+  },
+});
