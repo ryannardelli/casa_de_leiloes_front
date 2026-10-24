@@ -1,4 +1,6 @@
-import { Gavel } from "lucide-react";
+import { Gavel, Home } from "lucide-react";
+import { Link } from "react-router-dom";
+import { RouterLinks } from "../../../ui/shared/Links/RouterLinks";
 
 interface SidebarHeaderProps {
   role: "Licitante" | "Leiloeiro";
@@ -25,6 +27,14 @@ export function SidebarHeader({ role }: SidebarHeaderProps) {
           {subtitle}
         </span>
       </div>
+
+      <RouterLinks 
+        href="/" 
+        title="Página Inicial"
+        className="flex h-9 w-9 items-center justify-center rounded-lg text-text-muted hover:bg-muted hover:text-primary transition-colors"
+      >
+        <Home size={18} />
+      </RouterLinks>
     </div>
   );
 }
