@@ -18,7 +18,7 @@ export function Profile() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-7xl p-4 sm:p-6 lg:p-8">
+    <main className="mx-auto bg-background w-full max-w-7xl p-4 sm:p-6 lg:p-8">
       <ProfileHeader />
 
       <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
