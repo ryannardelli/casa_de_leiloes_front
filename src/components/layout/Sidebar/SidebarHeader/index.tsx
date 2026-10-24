@@ -15,7 +15,7 @@ export function SidebarHeader({ role }: SidebarHeaderProps) {
   return (
     <div className="flex h-20 items-center gap-3 border-b border-border px-6">
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent shadow-sm shadow-primary/20">
-        <Gavel className="h-5 w-5 text-gold" strokeWidth={2.2} />
+        <Gavel className="h-5 w-5 text-background" strokeWidth={2.2} />
       </div>
 
       <div className="min-w-0">
