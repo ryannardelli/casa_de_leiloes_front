@@ -1,19 +1,19 @@
-import { LogOut } from "lucide-react";
-
-import { profileMenus } from "../../../mocks/navigation.mock";
-import type { UserRole } from "../../../mocks/navigation.mock";
+import { HelpCircle, LogOut } from "lucide-react";
 
 import { SidebarHeader } from "./SidebarHeader";
 import { SidebarItem } from "./SidebarItem";
 import { useAuth } from "../../../hooks/useAuth";
+import { useProfile } from "../../../hooks/useProfile";
+import { MenuSkeletonList } from "../../ui/shared/Loading/MenuSkeletonList";
+import { AVAILABLE_ICONS } from "../../../constants/availableIcons";
 
-interface SidebarProps {
-  role: UserRole;
-}
-
-export function Sidebar({ role }: SidebarProps) {
+export function Sidebar() {
   const { state, logout } = useAuth();
-  const profile = profileMenus[role];
+  const { stateProfile } = useProfile();
+
+  const menus = stateProfile.menusByLoggedUser ?? [];
+  const isLoading =
+    state.loading || stateProfile.loadingMenusByLoggedUser;
 
   const profileName = state.user?.profile?.name;
 
@@ -23,14 +23,27 @@ export function Sidebar({ role }: SidebarProps) {
 
       <nav className="flex-1 overflow-y-auto px-4 py-6">
         <div className="space-y-1">
-          {profile.items.map((menu) => (
-            <SidebarItem
-              key={menu.path}
-              label={menu.label}
-              icon={menu.icon}
-              href={menu.path}
-            />
-          ))}
+          {isLoading ? (
+            <MenuSkeletonList items={5} />
+          ) : menus.length === 0 ? (
+            <p className="px-4 text-sm text-text-muted">
+              Nenhum menu disponível
+            </p>
+          ) : (
+            menus.map((menu) => {
+              const Icon =
+                AVAILABLE_ICONS[menu.icon as IconName] || HelpCircle;
+
+              return (
+                <SidebarItem
+                  key={menu.id || menu.route}
+                  label={menu.name}
+                  icon={Icon}
+                  href={menu.route}
+                />
+              );
+            })
+          )}
         </div>
       </nav>
 

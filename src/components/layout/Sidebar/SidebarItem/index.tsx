@@ -1,6 +1,5 @@
 import type { LucideIcon } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import { useProfile } from "../../../../hooks/useProfile";
 
 interface SidebarItemProps {
   label: string;
@@ -13,8 +12,6 @@ export function SidebarItem({
   icon: Icon,
   href,
 }: SidebarItemProps) {
-  const { stateProfile } = useProfile();
-  console.log(stateProfile);
 
   return (
     <NavLink
