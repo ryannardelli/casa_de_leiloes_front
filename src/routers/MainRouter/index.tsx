@@ -16,11 +16,8 @@ import { AuctioneerRoutes } from "../ProfileRouter/AuctioneerRoutes";
 import { BidderRoutes } from "../ProfileRouter/BidderRoutes";
 import type { UserRole } from "../../models/User";
 import { PrivateRoute } from "../Auth/PrivateRouter";
-
-
-const isAuth = false;
-const loading = false;
-const role: UserRole | null = null;
+import { LoadingAuth } from "../../components/ui/shared/Loading/LoadingAuth";
+import { useAuth } from "../../hooks/useAuth";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -51,6 +48,16 @@ const publicRoutes: RouteObject[] = [
 ];
 
 function AppRoutes() {
+  const { state } = useAuth();
+
+  const isAuth = state.isAuthenticated;
+  const loading = state.loading;
+  const role: UserRole | null = null;
+
+  if (loading) {
+    return <LoadingAuth message="Aguarde enquanto estamos preparando tudo..." />;
+  }
+  
   return useRoutes([
     ...publicRoutes,
     {

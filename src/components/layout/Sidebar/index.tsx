@@ -5,17 +5,21 @@ import type { UserRole } from "../../../mocks/navigation.mock";
 
 import { SidebarHeader } from "./SidebarHeader";
 import { SidebarItem } from "./SidebarItem";
+import { useAuth } from "../../../hooks/useAuth";
 
 interface SidebarProps {
   role: UserRole;
 }
 
 export function Sidebar({ role }: SidebarProps) {
+  const { state, logout } = useAuth();
   const profile = profileMenus[role];
+
+  const profileName = state.user?.profile?.name;
 
   return (
     <aside className="fixed left-0 top-0 flex h-screen w-64 flex-col border-r border-border bg-surface">
-      <SidebarHeader role={role} />
+      <SidebarHeader role={profileName ?? ""} />
 
       <nav className="flex-1 overflow-y-auto px-4 py-6">
         <div className="space-y-1">
@@ -33,6 +37,7 @@ export function Sidebar({ role }: SidebarProps) {
       <div className="border-t border-border p-4">
         <button
           type="button"
+          onClick={logout}
           className="
             group flex w-full items-center gap-3
             rounded-lg px-4 py-3

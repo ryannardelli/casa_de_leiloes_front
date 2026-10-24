@@ -1,32 +1,69 @@
 import { useState } from "react";
-import { ModalAuth, type AuthFormData } from "../../../ui/shared/Modal/ModalAuth";
-import { LoadingAuth } from "../../../ui/shared/Loading/LoadingAuth";
+import {
+  ModalAuth,
+  type AuthFormData,
+} from "../../../ui/shared/Modal/ModalAuth";
+import { useAuth } from "../../../../hooks/useAuth";
+import { showMessage } from "../../../ui/shared/Feedback/ShowMessage";
+import { useNavigate } from "react-router-dom";
 
 export function AuthButton() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-   async function handleAuthSubmit(data: AuthFormData) {
-      setIsLoading(true);
+  const { state, login, registerUser } = useAuth();
+  const navigate = useNavigate();
 
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 4000));
+  const isLoading = state.loading;
 
-        console.log("Dados enviados:", data);
-      } finally {
-        setIsLoading(false);
+  async function handleAuthSubmit(data: AuthFormData) {
+    setError("");
+
+    showMessage.dismiss();
+
+    try {
+      if (data.mode === "login") {
+        const user = await login(data.email, data.password);
+
+         if (user.profile?.name === "Leiloeiro") {
+              navigate("/auctioneer/dashboard");
+          } else if (user.profile?.name === "Licitante") {
+              navigate("/bidder/dashboard");
+          } else {
+              navigate("/");
+          }
+
+      } else {
+        if (!data.name) {
+          throw new Error("O nome é obrigatório para o cadastro.");
+        }
+
+        await registerUser(
+          data.name,
+          data.email,
+          data.password
+        );
+      }
+
+      setIsAuthOpen(false);
+    } catch (err: unknown) {
+       if (err instanceof Error) {
+        console.error(err);
+        showMessage.error(
+          err.message || "Algo deu errado. Tente novamente mais tarde."
+        );
       }
     }
-
-   if (isLoading) {
-    return <LoadingAuth message="Aguarde enquanto preparamos tudo..." />;
   }
 
   return (
     <>
       <button
         type="button"
-        onClick={() => setIsAuthOpen(true)}
+        onClick={() => {
+          setError("");
+          setIsAuthOpen(true);
+        }}
         className="rounded-md bg-accent px-4 py-2 font-semibold text-surface shadow-sm transition-all hover:opacity-90 cursor-pointer"
       >
         Iniciar sessão
@@ -36,6 +73,8 @@ export function AuthButton() {
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
         onSubmit={handleAuthSubmit}
+        isLoading={isLoading}
+        error={error}
       />
     </>
   );
