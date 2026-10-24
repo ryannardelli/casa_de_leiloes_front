@@ -121,7 +121,7 @@ const registerUser = async (
   const logout = () => {
     userAuthentication.logout();
     dispatch({ type: "LOGOUT" });
-    window.location.href = "/login";
+    window.location.href = "/";
   };
   
   return (
