@@ -1,16 +1,16 @@
 import { Navigate, Outlet } from "react-router-dom";
-import type { UserRole } from "../../../mocks/navigation.mock";
+import type { ProfileName } from "../../../models/Profile";
 
 interface ProtectedRouteProps {
-  role: UserRole;
-  allowedRoles: UserRole[];
+  role: ProfileName | null;
+  allowedRoles: ProfileName[];
 }
 
 export function ProtectedRoute({
   role,
   allowedRoles,
 }: ProtectedRouteProps) {
-  const hasPermission = allowedRoles.includes(role);
+  const hasPermission = role !== null && allowedRoles.includes(role);
 
   if (!hasPermission) {
     return <Navigate to="/forbidden" replace />;

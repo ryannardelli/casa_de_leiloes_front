@@ -36,8 +36,3 @@ export interface UpdateUserResponse {
     message: string;
     user: User;
 }
-
-export type UploadProfilePictureResponse = {
-    message: string;
-    url: string;
-};

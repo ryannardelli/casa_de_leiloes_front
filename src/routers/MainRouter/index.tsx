@@ -14,10 +14,10 @@ import NotFound from "../../pages/Auth/NotFound";
 
 import { AuctioneerRoutes } from "../ProfileRouter/AuctioneerRoutes";
 import { BidderRoutes } from "../ProfileRouter/BidderRoutes";
-import type { UserRole } from "../../models/User";
 import { PrivateRoute } from "../Auth/PrivateRouter";
 import { LoadingAuth } from "../../components/ui/shared/Loading/LoadingAuth";
 import { useAuth } from "../../hooks/useAuth";
+import type { ProfileName } from "../../models/Profile";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -52,7 +52,7 @@ function AppRoutes() {
 
   const isAuth = state.isAuthenticated;
   const loading = state.loading;
-  const role: UserRole | null = null;
+  const role: ProfileName | null = state.user?.profile?.name ?? null;
 
   if (loading) {
     return <LoadingAuth message="Aguarde enquanto estamos preparando tudo..." />;
@@ -66,7 +66,7 @@ function AppRoutes() {
           isAuth={isAuth}
           loading={loading}
           role={role}
-          allowedRoles={["BIDDER"]}
+          allowedRoles={["Licitante"]}
         />
       ),
       children: BidderRoutes,
@@ -77,7 +77,7 @@ function AppRoutes() {
           isAuth={isAuth}
           loading={loading}
           role={role}
-          allowedRoles={["AUCTIONEER"]}
+          allowedRoles={["Leiloeiro"]}
         />
       ),
       children: AuctioneerRoutes,
