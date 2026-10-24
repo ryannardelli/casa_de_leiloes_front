@@ -40,12 +40,18 @@ export function publicCollectionReducer(
                 loadingCollection: action.payload,
             };
 
-        case "SET_ERROR_COLLECTION":
-            return {
-                ...state,
-                errorCollection: action.payload,
-                loadingCollection: false,
-            };
+            case "SET_ERROR_COLLECTION":
+                return {
+                    ...state,
+                    errorCollection: action.payload || null,
+                };
+
+        // case "SET_ERROR_COLLECTION":
+        //     return {
+        //         ...state,
+        //         errorCollection: action.payload,
+        //         loadingCollection: false,
+        //     };
 
         default:
             return state;

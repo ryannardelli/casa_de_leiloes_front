@@ -6,8 +6,20 @@ import { WeeklyHighlights } from "../../../components/ui/views/WeeklyHighlights"
 
 import { Footer } from "../../../components/ui/layout/Footer";
 import { Header } from "../../../components/ui/layout/Header";
+import { usePublicCollection } from "../../../hooks/usePublicCollection";
+import { LoadingScreen } from "../../../components/ui/shared/Loading/LoadingScreen";
 
 export function Home() {
+    const { statePublicCollection } = usePublicCollection();
+
+    const {
+        loadingCollection,
+    } = statePublicCollection;
+
+    if (loadingCollection) {
+        return <LoadingScreen />;
+    }
+
     return(
     <div className="min-h-screen bg-background text-text">
             <Header />

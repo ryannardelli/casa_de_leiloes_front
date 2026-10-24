@@ -31,59 +31,116 @@ export const PublicCollectionProvider = ({
         initialStatePublicCollection
     );
 
-    const loadPublicCollection = useCallback(
-        async () => {
-            try {
-                dispatchPublicCollection({
-                    type: "SET_LOADING_COLLECTION",
-                    payload: true,
-                });
+    const loadPublicCollection = useCallback(async () => {
+    dispatchPublicCollection({
+        type: "SET_LOADING_COLLECTION",
+        payload: true,
+    });
 
-                const [
-                    featuredWorks,
-                    curatedWorks,
-                    categories,
-                ] = await Promise.all([
-                    publicCollectionService.getFeaturedWorks(),
-                    publicCollectionService.getCuratedWorks(),
-                    publicCollectionService.getCategories(),
-                ]);
+    dispatchPublicCollection({
+        type: "SET_ERROR_COLLECTION",
+        payload: "",
+    });
 
-                dispatchPublicCollection({
-                    type: "SET_FEATURED_WORKS",
-                    payload: featuredWorks,
-                });
+    try {
+        const results = await Promise.allSettled([
+            publicCollectionService.getFeaturedWorks(),
+            publicCollectionService.getCuratedWorks(),
+            publicCollectionService.getCategories(),
+        ]);
 
-                dispatchPublicCollection({
-                    type: "SET_CURATED_WORKS",
-                    payload: curatedWorks,
-                });
+        const [featuredResult, curatedResult, categoriesResult] = results;
 
-                dispatchPublicCollection({
-                    type: "SET_CATEGORIES",
-                    payload: categories,
-                });
-            } catch (error) {
-                console.error(error);
+        if (featuredResult.status === "fulfilled") {
+            dispatchPublicCollection({
+                type: "SET_FEATURED_WORKS",
+                payload: featuredResult.value,
+            });
+        }
 
-                const message =
-                    error instanceof Error
-                        ? error.message
-                        : "Erro ao carregar coleção pública";
+        if (curatedResult.status === "fulfilled") {
+            dispatchPublicCollection({
+                type: "SET_CURATED_WORKS",
+                payload: curatedResult.value,
+            });
+        }
 
-                dispatchPublicCollection({
-                    type: "SET_ERROR_COLLECTION",
-                    payload: message,
-                });
-            } finally {
-                dispatchPublicCollection({
-                    type: "SET_LOADING_COLLECTION",
-                    payload: false,
-                });
-            }
-        },
-        []
-    );
+        if (categoriesResult.status === "fulfilled") {
+            dispatchPublicCollection({
+                type: "SET_CATEGORIES",
+                payload: categoriesResult.value,
+            });
+        }
+
+        if (results.some(result => result.status === "rejected")) {
+            dispatchPublicCollection({
+                type: "SET_ERROR_COLLECTION",
+                payload: "Alguns dados da coleção não puderam ser carregados.",
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    } finally {
+        dispatchPublicCollection({
+            type: "SET_LOADING_COLLECTION",
+            payload: false,
+        });
+    }
+}, []);
+
+    // const loadPublicCollection = useCallback(
+    //     async () => {
+    //         try {
+    //             dispatchPublicCollection({
+    //                 type: "SET_LOADING_COLLECTION",
+    //                 payload: true,
+    //             });
+
+    //             const [
+    //                 featuredWorks,
+    //                 curatedWorks,
+    //                 categories,
+    //             ] = await Promise.all([
+    //                 publicCollectionService.getFeaturedWorks(),
+    //                 publicCollectionService.getCuratedWorks(),
+    //                 publicCollectionService.getCategories(),
+    //             ]);
+
+    //             dispatchPublicCollection({
+    //                 type: "SET_FEATURED_WORKS",
+    //                 payload: featuredWorks,
+    //             });
+
+    //             dispatchPublicCollection({
+    //                 type: "SET_CURATED_WORKS",
+    //                 payload: curatedWorks,
+    //             });
+
+    //             dispatchPublicCollection({
+    //                 type: "SET_CATEGORIES",
+    //                 payload: categories,
+    //             });
+    //         } catch (error) {
+    //             console.error(error);
+
+    //             const message =
+    //                 error instanceof Error
+    //                     ? error.message
+    //                     : "Erro ao carregar coleção pública";
+
+    //             dispatchPublicCollection({
+    //                 type: "SET_ERROR_COLLECTION",
+    //                 payload: message,
+    //             });
+    //         } finally {
+    //             dispatchPublicCollection({
+    //                 type: "SET_LOADING_COLLECTION",
+    //                 payload: false,
+    //             });
+    //         }
+    //     },
+    //     []
+    // );
 
     useEffect(() => {
         loadPublicCollection();
