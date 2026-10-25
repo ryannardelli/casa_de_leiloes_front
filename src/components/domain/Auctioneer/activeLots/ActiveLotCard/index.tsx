@@ -100,7 +100,7 @@ export function ActiveLotCard({ lot }: ActiveLotCardProps) {
         <div className="grid grid-cols-2 gap-3 border-t border-border pt-4">
           <Link
             to={`/auctions/${lot.id}`}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-background px-3 py-3 text-sm font-semibold text-white transition hover:opacity-90 dark:text-background"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-black px-3 py-3 text-sm font-semibold text-white transition hover:opacity-90 dark:text-background"
           >
             Ver sala
             <ArrowUpRight size={16} />

@@ -1,12 +1,11 @@
 import { ArrowLeft, PackagePlus } from "lucide-react";
-import { Link } from "react-router-dom";
 import { RouterLinks } from "../../../../ui/shared/Links/RouterLinks";
 
 export function CreateLotHeader() {
   return (
     <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-start gap-3">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-white dark:text-background">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-muted text-white dark:text-background">
           <PackagePlus size={22} />
         </div>
 

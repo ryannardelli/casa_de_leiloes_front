@@ -1,5 +1,4 @@
 import { Plus, Package } from "lucide-react";
-import { Link } from "react-router-dom";
 import { RouterLinks } from "../../../../ui/shared/Links/RouterLinks";
 
 export function MyLotsHeader() {

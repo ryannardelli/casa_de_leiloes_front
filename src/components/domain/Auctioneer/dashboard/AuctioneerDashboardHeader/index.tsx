@@ -1,5 +1,4 @@
 import { Plus } from "lucide-react";
-import { Link } from "react-router-dom";
 import { RouterLinks } from "../../../../ui/shared/Links/RouterLinks";
 
 export function AuctioneerDashboardHeader() {

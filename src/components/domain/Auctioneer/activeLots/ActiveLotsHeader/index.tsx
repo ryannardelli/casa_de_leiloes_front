@@ -1,5 +1,4 @@
 import {Plus } from "lucide-react";
-import { Link } from "react-router-dom";
 import { RouterLinks } from "../../../../ui/shared/Links/RouterLinks";
 
 export function ActiveLotsHeader() {
@@ -18,7 +17,7 @@ export function ActiveLotsHeader() {
 
       <RouterLinks
         href="/auctioneer/lots/new"
-        className="inline-flex w-fit items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90 dark:text-background"
+        className="inline-flex w-fit items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90 dark:text-background"
       >
         <Plus size={18} />
         Criar novo lote
