@@ -12,29 +12,45 @@ import { Lots } from "../../pages/Public/Lots";
 import { Forbidden } from "../../pages/Auth/Forbidden";
 import NotFound from "../../pages/Auth/NotFound";
 
+import HomeTemplate from "../../templates/HomeTemplate";
+import MainTemplate from "../../templates/MainTemplate";
+
 import { AuctioneerRoutes } from "../ProfileRouter/AuctioneerRoutes";
 import { BidderRoutes } from "../ProfileRouter/BidderRoutes";
 import { PrivateRoute } from "../Auth/PrivateRouter";
+
 import { LoadingAuth } from "../../components/ui/shared/Loading/LoadingAuth";
 import { useAuth } from "../../hooks/useAuth";
 import type { ProfileName } from "../../models/Profile";
+import { LiveRoom } from "../../pages/Public/LiveRoom";
 
 const publicRoutes: RouteObject[] = [
   {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/auctions",
-    element: <Lots />,
-  },
-  {
-    path: "/auctions/:id",
-    element: <AuctionRoom />,
-  },
-  {
-    path: "/auctions/:id/audit",
-    element: <Audit />,
+    element: <HomeTemplate />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/live-room",
+        element: <LiveRoom />,
+      },
+
+       {
+        path: "/auctions",
+        element: <Lots />,
+      },
+
+      {
+        path: "/auctions/:id",
+        element: <AuctionRoom />,
+      },
+      {
+        path: "/auctions/:id/audit",
+        element: <Audit />,
+      },
+    ],
   },
   {
     path: "/forbidden",
@@ -64,7 +80,12 @@ function AppRoutes() {
           allowedRoles={["Licitante"]}
         />
       ),
-      children: BidderRoutes,
+      children: [
+        {
+          element: <MainTemplate />,
+          children: BidderRoutes,
+        },
+      ],
     },
     {
       element: (
@@ -75,12 +96,19 @@ function AppRoutes() {
           allowedRoles={["Leiloeiro"]}
         />
       ),
-      children: AuctioneerRoutes,
+      children: [
+        {
+          element: <MainTemplate />,
+          children: AuctioneerRoutes,
+        },
+      ],
     },
   ]);
 
   if (loading) {
-    return <LoadingAuth message="Aguarde enquanto estamos preparando tudo..." />;
+    return (
+      <LoadingAuth message="Aguarde enquanto estamos preparando tudo..." />
+    );
   }
 
   return element;

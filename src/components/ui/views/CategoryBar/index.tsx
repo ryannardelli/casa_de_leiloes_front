@@ -1,16 +1,18 @@
-import { Flame, Landmark, Palette, ShieldCheck, TrendingUp } from 'lucide-react';
-import { useState } from 'react';
+import { Flame, House, Landmark, Palette, Radio, ShieldCheck } from 'lucide-react';
+import { RouterLinks } from '../../shared/Links/RouterLinks';
+import { useLocation } from 'react-router-dom';
 
 const categories = [
-  { id: "auditoria", label: "Auditoria pública", icon: ShieldCheck },
-  { id: "popular", label: "Mais disputados", icon: TrendingUp },
-  { id: "destaques", label: "Destaques", icon: Flame },
-  { id: "pinturas", label: "Pinturas", icon: Palette },
-  { id: "esculturas", label: "Esculturas", icon: Landmark },
+  { id: "home", label: "Início", icon: House, router: "/" },
+  { id: "auditoria", label: "Auditoria pública", icon: ShieldCheck, router: "/audit" },
+  { id: "salas-ao-vivo", label: "Salas ao vivo", icon: Radio, router: "/live-room" },
+  { id: "destaques", label: "Destaques", icon: Flame, router: "/destaques" },
+  { id: "pinturas", label: "Pinturas", icon: Palette, router: "/pinturas" },
+  { id: "esculturas", label: "Esculturas", icon: Landmark, router: "/esculturas" },
 ];
 
 export function CategoryBar() {
-  const [activeTab, setActiveTab] = useState('semana');
+  const location = useLocation();
 
   return (
     <div className="flex justify-center w-full bg-surface border-b border-border relative">
@@ -18,11 +20,12 @@ export function CategoryBar() {
         <div className="flex gap-2 py-3">
           {categories.map((item) => {
             const Icon = item.icon;
-            const isActive = activeTab === item.id;
+            const isActive = location.pathname === item.router;
+            
             return (
-              <button
+              <RouterLinks
+                href={item.router}
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
                 className={`flex flex-col items-center gap-1.5 px-3 py-2 text-xs font-semibold whitespace-nowrap transition-all border-b-2 -mb-3 ${
                   isActive
                     ? 'border-accent text-accent'
@@ -31,7 +34,7 @@ export function CategoryBar() {
               >
                 <Icon className={`w-5 h-5 ${isActive ? 'text-accent' : 'text-text-muted'}`} />
                 <span>{item.label}</span>
-              </button>
+              </RouterLinks>
             );
           })}
         </div>
