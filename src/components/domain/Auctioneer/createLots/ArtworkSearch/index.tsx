@@ -1,21 +1,27 @@
 import { Search, Image as ImageIcon } from "lucide-react";
 import type { Artwork } from "../../../../../mocks/auctioneer/artworks.mock";
+import { usePublicCollection } from "../../../../../hooks/usePublicCollection";
+import { ArtworkCardSkeleton } from "../../../../ui/shared/Loading/ArtworkCardSkeleton";
 
 interface ArtworkSearchProps {
-  artworks: Artwork[];
+  artworks?: Artwork[];
   search: string;
-  selectedArtworkId: string | null;
+  selectedArtworkId: string | number | null;
   onSearchChange: (value: string) => void;
-  onSelect: (artwork: Artwork) => void;
+  onSelect: (artwork: any) => void;
 }
 
 export function ArtworkSearch({
-  artworks,
   search,
   selectedArtworkId,
   onSearchChange,
   onSelect,
 }: ArtworkSearchProps) {
+  const { statePublicCollection } = usePublicCollection();
+  const featuredWorks = statePublicCollection?.featuredWorks || [];
+
+  const loading = statePublicCollection.loadingCollection;
+
   return (
     <section className="rounded-2xl border border-border bg-surface p-5 sm:p-6">
       <div>
@@ -39,14 +45,21 @@ export function ArtworkSearch({
         />
       </div>
 
-      {artworks.length > 0 ? (
+      {loading ? (
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {artworks.map((artwork) => {
-            const isSelected = selectedArtworkId === artwork.id;
+          {Array.from({ length: 6 }).map((_, index) => (
+            <ArtworkCardSkeleton key={index} />
+          ))}
+        </div>
+      ) : featuredWorks.length > 0 ? (
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {featuredWorks.map((artwork: any) => {
+            const artworkId = artwork.externalItemId ?? artwork.id;
+            const isSelected = String(selectedArtworkId) === String(artworkId);
 
             return (
               <button
-                key={artwork.id}
+                key={artworkId}
                 type="button"
                 onClick={() => onSelect(artwork)}
                 aria-pressed={isSelected}
@@ -56,30 +69,34 @@ export function ArtworkSearch({
                     : "border-border hover:border-accent/50"
                 }`}
               >
-                <div className="aspect-[4/3] overflow-hidden bg-muted">
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/50 flex items-center justify-center p-2">
                   <img
                     src={artwork.imageUrl}
                     alt={artwork.title}
-                    className="h-full w-full object-cover transition duration-300 hover:scale-105"
+                    className="h-full w-full object-contain transition duration-300 hover:scale-105"
                   />
                 </div>
 
                 <div className="space-y-2 p-4">
-                  <span className="inline-flex rounded-md bg-muted px-2 py-1 text-xs font-medium text-text-muted">
-                    {artwork.department}
-                  </span>
+                  {artwork.category && (
+                    <span className="inline-flex rounded-md bg-muted px-2 py-1 text-xs font-medium text-text-muted">
+                      {artwork.category}
+                    </span>
+                  )}
 
                   <h3 className="line-clamp-2 font-semibold">
                     {artwork.title}
                   </h3>
 
                   <p className="text-sm text-text-muted">
-                    {artwork.artist}
+                    {artwork.artist || "Artista desconhecido"}
                   </p>
 
-                  <p className="text-xs text-text-muted">
-                    {artwork.date} · {artwork.medium}
-                  </p>
+                  {(artwork.date || artwork.medium) && (
+                    <p className="text-xs text-text-muted">
+                      {[artwork.date, artwork.medium].filter(Boolean).join(" · ")}
+                    </p>
+                  )}
 
                   <div
                     className={`pt-2 text-sm font-semibold ${
