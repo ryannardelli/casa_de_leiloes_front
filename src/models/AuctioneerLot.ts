@@ -25,6 +25,17 @@ export interface AuctioneerLot {
   updatedAt: string;
 }
 
+export interface Artwork {
+  externalItemId: number;
+  title: string;
+  artist: string;
+  objectDate: string;
+  medium: string;
+  imageUrl: string;
+  department: string;
+  category: string;
+}
+
 export interface CreateAuctioneerLotPayload {
     itemId: string;
     startingBid: number;

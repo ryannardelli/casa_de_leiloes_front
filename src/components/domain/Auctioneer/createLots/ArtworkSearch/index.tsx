@@ -1,7 +1,7 @@
 import { Search, Image as ImageIcon } from "lucide-react";
-import type { Artwork } from "../../../../../mocks/auctioneer/artworks.mock";
 import { usePublicCollection } from "../../../../../hooks/usePublicCollection";
 import { ArtworkCardSkeleton } from "../../../../ui/shared/Loading/ArtworkCardSkeleton";
+import type { Artwork } from "../../../../../models/AuctioneerLot";
 
 interface ArtworkSearchProps {
   artworks?: Artwork[];
@@ -47,7 +47,7 @@ export function ArtworkSearch({
 
       {loading ? (
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, index) => (
+          {Array.from({ length: featuredWorks.length }).map((_, index) => (
             <ArtworkCardSkeleton key={index} />
           ))}
         </div>

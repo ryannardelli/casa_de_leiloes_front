@@ -1,7 +1,11 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { artworksMock, type Artwork } from "../../../mocks/auctioneer/artworks.mock";
-import { CreateLotForm, type CreateLotData } from "../../../components/domain/Auctioneer/createLots/CreateLotForm";
+import type { Artwork } from "../../../mocks/auctioneer/artworks.mock";
+import { usePublicCollection } from "../../../hooks/usePublicCollection";
+import {
+  CreateLotForm,
+  type CreateLotData,
+} from "../../../components/domain/Auctioneer/createLots/CreateLotForm";
 import { CreateLotHeader } from "../../../components/domain/Auctioneer/createLots/CreateLotHeader";
 import { ArtworkSearch } from "../../../components/domain/Auctioneer/createLots/ArtworkSearch";
 import { SelectedArtwork } from "../../../components/domain/Auctioneer/createLots/SelectedArtwork";
@@ -12,25 +16,31 @@ export function CreateLot() {
   const [search, setSearch] = useState("");
   const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
 
+  const { statePublicCollection } = usePublicCollection();
+
+  const featuredWorks = statePublicCollection?.featuredWorks ?? [];
+  console.log(featuredWorks);
+
   const filteredArtworks = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
 
     if (!normalizedSearch) {
-      return artworksMock;
+      return featuredWorks;
     }
 
-    return artworksMock.filter((artwork) =>
+    return featuredWorks.filter((artwork) =>
       [
         artwork.title,
         artwork.artist,
         artwork.department,
         artwork.medium,
-      ].some((value) => value.toLowerCase().includes(normalizedSearch)),
+      ].some((value) =>
+        String(value ?? "").toLowerCase().includes(normalizedSearch),
+      ),
     );
-  }, [search]);
+  }, [search, featuredWorks]);
 
   function handleCreateLot(data: CreateLotData) {
-    // Demonstração local: ainda não persiste o lote no backend.
     console.log("Dados do lote:", data);
 
     window.alert(
@@ -49,7 +59,9 @@ export function CreateLot() {
         <ArtworkSearch
           artworks={filteredArtworks}
           search={search}
-          selectedArtworkId={selectedArtwork?.id ?? null}
+          selectedArtworkId={
+            selectedArtwork?.externalItemId ?? selectedArtwork?.id ?? null
+          }
           onSearchChange={setSearch}
           onSelect={setSelectedArtwork}
         />
