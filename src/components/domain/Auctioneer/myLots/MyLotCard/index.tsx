@@ -2,18 +2,17 @@ import {
   ArrowUpRight,
   CalendarClock,
   Clock3,
-  Gavel,
   MoreHorizontal,
   Package,
   XCircle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import type { MyLot } from "../../../../../mocks/auctioneer/my-lots.mock";
+import type { AuctioneerLot } from "../../../../../models/AuctioneerLot";
 import { formatCurrency } from "../../../../../utils/formatCurrency";
 
 interface MyLotCardProps {
-  lot: MyLot;
-  onCancel: (lotId: string) => void;
+  lot: AuctioneerLot;
+  onCancel: (lotId: number) => void;
 }
 
 const statusConfig = {
@@ -33,20 +32,26 @@ const statusConfig = {
     label: "Cancelado",
     className: "bg-muted text-text-muted",
   },
+  CANCELLED: {
+    label: "Cancelado",
+    className: "bg-muted text-text-muted",
+  },
 };
 
 export function MyLotCard({ lot, onCancel }: MyLotCardProps) {
-  const status = statusConfig[lot.status];
+  const status = statusConfig[lot.status] ?? {
+    label: lot.status,
+    className: "bg-muted text-text-muted",
+  };
 
   const canCancel =
-    (lot.status === "LIVE" || lot.status === "SCHEDULED") &&
-    lot.totalBids === 0;
+    lot.status === "LIVE" || lot.status === "SCHEDULED";
 
   const dateLabel =
     lot.status === "SCHEDULED" ? "Início" : "Encerramento";
 
   const dateValue =
-    lot.status === "SCHEDULED" ? lot.startsAt : lot.endsAt;
+    lot.status === "SCHEDULED" ? lot.startAt : lot.endAt;
 
   const formattedDate = new Date(dateValue).toLocaleString("pt-BR", {
     day: "2-digit",
@@ -88,12 +93,19 @@ export function MyLotCard({ lot, onCancel }: MyLotCardProps) {
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
-                {lot.category} · {lot.id}
+                {lot.attributes?.department || "Sem categoria"}
               </p>
 
               <h2 className="mt-2 text-lg font-bold tracking-tight">
                 {lot.title}
               </h2>
+
+              <p className="mt-1 text-sm text-text-muted">
+                {lot.attributes?.artist || "Artista não informado"}
+                {lot.attributes?.objectDate
+                  ? ` · ${lot.attributes.objectDate}`
+                  : ""}
+              </p>
             </div>
 
             <MoreHorizontal
@@ -102,32 +114,29 @@ export function MyLotCard({ lot, onCancel }: MyLotCardProps) {
             />
           </div>
 
+          <p className="mt-3 text-sm leading-6 text-text-muted">
+            {lot.description}
+          </p>
+
           <div className="mt-5 grid grid-cols-2 gap-4 border-y border-border py-4 sm:grid-cols-3">
             <div>
-              <p className="text-xs text-text-muted">
-                Maior lance
-              </p>
+              <p className="text-xs text-text-muted">Preço atual</p>
 
               <p className="mt-1 text-lg font-bold text-accent">
-                {formatCurrency(lot.currentBid)}
+                {formatCurrency(Number(lot.currentPrice))}
               </p>
             </div>
 
             <div>
-              <p className="text-xs text-text-muted">
-                Total de lances
-              </p>
+              <p className="text-xs text-text-muted">Preço inicial</p>
 
-              <p className="mt-1 flex items-center gap-2 font-semibold">
-                <Gavel size={16} className="text-text-muted" />
-                {lot.totalBids}
+              <p className="mt-1 text-lg font-semibold">
+                {formatCurrency(Number(lot.startingPrice))}
               </p>
             </div>
 
             <div className="col-span-2 sm:col-span-1">
-              <p className="text-xs text-text-muted">
-                {dateLabel}
-              </p>
+              <p className="text-xs text-text-muted">{dateLabel}</p>
 
               <p className="mt-1 flex items-center gap-2 text-sm font-medium">
                 {lot.status === "SCHEDULED" ? (
@@ -141,6 +150,7 @@ export function MyLotCard({ lot, onCancel }: MyLotCardProps) {
                     className="shrink-0 text-text-muted"
                   />
                 )}
+
                 {formattedDate}
               </p>
             </div>
@@ -159,7 +169,7 @@ export function MyLotCard({ lot, onCancel }: MyLotCardProps) {
               <button
                 type="button"
                 onClick={handleCancel}
-                className="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-text-muted transition-colors hover:bg-muted hover:text-accent"
+                className="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-text-muted transition-colors hover:bg-muted hover:text-accent cursor-pointer"
               >
                 <XCircle size={16} />
                 Cancelar lote
@@ -168,7 +178,7 @@ export function MyLotCard({ lot, onCancel }: MyLotCardProps) {
 
             {lot.status === "ENDED" && (
               <Link
-                to={`/dashboard/results?lotId=${encodeURIComponent(lot.id)}`}
+                to={`/dashboard/results?lotId=${encodeURIComponent(String(lot.id))}`}
                 className="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-accent transition-colors hover:bg-muted"
               >
                 Ver resultado

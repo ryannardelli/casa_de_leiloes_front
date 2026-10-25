@@ -1,15 +1,24 @@
 import { useMemo, useState } from "react";
 import { PackageSearch } from "lucide-react";
-import type { MyLot, MyLotStatus } from "../../../../../mocks/auctioneer/my-lots.mock";
-import { MyLotsFilters, type MyLotsFilterStatus } from "../MyLotsFilters";
+import type { AuctioneerLot } from "../../../../../models/AuctioneerLot";
+import {
+  MyLotsFilters,
+  type MyLotsFilterStatus,
+} from "../MyLotsFilters";
 import { MyLotCard } from "../MyLotCard";
+import { MyLotCardSkeleton } from "../../../../ui/shared/Loading/MyLotCardSkeleton";
 
 interface MyLotsListProps {
-  lots: MyLot[];
-  onCancel: (lotId: string) => void;
+  lots: AuctioneerLot[];
+  loading: boolean;
+  onCancel: (lotId: number | string) => void;
 }
 
-export function MyLotsList({ lots, onCancel }: MyLotsListProps) {
+export function MyLotsList({
+  lots,
+  loading,
+  onCancel,
+}: MyLotsListProps) {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<MyLotsFilterStatus>("ALL");
 
@@ -19,11 +28,13 @@ export function MyLotsList({ lots, onCancel }: MyLotsListProps) {
     return lots.filter((lot) => {
       const matchesSearch =
         lot.title.toLowerCase().includes(normalizedSearch) ||
-        lot.category.toLowerCase().includes(normalizedSearch) ||
-        lot.id.toLowerCase().includes(normalizedSearch);
+        (lot.attributes?.department ?? "")
+          .toLowerCase()
+          .includes(normalizedSearch) ||
+        String(lot.id).toLowerCase().includes(normalizedSearch);
 
       const matchesStatus =
-        status === "ALL" || lot.status === (status as MyLotStatus);
+        status === "ALL" || lot.status === status;
 
       return matchesSearch && matchesStatus;
     });
@@ -48,7 +59,13 @@ export function MyLotsList({ lots, onCancel }: MyLotsListProps) {
         onStatusChange={setStatus}
       />
 
-      {filteredLots.length > 0 ? (
+      {loading ? (
+        <div className="space-y-4">
+          {Array.from({ length: lots.length }).map((_, index) => (
+            <MyLotCardSkeleton key={index} />
+          ))}
+        </div>
+      ) : filteredLots.length > 0 ? (
         <div className="space-y-4">
           {filteredLots.map((lot) => (
             <MyLotCard

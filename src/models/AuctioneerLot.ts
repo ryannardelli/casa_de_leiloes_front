@@ -1,13 +1,28 @@
 export interface AuctioneerLot {
-    id: string;
-    itemId: string;
-    title: string;
-    description?: string;
-    startingBid: number;
-    reservePrice?: number;
-    status: "ACTIVE" | "CANCELLED" | "FINISHED"; // Ajuste conforme os status da sua API
-    createdAt?: string;
-    updatedAt?: string;
+  id: number;
+  auctioneerId: number;
+  externalItemId: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  attributes: {
+    artist: string;
+    medium: string;
+    culture: string;
+    department: string;
+    objectDate: string;
+  };
+  startingPrice: string;
+  minimumIncrement: string;
+  currentPrice: string;
+  startAt: string;
+  endAt: string;
+  status: "LIVE" | "SCHEDULED" | "ENDED" | "CANCELED" | "CANCELLED";
+  winnerId: number | null;
+  finalPrice: string | null;
+  settledAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateAuctioneerLotPayload {
