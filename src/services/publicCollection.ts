@@ -11,7 +11,7 @@ type ApiError = {
 
 export const publicCollectionService = {
     getFeaturedWorks: async (): Promise<MuseumWork[]> => {
-        const res = await fetch(`${API_URL}/featured`);
+        const res = await fetch(`${API_URL}/japanese`);
 
         if (!res.ok) {
             const errorData: ApiError = await res
