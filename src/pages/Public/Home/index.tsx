@@ -5,7 +5,7 @@ import { WeeklyHighlights } from "../../../components/ui/views/WeeklyHighlights"
 
 import { Footer } from "../../../components/ui/layout/Footer";
 import { usePublicCollection } from "../../../hooks/usePublicCollection";
-import { LoadingScreen } from "../../../components/ui/shared/Loading/LoadingScreen";
+import { LoadingScreen } from "../../../components/ui/shared/Loading/general/LoadingScreen";
 
 export function Home() {
     const { statePublicCollection } = usePublicCollection();

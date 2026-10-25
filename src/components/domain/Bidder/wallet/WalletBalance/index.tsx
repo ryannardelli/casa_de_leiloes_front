@@ -1,19 +1,16 @@
-import { Eye, Wallet } from "lucide-react";import { formatCurrency } from "../../../../../utils/formatCurrency";
+import { formatCurrency } from "../../../../../utils/formatCurrency";
 import { useWallet } from "../../../../../hooks/useWallet";
-;
+import { Eye, Wallet } from "lucide-react";
+import { WalletBalanceSkeleton } from "../../../../ui/shared/Loading/wallet/WalletBalanceSkeleton";
 
-interface WalletBalanceProps {
-  availableBalance: number;
-  committedBalance: number;
-}
-
-export function WalletBalance({
-  availableBalance,
-  committedBalance,
-}: WalletBalanceProps) {
-  const totalBalance = availableBalance + committedBalance;
+export function WalletBalance() {
   const { stateWallet } = useWallet();
-  console.log(stateWallet);
+  const wallet = stateWallet.wallet;
+  const loading = stateWallet.loadingWallet;
+
+  if (loading || !wallet) {
+    return <WalletBalanceSkeleton />;
+  }
 
   return (
     <section className="relative overflow-hidden rounded-2xl bg-primary p-6 text-surface shadow-sm sm:p-8">
@@ -28,7 +25,7 @@ export function WalletBalance({
         </div>
 
         <p className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-          {formatCurrency(totalBalance)}
+          {formatCurrency(Number(wallet.total))}
         </p>
 
         <p className="mt-2 text-sm text-surface/70">
@@ -42,7 +39,7 @@ export function WalletBalance({
             </p>
 
             <p className="mt-1 text-xl font-semibold text-gold">
-              {formatCurrency(availableBalance)}
+              {formatCurrency(Number(wallet.available))}
             </p>
           </div>
 
@@ -52,7 +49,7 @@ export function WalletBalance({
             </p>
 
             <p className="mt-1 text-xl font-semibold">
-              {formatCurrency(committedBalance)}
+              {formatCurrency(Number(wallet.committed))}
             </p>
           </div>
         </div>

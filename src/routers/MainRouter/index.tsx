@@ -17,7 +17,7 @@ import { AuctioneerRoutes } from "../ProfileRouter/AuctioneerRoutes";
 import { BidderRoutes } from "../ProfileRouter/BidderRoutes";
 import { PrivateRoute } from "../Auth/PrivateRouter";
 
-import { LoadingAuth } from "../../components/ui/shared/Loading/LoadingAuth";
+import { LoadingAuth } from "../../components/ui/shared/Loading/general/LoadingAuth";
 import { useAuth } from "../../hooks/useAuth";
 import type { ProfileName } from "../../models/Profile";
 import { LiveAuctionRoom } from "../../pages/Public/AuctionRoom/LiveAuctionRoom";

@@ -4,9 +4,9 @@ import { SidebarHeader } from "./SidebarHeader";
 import { SidebarItem } from "./SidebarItem";
 import { useAuth } from "../../../hooks/useAuth";
 import { useProfile } from "../../../hooks/useProfile";
-import { MenuSkeletonList } from "../../ui/shared/Loading/MenuSkeletonList";
 import { AVAILABLE_ICONS } from "../../../constants/availableIcons";
 import { ThemeToggle } from "../../ui/shared/Button/ThemeToggle";
+import { MenuSkeletonList } from "../../ui/shared/Loading/menu/MenuSkeletonList";
 
 export function Sidebar() {
   const { state, logout } = useAuth();

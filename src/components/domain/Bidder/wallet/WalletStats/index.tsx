@@ -15,6 +15,7 @@ export function WalletStats({
   availableBalance,
   committedBalance,
 }: WalletStatsProps) {
+   
   const stats = [
     {
       label: "Saldo disponível",
