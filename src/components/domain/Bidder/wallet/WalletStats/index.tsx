@@ -4,18 +4,21 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { formatCurrency } from "../../../../../utils/formatCurrency";
+import { useWallet } from "../../../../../hooks/useWallet";
+import { WalletStatsSkeleton } from "../../../../ui/shared/Loading/wallet/WalletStatsSkeleton";
 
+export function WalletStats() {
+  const { stateWallet } = useWallet();
+  const wallet = stateWallet.wallet;
+  const loading = stateWallet.loadingWallet;
 
-interface WalletStatsProps {
-  availableBalance: number;
-  committedBalance: number;
-}
+  if (loading || !wallet) {
+    return <WalletStatsSkeleton />;
+  }
 
-export function WalletStats({
-  availableBalance,
-  committedBalance,
-}: WalletStatsProps) {
-   
+  const availableBalance = Number(wallet.available);
+  const committedBalance = Number(wallet.committed);
+
   const stats = [
     {
       label: "Saldo disponível",
