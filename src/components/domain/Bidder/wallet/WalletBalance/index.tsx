@@ -1,4 +1,5 @@
 import { Eye, Wallet } from "lucide-react";import { formatCurrency } from "../../../../../utils/formatCurrency";
+import { useWallet } from "../../../../../hooks/useWallet";
 ;
 
 interface WalletBalanceProps {
@@ -11,6 +12,8 @@ export function WalletBalance({
   committedBalance,
 }: WalletBalanceProps) {
   const totalBalance = availableBalance + committedBalance;
+  const { stateWallet } = useWallet();
+  console.log(stateWallet);
 
   return (
     <section className="relative overflow-hidden rounded-2xl bg-primary p-6 text-surface shadow-sm sm:p-8">
