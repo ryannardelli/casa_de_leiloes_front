@@ -19,7 +19,7 @@ export function SelectedArtwork({ artwork }: SelectedArtworkProps) {
           <img
             src={artwork.imageUrl}
             alt={artwork.title}
-            className="h-48 w-full bg-muted object-cover"
+            className="h-48 w-full bg-muted object-contain"
           />
 
           <div className="space-y-3 p-4">

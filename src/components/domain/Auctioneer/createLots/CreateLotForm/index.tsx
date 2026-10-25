@@ -1,17 +1,9 @@
 import { useState, type FormEvent } from "react";
 import { CalendarClock, CircleDollarSign, Save } from "lucide-react";
 import type { Artwork } from "../../../../../mocks/auctioneer/artworks.mock";
+import { CreateLotSchema, type CreateLotFormData } from "../../../../../schemas/AuctioneerLot/CreateLotForm";
 
-export interface CreateLotData {
-  artworkId: string;
-  title: string;
-  description: string;
-  startingPrice: number;
-  minimumPrice: number;
-  minimumIncrement: number;
-  startsAt: string;
-  endsAt: string;
-}
+export type CreateLotData = CreateLotFormData;
 
 interface CreateLotFormProps {
   artwork: Artwork | null;
@@ -22,13 +14,10 @@ export function CreateLotForm({
   artwork,
   onSubmit,
 }: CreateLotFormProps) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [startingPrice, setStartingPrice] = useState("");
-  const [minimumPrice, setMinimumPrice] = useState("");
-  const [minimumIncrement, setMinimumIncrement] = useState("50");
-  const [startsAt, setStartsAt] = useState("");
-  const [endsAt, setEndsAt] = useState("");
+  const [minimumIncrement, setMinimumIncrement] = useState("250");
+  const [startAt, setStartAt] = useState("");
+  const [endAt, setEndAt] = useState("");
   const [error, setError] = useState("");
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -40,40 +29,23 @@ export function CreateLotForm({
       return;
     }
 
-    const initial = Number(startingPrice);
-    const minimum = Number(minimumPrice);
-    const increment = Number(minimumIncrement);
+    const startDate = new Date(startAt);
+    const endDate = new Date(endAt);
+
+    const result = CreateLotSchema.safeParse({
+      externalItemId: String(artwork.id),
+      startingPrice: Number(startingPrice),
+      minimumIncrement: Number(minimumIncrement),
+      startAt: startDate.toISOString(),
+      endAt: endDate.toISOString(),
+    });
+
+    if (!result.success) {
+      setError(result.error.issues[0].message);
+      return;
+    }
 
     if (
-      !Number.isFinite(initial) ||
-      !Number.isFinite(minimum) ||
-      !Number.isFinite(increment) ||
-      initial <= 0 ||
-      minimum < 0 ||
-      increment <= 0
-    ) {
-      setError("Informe valores monetários válidos.");
-      return;
-    }
-
-    if (minimum > 0 && minimum < initial) {
-      setError(
-        "O preço mínimo de venda não pode ser inferior ao preço inicial.",
-      );
-      return;
-    }
-
-    if (!startsAt || !endsAt) {
-      setError("Informe a data e o horário de início e término.");
-      return;
-    }
-
-    const startDate = new Date(startsAt);
-    const endDate = new Date(endsAt);
-
-    if (
-      Number.isNaN(startDate.getTime()) ||
-      Number.isNaN(endDate.getTime()) ||
       startDate <= new Date() ||
       endDate <= startDate
     ) {
@@ -83,16 +55,7 @@ export function CreateLotForm({
       return;
     }
 
-    onSubmit({
-      artworkId: artwork.id,
-      title: title.trim() || artwork.title,
-      description: description.trim(),
-      startingPrice: initial,
-      minimumPrice: minimum,
-      minimumIncrement: increment,
-      startsAt,
-      endsAt,
-    });
+    onSubmit(result.data);
   }
 
   const inputClassName =
@@ -107,44 +70,19 @@ export function CreateLotForm({
         <h2 className="text-lg font-semibold">2. Configure o leilão</h2>
 
         <p className="mt-1 text-sm leading-6 text-text-muted">
-          Defina os detalhes, os valores e o período de participação.
+          Defina os valores e o período de participação.
         </p>
       </div>
 
       <div className="mt-6 space-y-5">
         <div>
-          <label htmlFor="lot-title" className="text-sm font-medium">
-            Título do lote
+          <label className="text-sm font-medium">
+            Obra selecionada
           </label>
 
-          <input
-            id="lot-title"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            placeholder={artwork?.title ?? "Selecione uma obra primeiro"}
-            maxLength={120}
-            className={inputClassName}
-          />
-
-          <p className="mt-1 text-xs text-text-muted">
-            Se não preencher, será utilizado o título da obra selecionada.
+          <p className="mt-2 rounded-xl border border-border bg-background px-4 py-3 text-sm text-text-muted">
+            {artwork?.title ?? "Selecione uma obra primeiro"}
           </p>
-        </div>
-
-        <div>
-          <label htmlFor="lot-description" className="text-sm font-medium">
-            Descrição
-          </label>
-
-          <textarea
-            id="lot-description"
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-            placeholder="Adicione informações complementares sobre o lote..."
-            rows={4}
-            maxLength={2000}
-            className={`${inputClassName} resize-y`}
-          />
         </div>
 
         <div className="border-t border-border pt-5">
@@ -154,11 +92,10 @@ export function CreateLotForm({
           </div>
 
           <p className="mt-1 text-xs leading-5 text-text-muted">
-            Valores ilustrativos em reais. Este projeto utiliza lances e
-            transações simulados.
+            Valores em reais. Os valores serão enviados conforme o contrato da API.
           </p>
 
-          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label
                 htmlFor="starting-price"
@@ -174,32 +111,12 @@ export function CreateLotForm({
                 step="0.01"
                 required
                 value={startingPrice}
-                onChange={(event) => setStartingPrice(event.target.value)}
-                placeholder="1500.00"
+                onChange={(event) =>
+                  setStartingPrice(event.target.value)
+                }
+                placeholder="5000"
                 className={inputClassName}
               />
-            </div>
-
-            <div>
-              <label htmlFor="minimum-price" className="text-sm font-medium">
-                Preço mínimo (R$)
-              </label>
-
-              <input
-                id="minimum-price"
-                type="number"
-                min="0"
-                step="0.01"
-                required
-                value={minimumPrice}
-                onChange={(event) => setMinimumPrice(event.target.value)}
-                placeholder="2000.00"
-                className={inputClassName}
-              />
-
-              <p className="mt-1 text-xs text-text-muted">
-                Informe 0 se não houver reserva.
-              </p>
             </div>
 
             <div>
@@ -234,31 +151,37 @@ export function CreateLotForm({
 
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="starts-at" className="text-sm font-medium">
+              <label
+                htmlFor="start-at"
+                className="text-sm font-medium"
+              >
                 Data e horário de início
               </label>
 
               <input
-                id="starts-at"
+                id="start-at"
                 type="datetime-local"
                 required
-                value={startsAt}
-                onChange={(event) => setStartsAt(event.target.value)}
+                value={startAt}
+                onChange={(event) => setStartAt(event.target.value)}
                 className={inputClassName}
               />
             </div>
 
             <div>
-              <label htmlFor="ends-at" className="text-sm font-medium">
+              <label
+                htmlFor="end-at"
+                className="text-sm font-medium"
+              >
                 Data e horário de término
               </label>
 
               <input
-                id="ends-at"
+                id="end-at"
                 type="datetime-local"
                 required
-                value={endsAt}
-                onChange={(event) => setEndsAt(event.target.value)}
+                value={endAt}
+                onChange={(event) => setEndAt(event.target.value)}
                 className={inputClassName}
               />
             </div>
@@ -278,7 +201,7 @@ export function CreateLotForm({
           <button
             type="button"
             onClick={() => window.history.back()}
-            className="rounded-xl border border-border px-5 py-3 text-sm font-semibold transition hover:bg-muted"
+            className="rounded-xl border border-border px-5 py-3 text-sm font-semibold transition hover:bg-muted cursor-pointer"
           >
             Cancelar
           </button>
@@ -286,7 +209,7 @@ export function CreateLotForm({
           <button
             type="submit"
             disabled={!artwork}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:text-background"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-background px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:text-background cursor-pointer"
           >
             <Save size={17} />
             Criar lote
