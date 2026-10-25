@@ -1,12 +1,13 @@
 import { createContext } from "react";
 import type { WalletAction, WalletState } from "../../models/Wallet";
 import { initialStateWallet } from "../../reducers/walletReducer";
+import type { DepositResponse } from "../../services/wallet";
 
 type WalletContextType = {
   stateWallet: WalletState;
   dispatchWallet: (action: WalletAction) => void;
   loadWallet: () => Promise<void>;
-  deposit: (amount: number) => Promise<void>;
+  deposit: (amount: number) => Promise<DepositResponse>;
   loadTransactions: () => Promise<void>;
   loadTransactionById: (id: number) => Promise<void>;
 };

@@ -77,24 +77,30 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
   }, []);
 
   const deposit = useCallback(async (amount: number) => {
-    try {
-      dispatchWallet({ type: "SET_LOADING_DEPOSIT", payload: true });
-      dispatchWallet({ type: "SET_ERROR_DEPOSIT", payload: null });
+  try {
+    dispatchWallet({ type: "SET_LOADING_DEPOSIT", payload: true });
+    dispatchWallet({ type: "SET_ERROR_DEPOSIT", payload: null });
 
-      await createDeposit(amount);
+    const response = await createDeposit(amount);
 
-      await Promise.all([loadWallet(), loadTransactions()]);
-    } catch (error) {
-      dispatchWallet({
-        type: "SET_ERROR_DEPOSIT",
-        payload: error instanceof Error ? error.message : "Erro ao realizar depósito",
-      });
-      console.error(error);
-      throw error;
-    } finally {
-      dispatchWallet({ type: "SET_LOADING_DEPOSIT", payload: false });
-    }
-  }, [loadWallet, loadTransactions]);
+    await Promise.all([loadWallet(), loadTransactions()]);
+
+    return response;
+  } catch (error) {
+    dispatchWallet({
+      type: "SET_ERROR_DEPOSIT",
+      payload:
+        error instanceof Error
+          ? error.message
+          : "Erro ao realizar depósito",
+    });
+
+    console.error(error);
+    throw error;
+  } finally {
+    dispatchWallet({ type: "SET_LOADING_DEPOSIT", payload: false });
+  }
+}, [loadWallet, loadTransactions]);
 
   const loadTransactionById = useCallback(async (id: number) => {
     try {

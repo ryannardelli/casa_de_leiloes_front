@@ -4,6 +4,11 @@ import { userAuthentication } from "./auth";
 
 const API_URL = "/api/wallet";
 
+export interface DepositResponse {
+  message: string;
+  transaction: WalletTransaction;
+}
+
 export async function getWallet(): Promise<Wallet> {
   const token = userAuthentication.getTokenFromStorage();
 
@@ -25,7 +30,7 @@ export async function getWallet(): Promise<Wallet> {
 
 export async function createDeposit(
   amount: number
-): Promise<WalletTransaction> {
+): Promise<DepositResponse> {
   const token = userAuthentication.getTokenFromStorage();
 
   const res = await fetch(`${API_URL}/deposits`, {
