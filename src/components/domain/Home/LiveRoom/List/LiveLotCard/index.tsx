@@ -9,7 +9,7 @@ interface LiveLotCardProps {
 export function LiveLotCard({ lot }: LiveLotCardProps) {
   return (
     <Link
-      to={`/live-room/${lot.id}`}
+      to={`/auctions/${lot.id}`}
       className="group overflow-hidden rounded-xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-lg"
     >
       <div className="relative overflow-hidden">

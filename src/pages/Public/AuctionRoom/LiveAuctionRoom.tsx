@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { liveRoomMock } from "../../../mocks/home/live-room.mock";
+import { liveRoomMock } from "../../../mocks/home/live-room.mock.ts";
 import { LiveBidHistory } from "../../../components/domain/Home/LiveRoom/Details/LiveBidHistory/index.tsx";
 import { LiveUserStatus } from "../../../components/domain/Home/LiveRoom/Details/LiveUserStatus/index.tsx";
 import { LiveBidPanel } from "../../../components/domain/Home/LiveRoom/Details/LiveBidPanel/index.tsx";
