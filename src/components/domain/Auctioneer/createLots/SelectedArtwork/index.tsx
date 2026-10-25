@@ -6,6 +6,7 @@ interface SelectedArtworkProps {
 }
 
 export function SelectedArtwork({ artwork }: SelectedArtworkProps) {
+
   return (
     <section className="rounded-2xl border border-border bg-surface p-5 sm:p-6">
       <h2 className="text-lg font-semibold">Obra selecionada</h2>

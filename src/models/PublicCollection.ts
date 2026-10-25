@@ -15,6 +15,7 @@ export interface MuseumCategory {
 
 export interface PublicCollectionState {
     featuredWorks: MuseumWork[];
+    featuredJapanese: MuseumWork[];
     curatedWorks: MuseumWork[];
     categories: MuseumCategory[];
     loadingCollection: boolean;
@@ -24,6 +25,10 @@ export interface PublicCollectionState {
 export type PublicCollectionAction =
     | {
           type: "SET_FEATURED_WORKS";
+          payload: MuseumWork[];
+      }
+    | {
+          type: "SET_FEATURED_JAPANESE";
           payload: MuseumWork[];
       }
     | {

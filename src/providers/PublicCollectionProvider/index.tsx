@@ -45,16 +45,29 @@ export const PublicCollectionProvider = ({
     try {
         const results = await Promise.allSettled([
             publicCollectionService.getFeaturedWorks(),
+            publicCollectionService.getJapaneseWorks(),
             publicCollectionService.getCuratedWorks(),
             publicCollectionService.getCategories(),
         ]);
 
-        const [featuredResult, curatedResult, categoriesResult] = results;
+        const [
+            featuredResult,
+            japaneseResult,
+            curatedResult,
+            categoriesResult,
+        ] = results;
 
         if (featuredResult.status === "fulfilled") {
             dispatchPublicCollection({
                 type: "SET_FEATURED_WORKS",
                 payload: featuredResult.value,
+            });
+        }
+
+        if (japaneseResult.status === "fulfilled") {
+            dispatchPublicCollection({
+                type: "SET_FEATURED_JAPANESE",
+                payload: japaneseResult.value,
             });
         }
 
@@ -87,60 +100,6 @@ export const PublicCollectionProvider = ({
         });
     }
 }, []);
-
-    // const loadPublicCollection = useCallback(
-    //     async () => {
-    //         try {
-    //             dispatchPublicCollection({
-    //                 type: "SET_LOADING_COLLECTION",
-    //                 payload: true,
-    //             });
-
-    //             const [
-    //                 featuredWorks,
-    //                 curatedWorks,
-    //                 categories,
-    //             ] = await Promise.all([
-    //                 publicCollectionService.getFeaturedWorks(),
-    //                 publicCollectionService.getCuratedWorks(),
-    //                 publicCollectionService.getCategories(),
-    //             ]);
-
-    //             dispatchPublicCollection({
-    //                 type: "SET_FEATURED_WORKS",
-    //                 payload: featuredWorks,
-    //             });
-
-    //             dispatchPublicCollection({
-    //                 type: "SET_CURATED_WORKS",
-    //                 payload: curatedWorks,
-    //             });
-
-    //             dispatchPublicCollection({
-    //                 type: "SET_CATEGORIES",
-    //                 payload: categories,
-    //             });
-    //         } catch (error) {
-    //             console.error(error);
-
-    //             const message =
-    //                 error instanceof Error
-    //                     ? error.message
-    //                     : "Erro ao carregar coleção pública";
-
-    //             dispatchPublicCollection({
-    //                 type: "SET_ERROR_COLLECTION",
-    //                 payload: message,
-    //             });
-    //         } finally {
-    //             dispatchPublicCollection({
-    //                 type: "SET_LOADING_COLLECTION",
-    //                 payload: false,
-    //             });
-    //         }
-    //     },
-    //     []
-    // );
 
     useEffect(() => {
         loadPublicCollection();

@@ -10,7 +10,7 @@ type ApiError = {
 };
 
 export const publicCollectionService = {
-    getFeaturedWorks: async (): Promise<MuseumWork[]> => {
+    getJapaneseWorks: async (): Promise<MuseumWork[]> => {
         const res = await fetch(`${API_URL}/japanese`);
 
         if (!res.ok) {
@@ -24,6 +24,22 @@ export const publicCollectionService = {
         }
 
         return res.json() as Promise<MuseumWork[]>;
+    },
+
+    getFeaturedWorks: async (): Promise<MuseumWork[]> => {
+    const res = await fetch(`${API_URL}/featured`);
+
+    if (!res.ok) {
+        const errorData: ApiError = await res
+            .json()
+            .catch(() => ({}));
+
+        throw new Error(
+            errorData.message || "Erro ao carregar obras em destaque"
+        );
+    }
+
+    return res.json() as Promise<MuseumWork[]>;
     },
 
     getCuratedWorks: async (): Promise<MuseumWork[]> => {
@@ -56,5 +72,23 @@ export const publicCollectionService = {
         }
 
         return res.json() as Promise<MuseumCategory[]>;
+    },
+
+    searchExternalItems: async (query: string) => {
+        const res = await fetch(
+            `${API_URL}/search?q=${encodeURIComponent(query)}`
+        );
+
+        if (!res.ok) {
+            const errorData: ApiError = await res
+                .json()
+                .catch(() => ({}));
+
+            throw new Error(
+                errorData.message || "Erro ao pesquisar obras externas"
+            );
+        }
+
+        return res.json();
     },
 };

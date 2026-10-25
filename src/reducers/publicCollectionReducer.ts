@@ -5,6 +5,7 @@ import type {
 
 export const initialStatePublicCollection: PublicCollectionState = {
     featuredWorks: [],
+    featuredJapanese: [],
     curatedWorks: [],
     categories: [],
     loadingCollection: false,
@@ -20,6 +21,12 @@ export function publicCollectionReducer(
             return {
                 ...state,
                 featuredWorks: action.payload,
+            };
+
+        case "SET_FEATURED_JAPANESE":
+            return {
+                ...state,
+                featuredJapanese: action.payload,
             };
 
         case "SET_CURATED_WORKS":
@@ -40,18 +47,11 @@ export function publicCollectionReducer(
                 loadingCollection: action.payload,
             };
 
-            case "SET_ERROR_COLLECTION":
-                return {
-                    ...state,
-                    errorCollection: action.payload || null,
-                };
-
-        // case "SET_ERROR_COLLECTION":
-        //     return {
-        //         ...state,
-        //         errorCollection: action.payload,
-        //         loadingCollection: false,
-        //     };
+        case "SET_ERROR_COLLECTION":
+            return {
+                ...state,
+                errorCollection: action.payload || null,
+            };
 
         default:
             return state;

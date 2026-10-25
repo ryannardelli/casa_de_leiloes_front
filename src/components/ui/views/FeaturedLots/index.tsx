@@ -6,7 +6,7 @@ import { ProductCard } from "../ProductCard";
 
 export function FeaturedLots() {
     const { statePublicCollection } = usePublicCollection();
-    const { featuredWorks, loadingCollection } = statePublicCollection;
+    const { featuredJapanese, loadingCollection } = statePublicCollection;
 
     return (
         <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -16,7 +16,7 @@ export function FeaturedLots() {
                 <p className="py-8 text-center">Carregando obras...</p>
             ) : (
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                    {featuredWorks.map((work) => (
+                    {featuredJapanese.map((work) => (
                         <ProductCard
                             key={work.id}
                             title={work.title}
