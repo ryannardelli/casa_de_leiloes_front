@@ -5,9 +5,12 @@ import { MyLotsStats } from "../../../components/domain/Auctioneer/myLots/MyLots
 import { MyLotsList } from "../../../components/domain/Auctioneer/myLots/MyLotsList";
 
 import { myLots as initialLots } from "../../../mocks/auctioneer/my-lots.mock";
+import { useAuctioneerLot } from "../../../hooks/useAuctioneerLot";
 
 export function MyLots() {
   const [lots, setLots] = useState<MyLot[]>(initialLots);
+  const { stateAuctioneerLot } = useAuctioneerLot();
+  console.log(stateAuctioneerLot);
 
   function handleCancelLot(lotId: string) {
     setLots((currentLots) =>

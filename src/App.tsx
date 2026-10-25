@@ -1,4 +1,5 @@
 import { MessageContainer } from "./components/feedback/MessageContainer";
+import { AuctioneerLotProvider } from "./providers/AuctioneerLotProvider";
 import { AuthProvider } from "./providers/AuthProvider";
 import { ProfileProvider } from "./providers/ProfileProvider";
 import { PublicCollectionProvider } from "./providers/PublicCollectionProvider";
@@ -7,18 +8,20 @@ import { MainRouter } from "./routers/MainRouter";
 
 function App() {
   return (
-    <PublicCollectionProvider>
-      <AuthProvider>
+    <AuthProvider>
       <UserProvider>
-      <ProfileProvider>
-      <MessageContainer>
-          <MainRouter />
-      </MessageContainer>
-      </ProfileProvider>
+        <ProfileProvider>
+          <PublicCollectionProvider>
+            <AuctioneerLotProvider>
+              <MessageContainer>
+                <MainRouter />
+              </MessageContainer>
+            </AuctioneerLotProvider>
+          </PublicCollectionProvider>
+        </ProfileProvider>
       </UserProvider>
-      </AuthProvider>
-    </PublicCollectionProvider>
-  )
+    </AuthProvider>
+  );
 }
 
 export default App;
