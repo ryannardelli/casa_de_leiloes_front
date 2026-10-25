@@ -9,9 +9,12 @@ import {
 import { CreateLotHeader } from "../../../components/domain/Auctioneer/createLots/CreateLotHeader";
 import { ArtworkSearch } from "../../../components/domain/Auctioneer/createLots/ArtworkSearch";
 import { SelectedArtwork } from "../../../components/domain/Auctioneer/createLots/SelectedArtwork";
+import { useAuctioneerLot } from "../../../hooks/useAuctioneerLot";
+import { showMessage } from "../../../components/ui/shared/Feedback/ShowMessage";
 
 export function CreateLot() {
   const navigate = useNavigate();
+  const { createLot } = useAuctioneerLot();
 
   const [search, setSearch] = useState("");
   const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
@@ -19,7 +22,6 @@ export function CreateLot() {
   const { statePublicCollection } = usePublicCollection();
 
   const featuredWorks = statePublicCollection?.featuredWorks ?? [];
-  console.log(featuredWorks);
 
   const filteredArtworks = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -40,15 +42,23 @@ export function CreateLot() {
     );
   }, [search, featuredWorks]);
 
-  function handleCreateLot(data: CreateLotData) {
-    console.log("Dados do lote:", data);
+  async function handleCreateLot(data: CreateLotData) {
+    try {
+      const response = await createLot(data);
 
-    window.alert(
-      "Validação concluída! Conecte a API para salvar o lote permanentemente.",
-    );
+      showMessage.success(response.message);
 
-    // Após integrar o POST ao backend, navegue para a lista de lotes:
-    // navigate("/dashboard/lots");
+      navigate("/auctioneer/lots");
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Aconteceu um problema inesperado ao criar o lote.";
+
+      console.error(err);
+
+      showMessage.error(errorMessage);
+    }
   }
 
   return (

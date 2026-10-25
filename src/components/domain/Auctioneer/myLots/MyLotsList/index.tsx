@@ -27,7 +27,7 @@ export function MyLotsList({
 
     return lots.filter((lot) => {
       const matchesSearch =
-        lot.title.toLowerCase().includes(normalizedSearch) ||
+        (lot.title ?? "").toLowerCase().includes(normalizedSearch)  ||
         (lot.attributes?.department ?? "")
           .toLowerCase()
           .includes(normalizedSearch) ||

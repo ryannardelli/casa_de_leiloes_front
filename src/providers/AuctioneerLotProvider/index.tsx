@@ -62,6 +62,8 @@ export const AuctioneerLotProvider = ({
                 type: "ADD_LOT",
                 payload: newLot,
             });
+
+            await loadLots();
             return newLot;
         } catch (error: any) {
             console.error(error);
