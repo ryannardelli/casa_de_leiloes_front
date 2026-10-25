@@ -1,41 +1,23 @@
-import { useState } from "react";
-import { profileMock, type UserProfile } from "../../../mocks/bidder/profile.mock";
-import { ProfileHeader } from "../../../components/domain/Bidder/profile/ProfileHeader";
-import { ProfileSummary } from "../../../components/domain/Bidder/profile/ProfileSummary";
-import { ProfileSecurity } from "../../../components/domain/Bidder/profile/ProfileSecurity";
-import { ProfileForm } from "../../../components/domain/Bidder/profile/ProfileForm";
+import { ProfileHeader } from "../../../components/domain/Auctioneer/profile/ProfileHeader.tsx";
+import { ProfileSummary } from "../../../components/domain/Auctioneer/profile/ProfileSummary/index.tsx";
+import { useAuth } from "../../../hooks/useAuth.ts";
 
 export function Profile() {
-  const [profile, setProfile] = useState<UserProfile>(profileMock);
+  const { state } = useAuth();
+  const user = state.user;
 
-  function handleSave(
-    data: Pick<UserProfile, "name" | "email" | "phone">,
-  ) {
-    setProfile((currentProfile) => ({
-      ...currentProfile,
-      ...data,
-    }));
+  if (!user) {
+    return null;
   }
 
   return (
-    <main className="min-h-screen bg-background px-4 py-6 text-text sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl space-y-8">
+    <main className="min-h-screen w-full bg-background px-4 py-8 text-text sm:px-6 lg:px-8">
         <ProfileHeader />
-
-        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
-          <div className="space-y-6 lg:col-span-1">
-            <ProfileSummary profile={profile} />
-            <ProfileSecurity />
+        <section className="mx-auto w-full max-w-2xl">
+          <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+            <ProfileSummary profile={user} />
           </div>
-
-          <div className="lg:col-span-2">
-            <ProfileForm
-              profile={profile}
-              onSave={handleSave}
-            />
-          </div>
-        </div>
-      </div>
+        </section>
     </main>
   );
 }

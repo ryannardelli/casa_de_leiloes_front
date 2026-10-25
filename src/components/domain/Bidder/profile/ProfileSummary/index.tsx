@@ -1,21 +1,26 @@
 import {
   CalendarDays,
-  CheckCircle2,
+  Mail,
   ShieldCheck,
   UserRound,
 } from "lucide-react";
-import type { UserProfile } from "../../../../../mocks/bidder/profile.mock";
 
 interface ProfileSummaryProps {
-  profile: UserProfile;
+  profile: {
+    id: number;
+    name: string;
+    email: string;
+    role: string;
+    createdAt: string;
+    profile: {
+      name: string;
+      description: string;
+      active: boolean;
+    };
+  };
 }
 
 export function ProfileSummary({ profile }: ProfileSummaryProps) {
-  const roleLabels = {
-    AUCTIONEER: "Leiloeiro",
-    BIDDER: "Licitante",
-  };
-
   const initials = profile.name
     .trim()
     .split(/\s+/)
@@ -24,54 +29,104 @@ export function ProfileSummary({ profile }: ProfileSummaryProps) {
     .join("")
     .toUpperCase();
 
+  const formattedDate = new Date(profile.createdAt).toLocaleDateString(
+    "pt-BR",
+    {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    },
+  );
+
   return (
-    <section className="rounded-2xl border border-border bg-surface p-6">
-      <div className="flex flex-col items-center text-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary text-2xl font-bold text-gold">
+    <section className="overflow-hidden rounded-2xl border border-border bg-surface">
+      <div className="flex flex-col items-center border-b border-border bg-muted/30 px-6 py-8 text-center sm:py-10">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-surface bg-primary/10 text-2xl font-bold text-primary shadow-sm">
           {initials}
         </div>
 
-        <h2 className="mt-4 text-xl font-bold">{profile.name}</h2>
+        <h2 className="mt-4 text-xl font-bold tracking-tight text-text">
+          {profile.name}
+        </h2>
 
-        <p className="mt-1 text-sm text-text-muted">
+        <p className="mt-1 break-all text-sm text-text-muted">
           {profile.email}
         </p>
 
-        <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5 text-xs font-semibold text-accent">
+        <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
           <ShieldCheck size={14} />
-          {roleLabels[profile.role]}
+          {profile.profile.name}
         </span>
+
+        <p className="mt-3 max-w-md text-sm leading-6 text-text-muted">
+          {profile.profile.description}
+        </p>
       </div>
 
-      <div className="mt-6 space-y-4 border-t border-border pt-5">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted text-text-muted">
-            <UserRound size={17} />
+      <div className="p-5 sm:p-7">
+        <h3 className="mb-4 text-sm font-semibold text-text">
+          Informações da conta
+        </h3>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="flex min-w-0 items-start gap-3 rounded-xl border border-border p-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+              <Mail size={18} className="text-text-muted" />
+            </div>
+
+            <div className="min-w-0">
+              <p className="text-xs text-text-muted">
+                E-mail cadastrado
+              </p>
+              <p className="mt-1 break-all text-sm font-medium text-text">
+                {profile.email}
+              </p>
+            </div>
           </div>
 
-          <div>
-            <p className="text-xs text-text-muted">Tipo de conta</p>
-            <p className="text-sm font-medium">
-              {roleLabels[profile.role]}
-            </p>
+          <div className="flex min-w-0 items-start gap-3 rounded-xl border border-border p-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+              <ShieldCheck size={18} className="text-text-muted" />
+            </div>
+
+            <div className="min-w-0">
+              <p className="text-xs text-text-muted">
+                Perfil de acesso
+              </p>
+              <p className="mt-1 text-sm font-medium text-text">
+                {profile.profile.name}
+              </p>
+            </div>
           </div>
 
-          <CheckCircle2
-            size={17}
-            className="ml-auto text-accent"
-          />
-        </div>
+          <div className="flex min-w-0 items-start gap-3 rounded-xl border border-border p-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+              <CalendarDays size={18} className="text-text-muted" />
+            </div>
 
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted text-text-muted">
-            <CalendarDays size={17} />
+            <div className="min-w-0">
+              <p className="text-xs text-text-muted">
+                Data de cadastro
+              </p>
+              <p className="mt-1 text-sm font-medium text-text">
+                {formattedDate}
+              </p>
+            </div>
           </div>
 
-          <div>
-            <p className="text-xs text-text-muted">Membro desde</p>
-            <p className="text-sm font-medium">
-              {new Date(profile.createdAt).toLocaleDateString("pt-BR")}
-            </p>
+          <div className="flex min-w-0 items-start gap-3 rounded-xl border border-border p-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+              <UserRound size={18} className="text-text-muted" />
+            </div>
+
+            <div className="min-w-0">
+              <p className="text-xs text-text-muted">
+                Identificador da conta
+              </p>
+              <p className="mt-1 text-sm font-medium text-text">
+                #{profile.id}
+              </p>
+            </div>
           </div>
         </div>
       </div>
