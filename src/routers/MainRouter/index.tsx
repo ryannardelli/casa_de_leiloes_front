@@ -6,7 +6,6 @@ import {
 
 import { Home } from "../../pages/Public/Home";
 import { AuctionRoom } from "../../pages/Public/AuctionRoom";
-import { Audit } from "../../pages/Public/Audit";
 
 import { Forbidden } from "../../pages/Auth/Forbidden";
 import NotFound from "../../pages/Auth/NotFound";
@@ -22,6 +21,8 @@ import { LoadingAuth } from "../../components/ui/shared/Loading/LoadingAuth";
 import { useAuth } from "../../hooks/useAuth";
 import type { ProfileName } from "../../models/Profile";
 import { LiveAuctionRoom } from "../../pages/Public/AuctionRoom/LiveAuctionRoom";
+import { AuditLots } from "../../pages/Public/Audit/AuditLots";
+import { Audit } from "../../pages/Public/Audit";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -42,8 +43,13 @@ const publicRoutes: RouteObject[] = [
         element: <LiveAuctionRoom />,
       },
       {
-        path: "/auctions/:id/audit",
+        path: "/audit",
         element: <Audit />,
+      },
+
+       {
+        path: "/audit/:id/lots",
+        element: <AuditLots />,
       },
     ],
   },
