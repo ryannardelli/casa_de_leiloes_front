@@ -130,9 +130,9 @@ const normalizedStatus = lot.status.trim().toUpperCase() as keyof typeof statusC
 
         <button
           onClick={() => {
-            window.location.href = `/lots/${lot.id}`;
+            window.location.href = `/auctions/${lot.id}`;
           }}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold transition-colors hover:border-accent hover:bg-accent hover:text-white"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold transition-colors hover:border-accent hover:bg-accent hover:text-white cursor-pointer"
         >
           {lot.status === "LIVE"
             ? "Acompanhar lote"
