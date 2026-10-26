@@ -1,46 +1,35 @@
-import { useState } from "react";
 import { useParams } from "react-router-dom";
-
-import { liveRoomMock } from "../../../mocks/home/live-room.mock.ts";
-import { LiveBidHistory } from "../../../components/domain/Home/LiveRoom/Details/LiveBidHistory/index.tsx";
-import { LiveUserStatus } from "../../../components/domain/Home/LiveRoom/Details/LiveUserStatus/index.tsx";
-import { LiveBidPanel } from "../../../components/domain/Home/LiveRoom/Details/LiveBidPanel/index.tsx";
-import { LiveLotDetails } from "../../../components/domain/Home/LiveRoom/Details/LiveLotDetails.tsx/index.tsx";
-import { LiveCountdown } from "../../../components/domain/Home/LiveRoom/Details/LiveCountdown.tsx/index.tsx";
+import { usePublicLot } from "../../../hooks/usePublicLot";
+import { LoadingAuth } from "../../../components/ui/shared/Loading/general/LoadingAuth";
+import { LiveLotDetails } from "../../../components/domain/Home/LiveRoom/Details/LiveLotDetails.tsx";
+import { LiveBidHistory } from "../../../components/domain/Home/LiveRoom/Details/LiveBidHistory";
+import { LiveCountdown } from "../../../components/domain/Home/LiveRoom/Details/LiveCountdown.tsx";
+import { LiveBidPanel } from "../../../components/domain/Home/LiveRoom/Details/LiveBidPanel";
+import { LiveUserStatus } from "../../../components/domain/Home/LiveRoom/Details/LiveUserStatus";
+import { useAuth } from "../../../hooks/useAuth.ts";
+import { BackButton } from "../../../components/ui/shared/Button/BackButton/index.tsx";
 
 export function LiveAuctionRoom() {
   const { id } = useParams<{ id: string }>();
-  const [room, setRoom] = useState(liveRoomMock);
+  const { statePublicLots } = usePublicLot();
+  const { lots, loadingLots } = statePublicLots;
 
-  function handleBid(amount: number) {
-    const newBid = {
-      id: `bid-${Date.now()}`,
-      bidderName: room.currentUser.name,
-      amount,
-      createdAt: new Date().toISOString(),
-      isCurrentUser: true,
-    };
+  const { state } = useAuth();
+  const isAuth = state.isAuthenticated;
 
-    setRoom((previousRoom) => ({
-      ...previousRoom,
-      currentBid: amount,
-      totalBids: previousRoom.totalBids + 1,
-      bids: [newBid, ...previousRoom.bids],
-      currentUser: {
-        ...previousRoom.currentUser,
-        highestBid: amount,
-        position: 1,
-        isWinning: true,
-      },
-    }));
+  if (loadingLots) {
+    return <LoadingAuth />;
   }
 
-  if (id !== room.lotId) {
+  const lot = lots.find((item) => item.id === Number(id));
+
+  if (!lot) {
     return (
       <div className="p-6 text-center">
         <h1 className="text-2xl font-bold text-gray-900">
           Lote não encontrado
         </h1>
+
         <p className="mt-2 text-gray-500">
           O lote solicitado não está disponível nesta sala.
         </p>
@@ -50,35 +39,42 @@ export function LiveAuctionRoom() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">
+
+      <BackButton />
+
       <div>
         <h1 className="text-3xl font-bold text-gray-900">
-          Sala do lote ao vivo
+          Sala do lote
         </h1>
 
         <p className="mt-2 text-gray-500">
-          Lote: {id}
-        </p>
-
-        <p className="mt-2 text-gray-500">
-          Acompanhe os lances e dispute este lote em tempo real.
+          Acompanhe os detalhes deste lote e os lances disponíveis.
         </p>
       </div>
 
       <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          <LiveLotDetails room={room} />
-          <LiveBidHistory bids={room.bids} />
+          <LiveLotDetails lot={lot} />
+          <LiveBidHistory bids={[]} />
         </div>
 
         <div className="space-y-6">
-          <LiveCountdown endsAt={room.endsAt} />
-          <LiveUserStatus currentUser={room.currentUser} />
+          <LiveCountdown endsAt={lot.endAt} />
 
-          <LiveBidPanel
-            currentBid={room.currentBid}
-            minimumIncrement={room.minimumIncrement}
-            onBid={handleBid}
-          />
+          <LiveUserStatus
+            currentUser={{
+              isWinning: false,
+              position: 3,
+              highestBid: 5500,
+            }}
+        />
+
+          {isAuth && (
+            <LiveBidPanel
+              currentBid={Number(lot.currentPrice || lot.startingPrice)}
+              minimumIncrement={Number(lot.minimumIncrement)}
+            />
+        )}
         </div>
       </div>
     </div>

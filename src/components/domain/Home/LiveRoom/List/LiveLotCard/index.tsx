@@ -14,10 +14,10 @@ export function LiveLotCard({ lot }: LiveLotCardProps) {
     >
       <div className="relative overflow-hidden">
         <img
-          src={lot.imageUrl}
-          alt={lot.title}
-          className="h-56 w-full object-cover transition duration-300 group-hover:scale-105"
-        />
+            src={lot.imageUrl}
+            alt={lot.title}
+            className="h-56 w-full object-contain transition duration-300 group-hover:scale-105"
+          />
 
         <span className="absolute left-3 top-3 flex items-center gap-2 rounded-full bg-red-600 px-3 py-1.5 text-xs font-semibold text-white">
           <Radio size={14} />
