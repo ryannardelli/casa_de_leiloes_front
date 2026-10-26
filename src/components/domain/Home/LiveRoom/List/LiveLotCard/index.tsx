@@ -1,6 +1,7 @@
 import { Clock3, Radio } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { PublicLot } from "../../../../../../models/PublicLot";
+import { ImageWithBlurBackground } from "../../../../../ui/shared/common/ImageWithBlurBackground";
 
 interface LiveLotCardProps {
   lot: PublicLot;
@@ -12,22 +13,20 @@ export function LiveLotCard({ lot }: LiveLotCardProps) {
       to={`/auctions/${lot.id}`}
       className="group overflow-hidden rounded-xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-lg"
     >
-      <div className="relative overflow-hidden">
-        <img
-            src={lot.imageUrl}
-            alt={lot.title}
-            className="h-56 w-full object-contain transition duration-300 group-hover:scale-105"
-          />
-
-        <span className="absolute left-3 top-3 flex items-center gap-2 rounded-full bg-red-600 px-3 py-1.5 text-xs font-semibold text-white">
+      <ImageWithBlurBackground
+        src={lot.imageUrl}
+        alt={lot.title}
+        aspectRatio="aspect-[16/10]"
+      >
+        <span className="absolute left-3 top-3 z-20 flex items-center gap-2 rounded-full bg-red-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm">
           <Radio size={14} />
           AO VIVO
         </span>
 
-        <span className="absolute bottom-3 left-3 rounded-md bg-black/60 px-2.5 py-1 text-xs text-white">
+        <span className="absolute bottom-3 left-3 z-20 rounded-md bg-black/60 px-2.5 py-1 text-xs text-white backdrop-blur shadow-sm">
           {lot.attributes?.department ?? "Sem categoria"}
         </span>
-      </div>
+      </ImageWithBlurBackground>
 
       <div className="space-y-4 p-5">
         <h2 className="line-clamp-1 text-lg font-bold text-gray-900 transition group-hover:text-blue-600">

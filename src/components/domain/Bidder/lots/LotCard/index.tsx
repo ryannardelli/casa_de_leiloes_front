@@ -5,6 +5,8 @@ import {
   Radio,
 } from "lucide-react";
 import type { PublicLot } from "../../../../../models/PublicLot";
+import { RouterLinks } from "../../../../ui/shared/Links/RouterLinks";
+import { ImageWithBlurBackground } from "../../../../ui/shared/common/ImageWithBlurBackground";
 
 interface LotCardProps {
   lot: PublicLot;
@@ -46,7 +48,7 @@ const formatDate = (value: string) =>
   });
 
 export function LotCard({ lot }: LotCardProps) {
-const normalizedStatus = lot.status.trim().toUpperCase() as keyof typeof statusConfig;
+  const normalizedStatus = lot.status.trim().toUpperCase() as keyof typeof statusConfig;
 
   if (normalizedStatus === "CANCELLED") return null;
 
@@ -63,27 +65,21 @@ const normalizedStatus = lot.status.trim().toUpperCase() as keyof typeof statusC
 
   return (
     <article className="group overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-200 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg">
-      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
-        <img
-          src={lot.imageUrl}
-          alt={lot.title}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-
+      <ImageWithBlurBackground src={lot.imageUrl} alt={lot.title}>
         <span
-          className={`absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold ${status.className}`}
+          className={`absolute left-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold shadow-sm ${status.className}`}
         >
-          {lot.status === "LIVE" && <Radio size={13} />}
-          {lot.status === "SCHEDULED" && <CalendarDays size={13} />}
-          {lot.status === "ENDED" && <Clock3 size={13} />}
+          {normalizedStatus === "LIVE" && <Radio size={13} />}
+          {normalizedStatus === "SCHEDULED" && <CalendarDays size={13} />}
+          {normalizedStatus === "ENDED" && <Clock3 size={13} />}
           {status.label}
         </span>
 
-        <span className="absolute bottom-3 right-3 rounded-lg bg-background/90 px-3 py-1.5 text-xs font-medium text-text backdrop-blur">
+        <span className="absolute bottom-3 right-3 z-20 rounded-lg bg-background/90 px-3 py-1.5 text-xs font-medium text-text backdrop-blur shadow-sm">
           {lot.attributes?.department ?? "Leilão"}
         </span>
-      </div>
-
+      </ImageWithBlurBackground>
+      
       <div className="space-y-4 p-5">
         <div>
           <h3 className="line-clamp-1 text-lg font-semibold transition-colors group-hover:text-accent">
@@ -97,9 +93,9 @@ const normalizedStatus = lot.status.trim().toUpperCase() as keyof typeof statusC
 
         <div className="rounded-xl bg-muted/60 p-4">
           <p className="text-xs text-text-muted">
-            {lot.status === "SCHEDULED"
+            {normalizedStatus === "SCHEDULED"
               ? "Lance inicial"
-              : lot.status === "ENDED"
+              : normalizedStatus === "ENDED"
                 ? "Lance final"
                 : "Lance atual"}
           </p>
@@ -109,12 +105,12 @@ const normalizedStatus = lot.status.trim().toUpperCase() as keyof typeof statusC
           </p>
 
           <div className="mt-3 flex items-center gap-1.5 text-xs text-text-muted">
-            {lot.status === "LIVE" ? (
+            {normalizedStatus === "LIVE" ? (
               <>
                 <Clock3 size={14} />
                 Encerra em {formatDate(lot.endAt)}
               </>
-            ) : lot.status === "SCHEDULED" ? (
+            ) : normalizedStatus === "SCHEDULED" ? (
               <>
                 <CalendarDays size={14} />
                 Início: {formatDate(lot.startAt)}
@@ -128,19 +124,17 @@ const normalizedStatus = lot.status.trim().toUpperCase() as keyof typeof statusC
           </div>
         </div>
 
-        <button
-          onClick={() => {
-            window.location.href = `/auctions/${lot.id}`;
-          }}
+        <RouterLinks
+          href={`/auctions/${lot.id}`}
           className="flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold transition-colors hover:border-accent hover:bg-accent hover:text-white cursor-pointer"
         >
-          {lot.status === "LIVE"
+          {normalizedStatus === "LIVE"
             ? "Acompanhar lote"
-            : lot.status === "SCHEDULED"
-              ? "Ver detalhes"
-              : "Consultar resultado"}
+            : normalizedStatus === "SCHEDULED"
+            ? "Ver detalhes"
+            : "Consultar resultado"}
           <ArrowUpRight size={16} />
-        </button>
+        </RouterLinks>
       </div>
     </article>
   );

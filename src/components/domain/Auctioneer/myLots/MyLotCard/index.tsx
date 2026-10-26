@@ -9,6 +9,7 @@ import {
 import { Link } from "react-router-dom";
 import type { AuctioneerLot } from "../../../../../models/AuctioneerLot";
 import { formatCurrency } from "../../../../../utils/formatCurrency";
+import { RouterLinks } from "../../../../ui/shared/Links/RouterLinks";
 
 interface MyLotCardProps {
   lot: AuctioneerLot;
@@ -157,13 +158,13 @@ export function MyLotCard({ lot, onCancel }: MyLotCardProps) {
           </div>
 
           <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Link
-              to={`/auctions/${lot.id}`}
+            <RouterLinks
+              href={`/auctions/${lot.id}`}
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold transition-colors hover:bg-muted"
             >
               Ver lote
               <ArrowUpRight size={16} />
-            </Link>
+            </RouterLinks>
 
             {canCancel && (
               <button
