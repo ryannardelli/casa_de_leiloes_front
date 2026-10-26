@@ -5,7 +5,7 @@ import {
 
 import { formatCurrency } from "../../../../../utils/formatCurrency";
 import { useWallet } from "../../../../../hooks/useWallet";
-import { WalletTransactionsSkeleton } from "../../../../ui/shared/Loading/wallet/WalletTransactionsSkeleton";
+import { WalletTransactionsSkeleton } from "../../../../ui/shared/Loading/bidder/wallet/WalletTransactionsSkeleton";
 
 const transactionConfig = {
   DEPOSIT: {

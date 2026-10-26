@@ -1,7 +1,7 @@
 import { formatCurrency } from "../../../../../utils/formatCurrency";
 import { useWallet } from "../../../../../hooks/useWallet";
 import { Eye, Wallet } from "lucide-react";
-import { WalletBalanceSkeleton } from "../../../../ui/shared/Loading/wallet/WalletBalanceSkeleton";
+import { WalletBalanceSkeleton } from "../../../../ui/shared/Loading/bidder/wallet/WalletBalanceSkeleton";
 
 export function WalletBalance() {
   const { stateWallet } = useWallet();

@@ -3,6 +3,7 @@ import { AuctioneerLotProvider } from "./providers/AuctioneerLotProvider";
 import { AuthProvider } from "./providers/AuthProvider";
 import { ProfileProvider } from "./providers/ProfileProvider";
 import { PublicCollectionProvider } from "./providers/PublicCollectionProvider";
+import { PublicLotsProvider } from "./providers/PublicLotProvider";
 import { UserProvider } from "./providers/UsersProvider";
 import { WalletProvider } from "./providers/WalletProvider";
 import { MainRouter } from "./routers/MainRouter";
@@ -12,6 +13,7 @@ function App() {
     <AuthProvider>
       <UserProvider>
         <ProfileProvider>
+          <PublicLotsProvider>
           <PublicCollectionProvider>
             <AuctioneerLotProvider>
               <WalletProvider>
@@ -21,6 +23,7 @@ function App() {
               </WalletProvider>
             </AuctioneerLotProvider>
           </PublicCollectionProvider>
+          </PublicLotsProvider>
         </ProfileProvider>
       </UserProvider>
     </AuthProvider>

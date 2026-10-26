@@ -8,6 +8,7 @@ import {
 import { AuctioneerLotContext } from "./AuctioneerLotContext";
 import { auctioneerLotReducer, initialStateAuctioneerLot } from "../../reducers/auctioneerLotReducer";
 import { auctioneerLotService } from "../../services/auctioneerLotService";
+import { useAuth } from "../../hooks/useAuth";
 
 type AuctioneerLotProviderProps = {
     children: ReactNode;
@@ -23,6 +24,8 @@ export const AuctioneerLotProvider = ({
         auctioneerLotReducer,
         initialStateAuctioneerLot
     );
+
+    const { state } = useAuth();
 
     const loadLots = useCallback(async () => {
         dispatchAuctioneerLot({
@@ -99,7 +102,7 @@ export const AuctioneerLotProvider = ({
     };
 
     useEffect(() => {
-        loadLots();
+        if(state.user?.profile.name === "Leiloeiro") loadLots();
     }, [loadLots]);
 
     return (

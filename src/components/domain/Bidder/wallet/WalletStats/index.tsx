@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import { formatCurrency } from "../../../../../utils/formatCurrency";
 import { useWallet } from "../../../../../hooks/useWallet";
-import { WalletStatsSkeleton } from "../../../../ui/shared/Loading/wallet/WalletStatsSkeleton";
+import { WalletStatsSkeleton } from "../../../../ui/shared/Loading/bidder/wallet/WalletStatsSkeleton";
 
 export function WalletStats() {
   const { stateWallet } = useWallet();

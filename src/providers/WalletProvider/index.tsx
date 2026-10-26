@@ -133,8 +133,10 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
   useEffect(() => {
     if (state.loading || !state.user) return;
 
-    loadWallet();
-    loadTransactions();
+    if(state.user?.profile.name === "Licitante") {
+      loadWallet();
+      loadTransactions();
+    }
   }, [state.loading, state.user, loadWallet, loadTransactions]);
 
   return (
