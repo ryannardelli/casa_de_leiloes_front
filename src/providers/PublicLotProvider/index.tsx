@@ -20,10 +20,7 @@ type PublicLotsProviderProps = {
 export const PublicLotsProvider = ({
   children,
 }: PublicLotsProviderProps) => {
-  const [
-    statePublicLots,
-    dispatchPublicLots,
-  ] = useReducer(
+  const [statePublicLots, dispatchPublicLots] = useReducer(
     publicLotsReducer,
     initialStatePublicLots
   );
@@ -57,6 +54,40 @@ export const PublicLotsProvider = ({
     } finally {
       dispatchPublicLots({
         type: "SET_LOADING_LOTS",
+        payload: false,
+      });
+    }
+  }, []);
+
+  const loadLiveLots = useCallback(async () => {
+    dispatchPublicLots({
+      type: "SET_LOADING_LIVE_LOTS",
+      payload: true,
+    });
+
+    dispatchPublicLots({
+      type: "SET_ERROR_LIVE_LOTS",
+      payload: "",
+    });
+
+    try {
+      const lots = await publicLotsService.getLots("LIVE");
+
+      dispatchPublicLots({
+        type: "SET_LIVE_LOTS",
+        payload: lots,
+      });
+    } catch (error) {
+      dispatchPublicLots({
+        type: "SET_ERROR_LIVE_LOTS",
+        payload:
+          error instanceof Error
+            ? error.message
+            : "Não foi possível carregar os lotes ao vivo.",
+      });
+    } finally {
+      dispatchPublicLots({
+        type: "SET_LOADING_LIVE_LOTS",
         payload: false,
       });
     }
@@ -98,7 +129,8 @@ export const PublicLotsProvider = ({
 
   useEffect(() => {
     loadPublicLots();
-  }, [loadPublicLots]);
+    loadLiveLots();
+  }, [loadPublicLots, loadLiveLots]);
 
   return (
     <PublicLotsContext.Provider
@@ -106,6 +138,7 @@ export const PublicLotsProvider = ({
         statePublicLots,
         dispatchPublicLots,
         loadPublicLots,
+        loadLiveLots,
         loadPublicLotById,
       }}
     >
