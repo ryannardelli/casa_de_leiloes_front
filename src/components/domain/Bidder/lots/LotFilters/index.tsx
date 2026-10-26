@@ -52,7 +52,7 @@ export function LotFilters({
             <button
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
-              className={`relative shrink-0 pb-3 text-sm font-medium transition-colors ${
+              className={`relative cursor-pointer shrink-0 pb-3 text-sm font-medium transition-colors ${
                 activeTab === tab.id
                   ? "text-accent"
                   : "text-text-muted hover:text-text"

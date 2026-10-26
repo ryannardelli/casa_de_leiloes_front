@@ -55,7 +55,40 @@ export function LiveAuctionRoom() {
       <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <LiveLotDetails lot={lot} />
-          <LiveBidHistory bids={[]} />
+          <LiveBidHistory
+            bids={[
+              {
+                id: 1,
+                bidderName: "Carlos Mendes",
+                amount: 1250,
+                createdAt: "2026-10-26T20:15:00",
+              },
+              {
+                id: 2,
+                bidderName: "Ana Souza",
+                amount: 1200,
+                createdAt: "2026-10-26T20:14:30",
+              },
+              {
+                id: 3,
+                bidderName: "Lucas Oliveira",
+                amount: 1100,
+                createdAt: "2026-10-26T20:13:45",
+              },
+              {
+                id: 4,
+                bidderName: "Mariana Costa",
+                amount: 1000,
+                createdAt: "2026-10-26T20:12:10",
+              },
+              {
+                id: 5,
+                bidderName: "Pedro Santos",
+                amount: 950,
+                createdAt: "2026-10-26T20:10:00",
+              },
+            ]}
+          />
         </div>
 
         <div className="space-y-6">

@@ -20,7 +20,7 @@ export function LotEmptyState({ onClear }: LotEmptyStateProps) {
 
       <button
         onClick={onClear}
-        className="mt-4 text-sm font-semibold text-accent hover:underline"
+        className="mt-4 text-sm font-semibold text-accent hover:underline cursor-pointer"
       >
         Limpar filtros
       </button>
