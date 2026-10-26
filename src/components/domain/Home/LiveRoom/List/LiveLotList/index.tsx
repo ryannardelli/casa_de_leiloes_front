@@ -1,11 +1,21 @@
-import type { ActiveLot } from "../../../../../../mocks/auctioneer/active-lots.mock";
+import { usePublicLot } from "../../../../../../hooks/usePublicLot";
+import { LiveLotCardSkeleton } from "../../../../../ui/shared/Loading/home/LiveRoom/LiveLotCardSkeleton";
 import { LiveLotCard } from "../LiveLotCard";
 
-interface LiveLotListProps {
-  lots: ActiveLot[];
-}
+export function LiveLotList() {
+  const { statePublicLots } = usePublicLot();
+  const { lots, loadingLots } = statePublicLots;
 
-export function LiveLotList({ lots }: LiveLotListProps) {
+  if (loadingLots) {
+    return (
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        {Array.from({ length: lots.length }).map((_, index) => (
+          <LiveLotCardSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
+
   if (lots.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-gray-300 p-12 text-center">

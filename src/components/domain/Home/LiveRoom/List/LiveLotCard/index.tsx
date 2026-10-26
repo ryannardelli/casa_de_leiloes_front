@@ -1,9 +1,17 @@
-import { Clock3, Gavel, Radio } from "lucide-react";
+import { Clock3, Radio } from "lucide-react";
 import { Link } from "react-router-dom";
-import type { ActiveLot } from "../../../../../../mocks/auctioneer/active-lots.mock";
 
 interface LiveLotCardProps {
-  lot: ActiveLot;
+  lot: {
+    id: number;
+    title: string;
+    imageUrl: string;
+    currentPrice: string;
+    startingPrice: string;
+    attributes?: {
+      department?: string;
+    };
+  };
 }
 
 export function LiveLotCard({ lot }: LiveLotCardProps) {
@@ -25,7 +33,7 @@ export function LiveLotCard({ lot }: LiveLotCardProps) {
         </span>
 
         <span className="absolute bottom-3 left-3 rounded-md bg-black/60 px-2.5 py-1 text-xs text-white">
-          {lot.category}
+          {lot.attributes?.department ?? "Sem categoria"}
         </span>
       </div>
 
@@ -38,7 +46,11 @@ export function LiveLotCard({ lot }: LiveLotCardProps) {
           <p className="text-sm text-gray-500">Lance atual</p>
 
           <p className="text-2xl font-bold text-gray-900">
-            {lot.currentBid.toLocaleString("pt-BR", {
+            {Number(
+              Number(lot.currentPrice) > 0
+                ? lot.currentPrice
+                : lot.startingPrice
+            ).toLocaleString("pt-BR", {
               style: "currency",
               currency: "BRL",
             })}
@@ -46,11 +58,6 @@ export function LiveLotCard({ lot }: LiveLotCardProps) {
         </div>
 
         <div className="flex items-center justify-between border-t border-gray-100 pt-4 text-sm text-gray-500">
-          <span className="flex items-center gap-2">
-            <Gavel size={16} />
-            {lot.totalBids} lances
-          </span>
-
           <span className="flex items-center gap-2 font-medium text-blue-600">
             <Clock3 size={16} />
             Entrar na sala
