@@ -23,6 +23,7 @@ const [startAt, setStartAt] = useState("");
 const [endAt, setEndAt] = useState("");
 const [error, setError] = useState("");
 const [isSubmitting, setIsSubmitting] = useState(false);
+const now = new Date();
 
 async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 event.preventDefault();
@@ -36,6 +37,8 @@ if (!artwork) {
 const startDate = new Date(startAt);
 const endDate = new Date(endAt);
 
+now.setMinutes(now.getMinutes() - 1);
+
 if (
   !startAt ||
   !endAt ||
@@ -46,7 +49,7 @@ if (
   return;
 }
 
-if (startDate <= new Date() || endDate <= startDate) {
+if (startDate <= now || endDate <= startDate) {
   setError(
     "O início deve ser futuro e o término deve ocorrer depois do início.",
   );
