@@ -24,7 +24,7 @@ const statusConfig = {
     label: "Agendado",
     className: "bg-muted text-text-muted",
   },
-  ENDED: {
+  CLOSED: {
     label: "Encerrado",
     className: "bg-muted text-gold",
   },

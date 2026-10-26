@@ -4,7 +4,7 @@ export type MyLotsFilterStatus =
   | "ALL"
   | "LIVE"
   | "SCHEDULED"
-  | "ENDED"
+  | "CLOSED"
   | "CANCELED";
 
 interface MyLotsFiltersProps {
@@ -41,13 +41,13 @@ export function MyLotsFilters({
           onStatusChange(event.target.value as MyLotsFilterStatus)
         }
         aria-label="Filtrar lotes por status"
-        className="rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text outline-none focus:border-accent"
+        className="rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text outline-none focus:border-accent cursor-pointer"
       >
         <option value="ALL">Todos os lotes</option>
         <option value="LIVE">Em andamento</option>
         <option value="SCHEDULED">Agendados</option>
-        <option value="ENDED">Encerrados</option>
-        <option value="CANCELED">Cancelados</option>
+        <option value="CLOSED">Encerrados</option>
+        <option value="CANCELLED">Cancelados</option>
       </select>
     </div>
   );
