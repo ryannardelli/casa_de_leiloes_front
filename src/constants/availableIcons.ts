@@ -1,6 +1,7 @@
 import {
   LayoutDashboard,
   CalendarDays,
+  Store,
   CalendarClock,
   UserRound,
   ContactRound,
@@ -29,6 +30,7 @@ import {
 export const AVAILABLE_ICONS = {
   LayoutDashboard,
   CalendarDays,
+  Store,
   CalendarClock,
   UserRound,
   ContactRound,
