@@ -1,15 +1,11 @@
 import {
   ArrowDownLeft,
-  ArrowUpRight,
-  LockKeyhole,
   ReceiptText,
 } from "lucide-react";
-import type { WalletTransaction } from "../../../../../mocks/bidder/wallet.mock";
-import { formatCurrency } from "../../../../../utils/formatCurrency";
 
-interface WalletTransactionsProps {
-  transactions: WalletTransaction[];
-}
+import { formatCurrency } from "../../../../../utils/formatCurrency";
+import { useWallet } from "../../../../../hooks/useWallet";
+import { WalletTransactionsSkeleton } from "../../../../ui/shared/Loading/wallet/WalletTransactionsSkeleton";
 
 const transactionConfig = {
   DEPOSIT: {
@@ -17,21 +13,13 @@ const transactionConfig = {
     icon: ArrowDownLeft,
     className: "bg-muted text-accent",
   },
-  BID_RESERVED: {
-    label: "Valor reservado",
-    icon: LockKeyhole,
-    className: "bg-muted text-text-muted",
-  },
-  BID_RELEASED: {
-    label: "Valor liberado",
-    icon: ArrowUpRight,
-    className: "bg-muted text-gold",
-  },
 };
 
-export function WalletTransactions({
-  transactions,
-}: WalletTransactionsProps) {
+export function WalletTransactions() {
+  const { stateWallet } = useWallet();
+
+  const { transactions, loadingTransactions } = stateWallet;
+
   return (
     <section className="rounded-2xl border border-border bg-surface">
       <div className="flex items-center gap-3 border-b border-border p-5">
@@ -47,9 +35,11 @@ export function WalletTransactions({
         </div>
       </div>
 
-      {transactions.length > 0 ? (
+      {loadingTransactions ? (
+        <WalletTransactionsSkeleton />
+      ) : transactions.length > 0 ? (
         <div className="divide-y divide-border">
-          {transactions.map((transaction) => {
+          {transactions.slice(0, 5).map((transaction) => {
             const config = transactionConfig[transaction.type];
             const Icon = config.icon;
 
@@ -66,11 +56,11 @@ export function WalletTransactions({
 
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium">
-                    {transaction.description}
+                    {config.label}
                   </p>
 
                   <p className="mt-1 text-xs text-text-muted">
-                    {new Date(transaction.date).toLocaleString("pt-BR", {
+                    {new Date(transaction.createdAt).toLocaleString("pt-BR", {
                       day: "2-digit",
                       month: "short",
                       year: "numeric",
@@ -83,13 +73,13 @@ export function WalletTransactions({
                 <div className="shrink-0 text-right">
                   <p
                     className={`text-sm font-semibold ${
-                      transaction.amount > 0
+                      Number(transaction.amount) > 0
                         ? "text-accent"
                         : "text-text"
                     }`}
                   >
-                    {transaction.amount > 0 ? "+" : ""}
-                    {formatCurrency(transaction.amount)}
+                    {Number(transaction.amount) > 0 ? "+" : ""}
+                    {formatCurrency(Number(transaction.amount))}
                   </p>
 
                   <p className="mt-1 text-xs text-text-muted">

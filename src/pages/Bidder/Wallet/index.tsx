@@ -50,7 +50,7 @@ export function Wallet() {
           committedBalance={committedBalance}
         />
 
-        <section className="grid grid-cols-1 items-start gap-6 xl:grid-cols-5">
+        <section className="grid grid-cols-1 items-start gap-6">
           <div className="xl:col-span-2">
             <WalletDeposit onDeposit={handleDeposit} />
           </div>
