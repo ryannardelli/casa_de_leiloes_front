@@ -1,9 +1,9 @@
-import { ArrowUpRight, Gavel, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
-import type { ActiveLot } from "../../../../../../mocks/auctioneer/active-lots.mock";
+import type { PublicLot } from "../../../../../../models/PublicLot";
 
 interface AuditLotCardProps {
-  lot: ActiveLot;
+  lot: PublicLot;
 }
 
 export function AuditLotCard({ lot }: AuditLotCardProps) {
@@ -25,7 +25,7 @@ export function AuditLotCard({ lot }: AuditLotCardProps) {
         </span>
 
         <span className="absolute bottom-3 left-3 rounded-md bg-black/60 px-2.5 py-1 text-xs text-white">
-          {lot.category}
+          {lot.attributes?.department ?? "Sem categoria"}
         </span>
       </div>
 
@@ -38,7 +38,11 @@ export function AuditLotCard({ lot }: AuditLotCardProps) {
           <p className="text-sm text-gray-500">Lance atual</p>
 
           <p className="text-2xl font-bold text-gray-900">
-            {lot.currentBid.toLocaleString("pt-BR", {
+            {Number(
+              Number(lot.currentPrice) > 0
+                ? lot.currentPrice
+                : lot.startingPrice
+            ).toLocaleString("pt-BR", {
               style: "currency",
               currency: "BRL",
             })}
@@ -46,11 +50,6 @@ export function AuditLotCard({ lot }: AuditLotCardProps) {
         </div>
 
         <div className="flex items-center justify-between border-t border-gray-100 pt-4 text-sm text-gray-500">
-          <span className="flex items-center gap-2">
-            <Gavel size={16} />
-            {lot.totalBids} lances
-          </span>
-
           <span className="flex items-center gap-2 font-medium text-blue-600">
             Consultar auditoria
             <ArrowUpRight size={16} />

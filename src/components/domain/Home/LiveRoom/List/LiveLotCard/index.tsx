@@ -1,17 +1,9 @@
 import { Clock3, Radio } from "lucide-react";
 import { Link } from "react-router-dom";
+import type { PublicLot } from "../../../../../../models/PublicLot";
 
 interface LiveLotCardProps {
-  lot: {
-    id: number;
-    title: string;
-    imageUrl: string;
-    currentPrice: string;
-    startingPrice: string;
-    attributes?: {
-      department?: string;
-    };
-  };
+  lot: PublicLot;
 }
 
 export function LiveLotCard({ lot }: LiveLotCardProps) {

@@ -1,11 +1,21 @@
-import type { ActiveLot } from "../../../../../../mocks/auctioneer/active-lots.mock";
+import { usePublicLot } from "../../../../../../hooks/usePublicLot";
+import { AuditLotCardSkeleton } from "../../../../../ui/shared/Loading/home/Audit/AuditLotCardSkeleton";
 import { AuditLotCard } from "../AuditLotCard";
 
-interface AuditLotListProps {
-  lots: ActiveLot[];
-}
+export function AuditLotList() {
+   const { statePublicLots } = usePublicLot();
+    const { lots, loadingLots } = statePublicLots;
+  
+    if (loadingLots) {
+      return (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          {Array.from({ length: lots.length }).map((_, index) => (
+            <AuditLotCardSkeleton key={index} />
+          ))}
+        </div>
+      );
+    }
 
-export function AuditLotList({ lots }: AuditLotListProps) {
   if (lots.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-gray-300 p-12 text-center">
