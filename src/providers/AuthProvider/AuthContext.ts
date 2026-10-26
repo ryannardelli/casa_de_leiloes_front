@@ -7,7 +7,7 @@ type ContextType = {
   state: State;
   dispatch: Dispatch<AuthAction>;
   logout: () => void;
-  registerUser: (name: string, email: string, password: string) => Promise<RegisterResponse>;
+  registerUser: (name: string, email: string, password: string, autoLogin?: boolean) => Promise<RegisterResponse>;
   login: (email: string, password: string) => Promise<AuthUser>;
 };
 

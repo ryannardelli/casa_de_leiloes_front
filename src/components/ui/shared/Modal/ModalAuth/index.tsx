@@ -3,7 +3,6 @@ import { Gavel, X } from "lucide-react";
 import { AnimationPresenceMotion } from "../../Motion/AnimationPresenceMotion";
 import { MotionContainer } from "../../Motion/MotionContainer";import { LoginForm } from "../../../../domain/Auth/LoginForm";
 import { RegisterForm } from "../../../../domain/Auth/RegisterForm";
-;
 
 interface ModalAuthProps {
   isOpen: boolean;

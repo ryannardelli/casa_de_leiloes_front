@@ -16,45 +16,90 @@ export function AuthButton() {
 
   const isLoading = state.loading;
 
-  async function handleAuthSubmit(data: AuthFormData) {
-    setError("");
+  
+async function handleAuthSubmit(data: AuthFormData) {
+  setError("");
+  showMessage.dismiss();
 
-    showMessage.dismiss();
+  try {
+    let user;
 
-    try {
-      if (data.mode === "login") {
-        const user = await login(data.email, data.password);
-
-         if (user.profile?.name === "Leiloeiro") {
-              navigate("/auctioneer/dashboard");
-          } else if (user.profile?.name === "Licitante") {
-              navigate("/bidder/dashboard");
-          } else {
-              navigate("/");
-          }
-
-      } else {
-        if (!data.name) {
-          throw new Error("O nome é obrigatório para o cadastro.");
-        }
-
-        await registerUser(
-          data.name,
-          data.email,
-          data.password
-        );
+    if (data.mode === "login") {
+      user = await login(data.email, data.password);
+    } else {
+      if (!data.name) {
+        throw new Error("O nome é obrigatório para o cadastro.");
       }
 
-      setIsAuthOpen(false);
-    } catch (err: unknown) {
-       if (err instanceof Error) {
-        console.error(err);
-        showMessage.error(
-          err.message || "Algo deu errado. Tente novamente mais tarde."
-        );
-      }
+      const response = await registerUser(
+        data.name,
+        data.email,
+        data.password,
+        true
+      );
+
+      user = response.user;
+    }
+
+    setIsAuthOpen(false);
+
+    if (user.profile?.name === "Leiloeiro") {
+      navigate("/auctioneer/dashboard");
+    } else if (user.profile?.name === "Licitante") {
+      navigate("/bidder/dashboard");
+    } else {
+      navigate("/");
+    }
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error(err);
+      showMessage.error(
+        err.message || "Algo deu errado. Tente novamente mais tarde."
+      );
     }
   }
+}
+
+
+  // async function handleAuthSubmit(data: AuthFormData) {
+  //   setError("");
+
+  //   showMessage.dismiss();
+
+  //   try {
+  //     if (data.mode === "login") {
+  //       const user = await login(data.email, data.password);
+
+  //        if (user.profile?.name === "Leiloeiro") {
+  //             navigate("/auctioneer/dashboard");
+  //         } else if (user.profile?.name === "Licitante") {
+  //             navigate("/bidder/dashboard");
+  //         } else {
+  //             navigate("/");
+  //         }
+
+  //     } else {
+  //       if (!data.name) {
+  //         throw new Error("O nome é obrigatório para o cadastro.");
+  //       }
+
+  //       await registerUser(
+  //         data.name,
+  //         data.email,
+  //         data.password
+  //       );
+  //     }
+
+  //     setIsAuthOpen(false);
+  //   } catch (err: unknown) {
+  //      if (err instanceof Error) {
+  //       console.error(err);
+  //       showMessage.error(
+  //         err.message || "Algo deu errado. Tente novamente mais tarde."
+  //       );
+  //     }
+  //   }
+  // }
 
   return (
     <>
