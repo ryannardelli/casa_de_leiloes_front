@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 const categories = [
   { id: "home", label: "Início", icon: House, router: "/" },
   { id: "auditoria", label: "Auditoria pública", icon: ShieldCheck, router: "/audit" },
-  { id: "salas-ao-vivo", label: "Salas ao vivo", icon: Radio, router: "/auctions" },
+  { id: "leilao-ao-vivo", label: "Leilão ao vivo", icon: Radio, router: "/auctions" },
   { id: "destaques", label: "Destaques", icon: Flame, router: "/destaques" },
 ];
 
