@@ -2,9 +2,9 @@ import { useMemo, useState } from "react";
 import { LotFilters, type TabId } from "../LotFilters";
 import { LotStats } from "../LotStats";
 import { LotCard } from "../LotCard";
-import { LotEmptyState } from "../LotEmptyState";
 import { usePublicLot } from "../../../../../hooks/usePublicLot";
 import { LotCardSkeleton } from "../../../../ui/shared/Loading/bidder/lot/LotCardSkeleton";
+import { LotSearchEmptyState } from "../LotSearchEmptyState";
 
 export function LotShowcase() {
   const [activeTab, setActiveTab] = useState<TabId>("all");
@@ -70,7 +70,7 @@ export function LotShowcase() {
               ))}
             </div>
           ) : (
-            <LotEmptyState
+            <LotSearchEmptyState
               onClear={() => {
                 setSearch("");
                 setActiveTab("all");

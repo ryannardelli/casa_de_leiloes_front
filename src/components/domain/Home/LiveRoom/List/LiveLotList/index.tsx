@@ -1,4 +1,6 @@
+import { Radio } from "lucide-react";
 import { usePublicLot } from "../../../../../../hooks/usePublicLot";
+import { LotEmptyState } from "../../../../../ui/shared/Feedback/LotEmptyState";
 import { LiveLotCardSkeleton } from "../../../../../ui/shared/Loading/home/LiveRoom/LiveLotCardSkeleton";
 import { LiveLotCard } from "../LiveLotCard";
 
@@ -18,15 +20,11 @@ export function LiveLotList() {
 
   if (liveLots.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-gray-300 p-12 text-center">
-        <p className="text-lg font-semibold text-gray-700">
-          Nenhum lote disponível
-        </p>
-
-        <p className="mt-2 text-sm text-gray-500">
-          Novos lotes aparecerão aqui quando estiverem disponíveis.
-        </p>
-      </div>
+     <LotEmptyState
+        icon={Radio}
+        title="Nenhum leilão ao vivo"
+        description="No momento, não há lotes recebendo lances. Confira novamente mais tarde."
+      />
     );
   }
 

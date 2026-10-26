@@ -1,4 +1,6 @@
+import { ShieldCheck } from "lucide-react";
 import { usePublicLot } from "../../../../../../hooks/usePublicLot";
+import { LotEmptyState } from "../../../../../ui/shared/Feedback/LotEmptyState";
 import { AuditLotCardSkeleton } from "../../../../../ui/shared/Loading/home/Audit/AuditLotCardSkeleton";
 import { AuditLotCard } from "../AuditLotCard";
 
@@ -18,16 +20,12 @@ export function AuditLotList() {
 
   if (lots.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-gray-300 p-12 text-center">
-        <p className="text-lg font-semibold text-gray-700">
-          Nenhum lote disponível para auditoria
-        </p>
-
-        <p className="mt-2 text-sm text-gray-500">
-          Os lotes disponíveis para consulta pública aparecerão aqui.
-        </p>
-      </div>
-    );
+      <LotEmptyState
+        icon={ShieldCheck}
+        title="Nenhum lote disponível para auditoria"
+        description="Os lotes disponíveis para consulta pública aparecerão aqui."
+      />
+      );
   }
 
   return (

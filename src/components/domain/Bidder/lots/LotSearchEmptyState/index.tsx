@@ -1,10 +1,12 @@
 import { Search } from "lucide-react";
 
-interface LotEmptyStateProps {
+interface LotSearchEmptyStateProps {
   onClear: () => void;
 }
 
-export function LotEmptyState({ onClear }: LotEmptyStateProps) {
+export function LotSearchEmptyState({
+  onClear,
+}: LotSearchEmptyStateProps) {
   return (
     <div className="flex min-h-64 flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-surface px-6 text-center">
       <div className="mb-4 rounded-full bg-muted p-4 text-text-muted">
@@ -20,7 +22,7 @@ export function LotEmptyState({ onClear }: LotEmptyStateProps) {
 
       <button
         onClick={onClear}
-        className="mt-4 text-sm font-semibold text-accent hover:underline cursor-pointer"
+        className="mt-4 cursor-pointer text-sm font-semibold text-accent hover:underline"
       >
         Limpar filtros
       </button>
