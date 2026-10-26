@@ -1,4 +1,4 @@
-import { Flame, House, Landmark, Palette, Radio, ShieldCheck } from 'lucide-react';
+import { Flame, House, Radio, ShieldCheck } from 'lucide-react';
 import { RouterLinks } from '../../shared/Links/RouterLinks';
 import { useLocation } from 'react-router-dom';
 
@@ -7,8 +7,6 @@ const categories = [
   { id: "auditoria", label: "Auditoria pública", icon: ShieldCheck, router: "/audit" },
   { id: "salas-ao-vivo", label: "Salas ao vivo", icon: Radio, router: "/auctions" },
   { id: "destaques", label: "Destaques", icon: Flame, router: "/destaques" },
-  { id: "pinturas", label: "Pinturas", icon: Palette, router: "/pinturas" },
-  { id: "esculturas", label: "Esculturas", icon: Landmark, router: "/esculturas" },
 ];
 
 export function CategoryBar() {
