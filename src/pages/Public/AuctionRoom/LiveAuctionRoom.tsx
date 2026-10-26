@@ -16,6 +16,7 @@ export function LiveAuctionRoom() {
 
   const { state } = useAuth();
   const isAuth = state.isAuthenticated;
+  const profileName = state.user?.profile.name;
 
   if (loadingLots) {
     return <LoadingAuth />;
@@ -102,7 +103,7 @@ export function LiveAuctionRoom() {
             }}
         />
 
-          {isAuth && (
+          {(isAuth && profileName === "Licitante") && (
             <LiveBidPanel
               currentBid={Number(lot.currentPrice || lot.startingPrice)}
               minimumIncrement={Number(lot.minimumIncrement)}

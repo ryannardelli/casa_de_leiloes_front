@@ -101,9 +101,11 @@ export const AuctioneerLotProvider = ({
         }
     };
 
-    useEffect(() => {
-        if(state.user?.profile.name === "Leiloeiro") loadLots();
-    }, [loadLots]);
+   useEffect(() => {
+    if (state.user?.profile.name === "Leiloeiro") {
+        loadLots();
+    }
+}, [state.user, loadLots]);
 
     return (
         <AuctioneerLotContext.Provider
