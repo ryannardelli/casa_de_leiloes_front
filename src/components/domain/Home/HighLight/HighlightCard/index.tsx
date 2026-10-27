@@ -1,5 +1,6 @@
 import { CalendarDays, Landmark } from "lucide-react";
 import type { FeaturedWorks } from "../../../../../models/PublicCollection";
+import { ImageWithBlurBackground } from "../../../../ui/shared/common/ImageWithBlurBackground";
 
 interface HighlightCardProps {
   item: FeaturedWorks;
@@ -8,20 +9,20 @@ interface HighlightCardProps {
 export function HighlightCard({ item }: HighlightCardProps) {
   return (
     <article className="group overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-      <div className="relative flex h-64 items-center justify-center overflow-hidden bg-muted p-5">
-        <img
+      <div className="relative p-5">
+        <ImageWithBlurBackground
           src={item.imageUrl}
           alt={item.title}
-          loading="lazy"
-          className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
-        />
-
-        <span className="absolute left-4 top-4 rounded-full border border-border bg-surface/90 px-3 py-1 text-xs font-medium text-text">
-          {item.category || item.department}
-        </span>
+          aspectRatio="aspect-[4/3]"
+          className="rounded-xl"
+        >
+          <span className="absolute left-3 top-3 z-20 rounded-full border border-border bg-surface/90 px-3 py-1 text-xs font-medium text-text">
+            {item.category || item.department}
+          </span>
+        </ImageWithBlurBackground>
       </div>
 
-      <div className="space-y-4 p-5">
+      <div className="space-y-4 p-5 pt-0">
         <div>
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
             Obra em destaque
