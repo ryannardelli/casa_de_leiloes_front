@@ -103,12 +103,13 @@ export function LiveAuctionRoom() {
             }}
         />
 
-          {(isAuth && profileName === "Licitante") && (
-            <LiveBidPanel
-              currentBid={Number(lot.currentPrice || lot.startingPrice)}
+          {isAuth && profileName === "Licitante" && (
+            <LiveBidPanel 
+              lotId={lot.id}
+              currentBid={Number(lot.currentPrice ?? lot.startingPrice)}
               minimumIncrement={Number(lot.minimumIncrement)}
             />
-        )}
+          )}
         </div>
       </div>
     </div>

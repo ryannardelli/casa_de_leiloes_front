@@ -1,5 +1,6 @@
 import {
   ArrowDownLeft,
+  ArrowUpRight,
   ReceiptText,
 } from "lucide-react";
 
@@ -11,6 +12,16 @@ const transactionConfig = {
   DEPOSIT: {
     label: "Depósito",
     icon: ArrowDownLeft,
+    className: "bg-muted text-accent",
+  },
+  COMMIT: {
+    label: "Saldo reservado",
+    icon: ReceiptText,
+    className: "bg-muted text-text",
+  },
+  RELEASE: {
+    label: "Saldo liberado",
+    icon: ArrowUpRight,
     className: "bg-muted text-accent",
   },
 };

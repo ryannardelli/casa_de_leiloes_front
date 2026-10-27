@@ -1,29 +1,60 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Gavel } from "lucide-react";
+import { useBids } from "../../../../../../hooks/useBids";
+import { showMessage } from "../../../../../ui/shared/Feedback/ShowMessage";
 
 interface LiveBidPanelProps {
+  lotId: number;
   currentBid: number;
   minimumIncrement: number;
-  onBid: (amount: number) => void;
 }
 
 export function LiveBidPanel({
+  lotId,
   currentBid,
   minimumIncrement,
-  onBid,
 }: LiveBidPanelProps) {
-  const minimumBid = currentBid + minimumIncrement;
-  const [amount, setAmount] = useState(String(minimumBid));
+  const { stateBids, createBid } = useBids();
 
-  function handleBid() {
+  const minimumBid = currentBid + minimumIncrement;
+
+  const [amount, setAmount] = useState(String(minimumBid));
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    setAmount(String(minimumBid));
+  }, [minimumBid]);
+
+  async function handleBid() {
     const bidAmount = Number(amount);
 
     if (!Number.isFinite(bidAmount) || bidAmount < minimumBid) {
+      showMessage.error(
+        `O lance mínimo permitido é ${minimumBid.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        })}.`,
+      );
       return;
     }
 
-    onBid(bidAmount);
-    setAmount(String(bidAmount + minimumIncrement));
+    try {
+      setSubmitting(true);
+
+      const response = await createBid(lotId, bidAmount);
+
+      showMessage.success(response.message);
+
+      setAmount(String(bidAmount + minimumIncrement));
+    } catch (error) {
+      showMessage.error(
+        error instanceof Error
+          ? error.message
+          : "Erro ao enviar lance.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -46,17 +77,23 @@ export function LiveBidPanel({
         step={minimumIncrement}
         value={amount}
         onChange={(event) => setAmount(event.target.value)}
+        disabled={submitting || stateBids.loadingCreateBid}
         className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
       />
 
       <button
         type="button"
         onClick={handleBid}
-        disabled={!Number.isFinite(Number(amount)) || Number(amount) < minimumBid}
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+        disabled={
+          submitting ||
+          stateBids.loadingCreateBid ||
+          !Number.isFinite(Number(amount)) ||
+          Number(amount) < minimumBid
+        }
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
       >
         <Gavel size={18} />
-        Enviar lance
+        {submitting ? "Enviando lance..." : "Enviar lance"}
       </button>
     </div>
   );

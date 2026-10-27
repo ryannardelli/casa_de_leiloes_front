@@ -1,6 +1,7 @@
 import { MessageContainer } from "./components/feedback/MessageContainer";
 import { AuctioneerLotProvider } from "./providers/AuctioneerLotProvider";
 import { AuthProvider } from "./providers/AuthProvider";
+import { BidsProvider } from "./providers/BidsProvider";
 import { ProfileProvider } from "./providers/ProfileProvider";
 import { PublicCollectionProvider } from "./providers/PublicCollectionProvider";
 import { PublicLotsProvider } from "./providers/PublicLotProvider";
@@ -17,9 +18,11 @@ function App() {
           <PublicCollectionProvider>
             <AuctioneerLotProvider>
               <WalletProvider>
+              <BidsProvider>
               <MessageContainer>
                 <MainRouter />
               </MessageContainer>
+              </BidsProvider>
               </WalletProvider>
             </AuctioneerLotProvider>
           </PublicCollectionProvider>
