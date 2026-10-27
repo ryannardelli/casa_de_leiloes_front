@@ -1,30 +1,33 @@
 import { useMemo, useState } from "react";
 import { Gavel } from "lucide-react";
-import { myBids, type MyBidStatus } from "../../../../../mocks/bidder/myBids.mock";
+
 import { MyBidsFilters } from "../MyBidsFilters";
 import { MyBidCard } from "../MyBidCard";
+import { useBids } from "../../../../../hooks/useBids";
+import { MyBidCardSkeleton } from "../../../../ui/shared/Loading/bidder/my-bids/MyBidCardSkeleton";
 
 export function MyBidsList() {
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("ALL");
+  const { stateBids } = useBids();
+  const myBids = stateBids.myBids;
+  const loading = stateBids.loadingMyBids;
 
   const filteredBids = useMemo(() => {
     return myBids.filter((bid) => {
-      const matchesSearch = bid.title
+      const title = bid.lot?.title ?? "";
+
+      return title
         .toLowerCase()
         .includes(search.trim().toLowerCase());
-
-      const matchesStatus =
-        status === "ALL" || bid.status === (status as MyBidStatus);
-
-      return matchesSearch && matchesStatus;
     });
-  }, [search, status]);
+  }, [myBids, search]);
 
   return (
     <section className="space-y-5">
       <div>
-        <h2 className="text-lg font-semibold">Histórico de participação</h2>
+        <h2 className="text-lg font-semibold">
+          Histórico de participação
+        </h2>
         <p className="mt-1 text-sm text-text-muted">
           Consulte os leilões em andamento e os resultados anteriores.
         </p>
@@ -33,11 +36,15 @@ export function MyBidsList() {
       <MyBidsFilters
         search={search}
         onSearchChange={setSearch}
-        status={status}
-        onStatusChange={setStatus}
       />
 
-      {filteredBids.length > 0 ? (
+     {loading ? (
+        <div className="space-y-4">
+          {Array.from({ length: myBids.length }).map((_, index) => (
+            <MyBidCardSkeleton key={index} />
+          ))}
+        </div>
+      ) : filteredBids.length > 0 ? (
         <div className="space-y-4">
           {filteredBids.map((bid) => (
             <MyBidCard key={bid.id} bid={bid} />

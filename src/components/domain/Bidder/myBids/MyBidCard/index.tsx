@@ -1,49 +1,53 @@
 import { Clock3, Gavel, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import type { MyBid, MyBidStatus } from "../../../../../mocks/bidder/myBids.mock";
+import type { Bid } from "../../../../../models/Bid";
 
 interface MyBidCardProps {
-  bid: MyBid;
+  bid: Bid;
 }
 
-const statusConfig: Record<
-  MyBidStatus,
-  { label: string; className: string }
-> = {
-  WINNING: {
-    label: "Você está liderando",
-    className: "bg-muted text-accent",
+const statusConfig = {
+  LIVE: {
+    label: "Leilão em andamento",
+    className: "bg-emerald-500/10 text-emerald-500",
   },
-  OUTBID: {
-    label: "Seu lance foi superado",
-    className: "bg-muted text-text",
-  },
-  WON: {
-    label: "Arremate conquistado",
-    className: "bg-muted text-gold",
-  },
-  LOST: {
+
+  CLOSED: {
     label: "Leilão encerrado",
     className: "bg-muted text-text-muted",
   },
-};
+
+  CANCELLED: {
+    label: "Leilão cancelado",
+    className: "bg-red-500/10 text-red-500",
+  },
+} as const;
 
 const formatCurrency = (value: number) =>
   value.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
-    maximumFractionDigits: 0,
+    maximumFractionDigits: 2,
   });
 
 export function MyBidCard({ bid }: MyBidCardProps) {
-  const status = statusConfig[bid.status];
+  const lot = bid.lot;
+
+  if (!lot) return null;
+
+  const status = statusConfig[
+    lot.status as keyof typeof statusConfig
+  ] ?? {
+    label: "Status desconhecido",
+    className: "bg-muted text-text-muted",
+  };
 
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-surface transition-colors hover:border-accent/50">
       <div className="flex flex-col sm:flex-row">
         <img
-          src={bid.imageUrl}
-          alt={bid.title}
+          src={lot.imageUrl}
+          alt={lot.title}
           loading="lazy"
           className="h-48 w-full object-cover sm:h-auto sm:w-44"
         />
@@ -51,11 +55,9 @@ export function MyBidCard({ bid }: MyBidCardProps) {
         <div className="flex min-w-0 flex-1 flex-col p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
-              <p className="text-xs text-text-muted">
-                {bid.category} · {bid.lotId}
-              </p>
-
-              <h3 className="mt-1 font-semibold">{bid.title}</h3>
+              <h3 className="mt-1 font-semibold">
+                {lot.title}
+              </h3>
             </div>
 
             <span
@@ -71,16 +73,16 @@ export function MyBidCard({ bid }: MyBidCardProps) {
                 Maior lance do lote
               </p>
               <p className="mt-1 font-bold">
-                {formatCurrency(bid.currentBid)}
+                {formatCurrency(Number(lot.currentPrice))}
               </p>
             </div>
 
             <div>
               <p className="text-xs text-text-muted">
-                Seu maior lance
+                Seu lance
               </p>
               <p className="mt-1 font-semibold">
-                {formatCurrency(bid.myHighestBid)}
+                {formatCurrency(Number(bid.amount))}
               </p>
             </div>
           </div>
@@ -88,10 +90,15 @@ export function MyBidCard({ bid }: MyBidCardProps) {
           <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
             <div className="flex items-center gap-2 text-xs text-text-muted">
               <Gavel size={15} />
-              {bid.totalBids} lances no total
+              Lance registrado
+
               <span className="text-border">·</span>
+
               <Clock3 size={15} />
-              {bid.endsAt}
+              {new Date(bid.createdAt).toLocaleString("pt-BR", {
+                dateStyle: "short",
+                timeStyle: "short",
+              })}
             </div>
 
             <Link
