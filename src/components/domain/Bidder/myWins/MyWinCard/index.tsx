@@ -6,12 +6,15 @@ import {
 
 import type { Award } from "../../../../../models/Award";
 import { formatCurrency } from "../../../../../utils/formatCurrency";
+import { getStatusConfig, statusConfig } from "../../../../../utils/statusConfig";
 
 interface MyWinCardProps {
   win: Award;
 }
 
 export function MyWinCard({ win }: MyWinCardProps) {
+  const status = getStatusConfig(win.status);
+  
   const endedAt = win.endAt
     ? new Date(win.endAt).toLocaleString("pt-BR", {
         day: "2-digit",
@@ -21,7 +24,6 @@ export function MyWinCard({ win }: MyWinCardProps) {
         minute: "2-digit",
       })
     : "Data não informada";
-
   async function handleShare() {
     const receiptUrl = new URL(
       `/receipts/${encodeURIComponent(String(win.lotId))}`,
@@ -85,8 +87,10 @@ export function MyWinCard({ win }: MyWinCardProps) {
               </p>
             </div>
 
-            <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold">
-              {win.status}
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${status.className}`}
+            >
+              {status.label}
             </span>
           </div>
 

@@ -7,29 +7,11 @@ import {
 import type { PublicLot } from "../../../../../models/PublicLot";
 import { RouterLinks } from "../../../../ui/shared/Links/RouterLinks";
 import { ImageWithBlurBackground } from "../../../../ui/shared/common/ImageWithBlurBackground";
+import { statusConfig } from "../../../../../utils/statusConfig";
 
 interface LotCardProps {
   lot: PublicLot;
 }
-
-const statusConfig = {
-  LIVE: {
-    label: "Ao vivo",
-    className: "bg-accent/10 text-accent",
-  },
-  SCHEDULED: {
-    label: "Agendado",
-    className: "bg-gold/15 text-gold",
-  },
-  ENDED: {
-    label: "Encerrado",
-    className: "bg-muted text-text-muted",
-  },
-  CANCELLED: {
-    label: "Cancelado",
-    className: "bg-muted text-text-muted",
-  },
-};
 
 const formatCurrency = (value: string | number | null) =>
   new Intl.NumberFormat("pt-BR", {
