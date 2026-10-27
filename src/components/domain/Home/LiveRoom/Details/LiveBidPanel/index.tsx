@@ -38,6 +38,8 @@ export function LiveBidPanel({
       return;
     }
 
+    showMessage.dismiss();
+
     try {
       setSubmitting(true);
 

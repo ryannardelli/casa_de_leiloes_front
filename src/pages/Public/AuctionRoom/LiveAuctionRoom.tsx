@@ -11,6 +11,7 @@ import { BackButton } from "../../../components/ui/shared/Button/BackButton/inde
 import { useEffect, useState } from "react";
 import { socket } from "../../../services/socket.ts";
 import type { BidUpdatedEvent, LiveLot } from "../../../models/Bid.ts";
+import { useBids } from "../../../hooks/useBids.ts";
 
 export function LiveAuctionRoom() {
   const { id } = useParams<{ id: string }>();
@@ -23,10 +24,20 @@ export function LiveAuctionRoom() {
   const isAuth = state.isAuthenticated;
   const profileName = state.user?.profile.name;
 
+  const { stateBids, loadBidsById } = useBids();
+
   const lot = lots.find((item) => item.id === Number(id));
 
   const [liveLot, setLiveLot] = useState<LiveLot | null>(null);
   const [setMinimumNextBid] = useState<number | null>(null);
+
+  useEffect(() => {
+  if (!id || !Number.isInteger(Number(id)) || Number(id) <= 0) {
+    return;
+  }
+
+  loadBidsById(Number(id)).catch(() => undefined);
+}, [id, loadBidsById]);
 
   useEffect(() => {
     if (!lot) return;
@@ -94,6 +105,8 @@ export function LiveAuctionRoom() {
   };
 }, [id]);
 
+  const lotBidsHistory = stateBids.selectedLot ?? [];
+
   if (loadingLots) {
     return <LoadingAuth />;
   }
@@ -138,39 +151,14 @@ export function LiveAuctionRoom() {
           />
 
           <LiveBidHistory
-            bids={[
-              {
-                id: 1,
-                bidderName: "Carlos Mendes",
-                amount: 1250,
-                createdAt: "2026-10-26T20:15:00",
-              },
-              {
-                id: 2,
-                bidderName: "Ana Souza",
-                amount: 1200,
-                createdAt: "2026-10-26T20:14:30",
-              },
-              {
-                id: 3,
-                bidderName: "Lucas Oliveira",
-                amount: 1100,
-                createdAt: "2026-10-26T20:13:45",
-              },
-              {
-                id: 4,
-                bidderName: "Mariana Costa",
-                amount: 1000,
-                createdAt: "2026-10-26T20:12:10",
-              },
-              {
-                id: 5,
-                bidderName: "Pedro Santos",
-                amount: 950,
-                createdAt: "2026-10-26T20:10:00",
-              },
-            ]}
-          />
+              bids={lotBidsHistory.map((bid) => ({
+                id: bid.id,
+                bidderName: `Licitante #${bid.bidderId}`,
+                amount: Number(bid.amount),
+                createdAt: bid.createdAt,
+                isCurrentUser: Number(bid.bidderId) === Number(state.user?.id),
+              }))}
+            />
         </div>
 
         <div className="space-y-6">

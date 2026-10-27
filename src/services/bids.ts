@@ -1,8 +1,8 @@
 import type {
   Bid,
-  LiveRoom,
   CreateBidResponse,
 } from "../models/Bid";
+import type { LiveRoom } from "../models/LiveRoom";
 
 import { userAuthentication } from "./auth";
 
@@ -26,7 +26,7 @@ async function handleResponse<T>(res: Response): Promise<T> {
     );
   }
 
-  return res.json();
+  return res.json() as Promise<T>;
 }
 
 export async function createBid(
@@ -55,6 +55,18 @@ export async function getLotBids(
   });
 
   return handleResponse<Bid[]>(res);
+}
+
+export async function getLotById(
+  id: number
+): Promise<Bid> {
+  const response = await fetch(`${API_URL}/lots/${id}`);
+
+  if (!response.ok) {
+    throw new Error("Erro ao buscar os detalhes do lote.");
+  }
+
+  return response.json() as Promise<Bid>;
 }
 
 export async function getMyBids(): Promise<Bid[]> {

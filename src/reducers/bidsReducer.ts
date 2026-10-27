@@ -6,6 +6,10 @@ export const initialStateBids: BidsState = {
   liveRoom: null,
   selectedBid: null,
 
+  selectedLot: null,
+  loadingLotById: false,
+  errorLotById: null,
+
   loadingCreateBid: false,
   loadingLotBids: false,
   loadingMyBids: false,
@@ -34,6 +38,9 @@ export function bidsReducer(
     case "SET_SELECTED_BID":
       return { ...state, selectedBid: action.payload };
 
+    case "SET_SELECTED_LOT":
+      return { ...state, selectedLot: action.payload };
+
     case "SET_LOADING_CREATE_BID":
       return { ...state, loadingCreateBid: action.payload };
 
@@ -46,6 +53,9 @@ export function bidsReducer(
     case "SET_LOADING_LIVE_ROOM":
       return { ...state, loadingLiveRoom: action.payload };
 
+    case "SET_LOADING_LOT_BY_ID":
+      return { ...state, loadingLotById: action.payload };
+
     case "SET_ERROR_CREATE_BID":
       return { ...state, errorCreateBid: action.payload };
 
@@ -57,6 +67,9 @@ export function bidsReducer(
 
     case "SET_ERROR_LIVE_ROOM":
       return { ...state, errorLiveRoom: action.payload };
+
+    case "SET_ERROR_LOT_BY_ID":
+      return { ...state, errorLotById: action.payload };
 
     default:
       return state;

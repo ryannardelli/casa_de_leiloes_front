@@ -1,3 +1,5 @@
+import type { LiveRoom } from "./LiveRoom";
+
 export interface Bid {
   id: number;
   lotId: number;
@@ -15,14 +17,6 @@ export interface BidLot {
   imageUrl: string | null;
   currentPrice: number;
   status: "LIVE" | "CLOSED" | "SCHEDULED" | string;
-}
-
-export interface LiveRoom {
-  lotId: number;
-  currentBid: number;
-  minimumIncrement: number;
-  totalBids: number;
-  bids: Bid[];
 }
 
 export interface CreateBidResponse {
@@ -79,7 +73,12 @@ export type BidsAction =
   | { type: "SET_ERROR_CREATE_BID"; payload: string | null }
   | { type: "SET_ERROR_LOT_BIDS"; payload: string | null }
   | { type: "SET_ERROR_MY_BIDS"; payload: string | null }
-  | { type: "SET_ERROR_LIVE_ROOM"; payload: string | null };
+  | { type: "SET_ERROR_LIVE_ROOM"; payload: string | null }
+
+  | { type: "SET_SELECTED_LOT"; payload: Bid | null }
+  | { type: "SET_LOADING_LOT_BY_ID"; payload: boolean }
+  | { type: "SET_ERROR_LOT_BY_ID"; payload: string | null };
+
 
 export type BidsState = {
   lotBids: Bid[];
@@ -87,11 +86,16 @@ export type BidsState = {
   liveRoom: LiveRoom | null;
   selectedBid: Bid | null;
 
+  selectedLot: Bid[] | null;
+  loadingLotById: boolean;
+  errorLotById: string | null;
+
   loadingCreateBid: boolean;
   loadingLotBids: boolean;
   loadingMyBids: boolean;
   loadingLiveRoom: boolean;
 
+  // Errors
   errorCreateBid: string | null;
   errorLotBids: string | null;
   errorMyBids: string | null;

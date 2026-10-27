@@ -16,12 +16,17 @@ import {
 
 import {
   createBid as createBidService,
-  getLotBids,
   getMyBids,
+  getLotBids,
   getLiveRoom,
+  getLotById,
 } from "../../services/bids";
 
-import type { CreateBidResponse } from "../../models/Bid";
+import type {
+  Bid,
+  CreateBidResponse,
+} from "../../models/Bid";
+import type { LiveRoom } from "../../models/LiveRoom";
 
 type BidsProviderProps = {
   children: ReactNode;
@@ -41,7 +46,7 @@ export const BidsProvider = ({
   const profileName = state.user?.profile?.name;
 
   const loadLotBids = useCallback(
-    async (lotId: number): Promise<void> => {
+    async (lotId: number): Promise<Bid[]> => {
       try {
         dispatchBids({
           type: "SET_LOADING_LOT_BIDS",
@@ -59,6 +64,8 @@ export const BidsProvider = ({
           type: "SET_LOT_BIDS",
           payload: bids,
         });
+
+        return bids;
       } catch (error) {
         dispatchBids({
           type: "SET_ERROR_LOT_BIDS",
@@ -81,8 +88,54 @@ export const BidsProvider = ({
     []
   );
 
+  const loadBidsById = useCallback(
+    async (lotId: number): Promise<Bid> => {
+      try {
+        dispatchBids({
+          type: "SET_LOADING_LOT_BY_ID",
+          payload: true,
+        });
+
+        dispatchBids({
+          type: "SET_ERROR_LOT_BY_ID",
+          payload: null,
+        });
+
+        const bids = await getLotById(lotId);
+
+        dispatchBids({
+          type: "SET_SELECTED_LOT",
+          payload: bids,
+        });
+
+        return bids;
+      } catch (error) {
+        dispatchBids({
+          type: "SET_ERROR_LOT_BY_ID",
+          payload:
+            error instanceof Error
+              ? error.message
+              : "Erro ao carregar os detalhes do lote.",
+        });
+
+        console.error(
+          "Erro ao carregar detalhes do lote:",
+          error
+        );
+
+        throw error;
+      } finally {
+        dispatchBids({
+          type: "SET_LOADING_LOT_BY_ID",
+          payload: false,
+        });
+      }
+    },
+    []
+  );
+
   const loadMyBids = useCallback(
-    async (): Promise<void> => {
+    async (): Promise<Bid[]> => {
       try {
         dispatchBids({
           type: "SET_LOADING_MY_BIDS",
@@ -100,6 +153,8 @@ export const BidsProvider = ({
           type: "SET_MY_BIDS",
           payload: bids,
         });
+
+      return bids;
       } catch (error) {
         dispatchBids({
           type: "SET_ERROR_MY_BIDS",
@@ -123,7 +178,7 @@ export const BidsProvider = ({
   );
 
   const loadLiveRoom = useCallback(
-    async (lotId: number): Promise<void> => {
+    async (lotId: number): Promise<LiveRoom> => {
       try {
         dispatchBids({
           type: "SET_LOADING_LIVE_ROOM",
@@ -141,6 +196,8 @@ export const BidsProvider = ({
           type: "SET_LIVE_ROOM",
           payload: liveRoom,
         });
+
+        return liveRoom;
       } catch (error) {
         dispatchBids({
           type: "SET_ERROR_LIVE_ROOM",
@@ -179,7 +236,10 @@ export const BidsProvider = ({
           payload: null,
         });
 
-        const response = await createBidService(lotId, amount);
+        const response = await createBidService(
+          lotId,
+          amount
+        );
 
         const refreshResults = await Promise.allSettled([
           loadLotBids(lotId),
@@ -240,6 +300,7 @@ export const BidsProvider = ({
         loadLotBids,
         loadMyBids,
         loadLiveRoom,
+        loadBidsById,
       }}
     >
       {children}
