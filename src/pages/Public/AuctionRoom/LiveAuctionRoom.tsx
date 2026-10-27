@@ -23,21 +23,28 @@ export function LiveAuctionRoom() {
 
   const isAuth = state.isAuthenticated;
   const profileName = state.user?.profile.name;
+  const currentUserId = state.user?.id ? Number(state.user.id) : null;
 
   const { stateBids, loadBidsById } = useBids();
 
   const lot = lots.find((item) => item.id === Number(id));
 
   const [liveLot, setLiveLot] = useState<LiveLot | null>(null);
-  const [setMinimumNextBid] = useState<number | null>(null);
+  const [bidsList, setBidsList] = useState<any[]>([]);
 
   useEffect(() => {
-  if (!id || !Number.isInteger(Number(id)) || Number(id) <= 0) {
-    return;
-  }
+    if (!id || !Number.isInteger(Number(id)) || Number(id) <= 0) {
+      return;
+    }
 
-  loadBidsById(Number(id)).catch(() => undefined);
-}, [id, loadBidsById]);
+    loadBidsById(Number(id)).catch(() => undefined);
+  }, [id, loadBidsById]);
+
+  useEffect(() => {
+    if (stateBids.selectedLot) {
+      setBidsList(stateBids.selectedLot);
+    }
+  }, [stateBids.selectedLot]);
 
   useEffect(() => {
     if (!lot) return;
@@ -53,59 +60,77 @@ export function LiveAuctionRoom() {
   }, [lot]);
 
   useEffect(() => {
-  if (!id || !Number.isInteger(Number(id)) || Number(id) <= 0) {
-    return;
-  }
+    if (!id || !Number.isInteger(Number(id)) || Number(id) <= 0) {
+      return;
+    }
 
-  const lotId = Number(id);
+    const lotId = Number(id);
 
-  function joinLot() {
-    socket.emit("lot:join", { lotId });
-  }
+    function joinLot() {
+      socket.emit("lot:join", { lotId });
+    }
 
-  function handleBidUpdated(data: BidUpdatedEvent) {
+    function handleBidUpdated(data: BidUpdatedEvent) {
+      if (Number(data.bid?.lotId ?? data.lot?.id) !== lotId) return;
 
-    if (Number(data.bid.lotId) !== lotId) return;
+      setLiveLot((current) => {
+        if (!current) return current;
 
-    setLiveLot((current) => {
-      if (!current) {
-        console.warn("[Socket] liveLot ainda está null");
-        return current;
+        return {
+          ...current,
+          currentPrice: Number(data.lot.currentPrice),
+          endAt: data.lot.endAt,
+          status: data.lot.status,
+        };
+      });
+
+      if (data.bid) {
+        setBidsList((prevBids) => {
+          if (prevBids.some((b) => Number(b.id) === Number(data.bid.id))) {
+            return prevBids;
+          }
+          return [data.bid, ...prevBids];
+        });
       }
+    }
 
-      return {
-        ...current,
-        currentPrice: Number(data.lot.currentPrice),
-        endAt: data.lot.endAt,
-        status: data.lot.status,
-      };
+    socket.on("connect", joinLot);
+    socket.on("bid:updated", handleBidUpdated);
+
+    socket.on("connect_error", (error) => {
+      console.error("[Socket] Erro de conexão:", error.message);
     });
 
-    setMinimumNextBid(Number(data.lot.minimumNextBid));
-    setTotalBids(Number(data.lot.totalBids));
-  }
+    if (socket.connected) {
+      joinLot();
+    } else {
+      socket.connect();
+    }
 
-  socket.on("connect", joinLot);
-  socket.on("bid:updated", handleBidUpdated);
+    return () => {
+      socket.emit("lot:leave", { lotId });
+      socket.off("connect", joinLot);
+      socket.off("bid:updated", handleBidUpdated);
+    };
+  }, [id]);
 
-  socket.on("connect_error", (error) => {
-    console.error("[Socket] Erro de conexão:", error.message);
-  });
+  const currentUserBids = bidsList.filter(
+    (bid) => Number(bid.bidderId) === currentUserId
+  );
 
-  if (socket.connected) {
-    joinLot();
-  } else {
-    socket.connect();
-  }
+  const userHighestBid =
+    currentUserBids.length > 0
+      ? Math.max(...currentUserBids.map((bid) => Number(bid.amount)))
+      : null;
 
-  return () => {
-    socket.emit("lot:leave", { lotId });
-    socket.off("connect", joinLot);
-    socket.off("bid:updated", handleBidUpdated);
-  };
-}, [id]);
+  const highestBidInRoom = bidsList[0];
 
-  const lotBidsHistory = stateBids.selectedLot ?? [];
+  const isWinning = Boolean(
+    currentUserId &&
+      userHighestBid &&
+      highestBidInRoom &&
+      Number(highestBidInRoom.bidderId) === currentUserId
+  );
 
   if (loadingLots) {
     return <LoadingAuth />;
@@ -117,7 +142,6 @@ export function LiveAuctionRoom() {
         <h1 className="text-2xl font-bold text-gray-900">
           Lote não encontrado
         </h1>
-
         <p className="mt-2 text-gray-500">
           O lote solicitado não está disponível nesta sala.
         </p>
@@ -130,10 +154,7 @@ export function LiveAuctionRoom() {
       <BackButton />
 
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">
-          Sala do lote
-        </h1>
-
+        <h1 className="text-3xl font-bold text-gray-900">Sala do lote</h1>
         <p className="mt-2 text-gray-500">
           Acompanhe os detalhes deste lote e os lances disponíveis.
         </p>
@@ -151,14 +172,14 @@ export function LiveAuctionRoom() {
           />
 
           <LiveBidHistory
-              bids={lotBidsHistory.map((bid) => ({
-                id: bid.id,
-                bidderName: `Licitante #${bid.bidderId}`,
-                amount: Number(bid.amount),
-                createdAt: bid.createdAt,
-                isCurrentUser: Number(bid.bidderId) === Number(state.user?.id),
-              }))}
-            />
+            bids={bidsList.map((bid) => ({
+              id: bid.id,
+              bidderName: `Licitante #${bid.bidderId}`,
+              amount: Number(bid.amount),
+              createdAt: bid.createdAt,
+              isCurrentUser: Number(bid.bidderId) === currentUserId,
+            }))}
+          />
         </div>
 
         <div className="space-y-6">
@@ -166,9 +187,10 @@ export function LiveAuctionRoom() {
 
           <LiveUserStatus
             currentUser={{
-              isWinning: false,
-              position: null,
-              highestBid: liveLot.currentPrice,
+              isWinning: isWinning,
+              position: isWinning ? 1 : userHighestBid ? 2 : null,
+              highestBid: userHighestBid,
+              hasBidded: currentUserBids.length > 0,
             }}
           />
 

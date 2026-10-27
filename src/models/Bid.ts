@@ -95,7 +95,6 @@ export type BidsState = {
   loadingMyBids: boolean;
   loadingLiveRoom: boolean;
 
-  // Errors
   errorCreateBid: string | null;
   errorLotBids: string | null;
   errorMyBids: string | null;
