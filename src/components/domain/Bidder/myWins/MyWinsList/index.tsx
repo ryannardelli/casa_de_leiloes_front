@@ -6,7 +6,6 @@ import { MyWinCard } from "../MyWinCard";
 
 export function MyWinsList() {
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<MyWinsFilterStatus>("ALL");
 
   const filteredWins = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -17,12 +16,10 @@ export function MyWinsList() {
         win.category.toLowerCase().includes(normalizedSearch) ||
         win.lotId.toLowerCase().includes(normalizedSearch);
 
-      const matchesStatus =
-        status === "ALL" || win.status === status;
 
-      return matchesSearch && matchesStatus;
+      return matchesSearch;
     });
-  }, [search, status]);
+  }, [search]);
 
   return (
     <section className="space-y-5">
@@ -39,8 +36,6 @@ export function MyWinsList() {
       <MyWinsFilters
         search={search}
         onSearchChange={setSearch}
-        status={status}
-        onStatusChange={setStatus}
       />
 
       {filteredWins.length > 0 ? (
@@ -61,7 +56,6 @@ export function MyWinsList() {
 
           <p className="mt-2 max-w-sm text-sm leading-6 text-text-muted">
             Você ainda não possui arremates com esses critérios.
-            Experimente alterar os filtros ou explorar os leilões.
           </p>
         </div>
       )}

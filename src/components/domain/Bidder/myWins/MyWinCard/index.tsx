@@ -1,9 +1,6 @@
 import {
   ArrowUpRight,
   CalendarDays,
-  CheckCircle2,
-  Clock3,
-  Gavel,
   Share2,
   Trophy,
 } from "lucide-react";
@@ -16,22 +13,7 @@ interface MyWinCardProps {
   win: MyWin;
 }
 
-const statusConfig = {
-  CONFIRMED: {
-    label: "Arremate confirmado",
-    icon: CheckCircle2,
-    className: "bg-muted text-accent",
-  },
-  PENDING: {
-    label: "Aguardando confirmação",
-    icon: Clock3,
-    className: "bg-muted text-text-muted",
-  },
-};
-
 export function MyWinCard({ win }: MyWinCardProps) {
-  const status = statusConfig[win.status];
-  const StatusIcon = status.icon;
 
   const endedAt = new Date(win.endedAt).toLocaleString("pt-BR", {
     day: "2-digit",
@@ -97,13 +79,6 @@ export function MyWinCard({ win }: MyWinCardProps) {
                 {win.title}
               </h2>
             </div>
-
-            <span
-              className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium ${status.className}`}
-            >
-              <StatusIcon size={14} />
-              {status.label}
-            </span>
           </div>
 
           <div className="mt-5 grid grid-cols-1 gap-4 border-y border-border py-4 sm:grid-cols-3">
@@ -111,14 +86,6 @@ export function MyWinCard({ win }: MyWinCardProps) {
               <p className="text-xs text-text-muted">Valor final</p>
               <p className="mt-1 text-lg font-bold text-accent">
                 {formatCurrency(win.finalPrice)}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-xs text-text-muted">Total de lances</p>
-              <p className="mt-1 flex items-center gap-2 font-semibold">
-                <Gavel size={16} className="text-text-muted" />
-                {win.totalBids}
               </p>
             </div>
 
