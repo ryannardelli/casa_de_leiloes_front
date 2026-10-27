@@ -10,28 +10,28 @@ import { Link } from "react-router-dom";
 
 const actions = [
   {
-    title: "Criar novo lote",
+    title: "Criar lote",
     description: "Cadastre uma nova obra para leilão.",
     icon: Plus,
-    path: "/dashboard/lots/new",
+    path: "/auctioneer/lots/new",
   },
   {
-    title: "Gerenciar lotes",
-    description: "Edite e acompanhe seus lotes.",
+    title: "Meus lotes",
+    description: "Gerencie suas obras e acompanhe os lotes cadastrados.",
     icon: Package,
-    path: "/dashboard/lots",
+    path: "/auctioneer/lots",
   },
   {
-    title: "Acompanhar leilões",
-    description: "Consulte os leilões em andamento.",
+    title: "Leilões ativos",
+    description: "Monitore os leilões em andamento e os lances recebidos.",
     icon: Gavel,
-    path: "/dashboard/active-auctions",
+    path: "/auctioneer/active-auctions",
   },
   {
-    title: "Ver resultados",
-    description: "Confira os lotes encerrados.",
+    title: "Resultados",
+    description: "Consulte os leilões encerrados e seus resultados.",
     icon: ChartNoAxesCombined,
-    path: "/dashboard/results",
+    path: "/auctioneer/results",
   },
 ];
 

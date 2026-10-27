@@ -5,14 +5,16 @@ export function AuctioneerDashboardHeader() {
   return (
     <header className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
       <div>
-        <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
-          Visão geral
-        </h1>
+      <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
+        Visão geral
+      </h1>
 
-        <p className="mt-2 text-sm text-text-muted">
-          Acompanhe o desempenho dos seus lotes e os resultados dos leilões.
-        </p>
-      </div>
+      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-text-muted">
+        Gerencie seus lotes, acompanhe os leilões em andamento e monitore os
+        lances recebidos. Consulte os resultados e acompanhe o desempenho
+        dos seus leilões em um só lugar.
+      </p>
+    </div>
 
       <RouterLinks
         href="/auctioneer/lots/new"

@@ -1,6 +1,5 @@
 import { AuctioneerDashboardHeader } from "../../../components/domain/Auctioneer/dashboard/AuctioneerDashboardHeader";
 import { AuctioneerDashboardStats } from "../../../components/domain/Auctioneer/dashboard/AuctioneerDashboardStats";
-import { AuctioneerPerformance } from "../../../components/domain/Auctioneer/dashboard/AuctioneerPerformance";
 import { AuctioneerQuickActions } from "../../../components/domain/Auctioneer/dashboard/AuctioneerQuickActions";
 import { AuctioneerRecentLots } from "../../../components/domain/Auctioneer/dashboard/AuctioneerRecentLots";
 
@@ -12,11 +11,7 @@ export function Dashboard() {
 
         <AuctioneerDashboardStats />
 
-        <section className="grid grid-cols-1 gap-5 xl:grid-cols-3">
-          <div className="xl:col-span-2">
-            <AuctioneerPerformance />
-          </div>
-
+        <section className="grid grid-cols-1 gap-5">
           <AuctioneerQuickActions />
         </section>
 

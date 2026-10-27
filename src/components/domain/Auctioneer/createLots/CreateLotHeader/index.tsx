@@ -1,5 +1,5 @@
-import { ArrowLeft, PackagePlus } from "lucide-react";
-import { RouterLinks } from "../../../../ui/shared/Links/RouterLinks";
+import { PackagePlus } from "lucide-react";
+import { BackButton } from "../../../../ui/shared/Button/BackButton";
 
 export function CreateLotHeader() {
   return (
@@ -20,13 +20,7 @@ export function CreateLotHeader() {
         </div>
       </div>
 
-      <RouterLinks
-        href="/auctioneer/lots"
-        className="inline-flex w-fit items-center gap-2 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-semibold transition hover:bg-muted"
-      >
-        <ArrowLeft size={17} />
-        Voltar aos lotes
-      </RouterLinks>
+      <BackButton />
     </header>
   );
 }
