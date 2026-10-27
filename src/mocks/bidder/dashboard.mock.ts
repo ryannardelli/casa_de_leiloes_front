@@ -1,33 +1,33 @@
 import {
-  Package,
   Gavel,
   Trophy,
   Wallet,
+  Radio,
 } from "lucide-react";
 
 export const dashboardStats = [
   {
-    label: "Lotes ativos",
-    value: "12",
-    change: "+2 este mês",
-    icon: Package,
-  },
-  {
-    label: "Lances recebidos",
-    value: "248",
-    change: "+18,5% vs. mês anterior",
+    label: "Lances realizados",
+    value: "24",
+    change: "Lances enviados por você",
     icon: Gavel,
   },
   {
-    label: "Arremates concluídos",
-    value: "36",
-    change: "8 aguardando conclusão",
+    label: "Leilões em andamento",
+    value: "5",
+    change: "Leilões com sua participação",
+    icon: Radio,
+  },
+  {
+    label: "Lotes arrematados",
+    value: "3",
+    change: "Arrematações conquistadas",
     icon: Trophy,
   },
   {
-    label: "Valor arrecadado",
-    value: "R$ 48.750",
-    change: "+12,8% vs. mês anterior",
+    label: "Valor arrematado",
+    value: "R$ 8.450,00",
+    change: "Soma dos valores dos lotes ganhos",
     icon: Wallet,
   },
 ];

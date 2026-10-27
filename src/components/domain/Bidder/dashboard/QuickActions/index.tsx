@@ -1,29 +1,29 @@
 import {
-  Plus,
   Gavel,
   Trophy,
   ArrowRight,
+  Search,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const actions = [
   {
-    label: "Criar lote",
-    description: "Cadastre uma nova obra",
-    icon: Plus,
-    path: "/dashboard/lots/new",
+    label: "Vitrine de Lotes",
+    description: "Explore as obras disponíveis para dar lances",
+    icon: Search,
+    path: "/bidder/lots",
   },
   {
-    label: "Leilões ativos",
-    description: "Acompanhe os lances",
+    label: "Meus lances",
+    description: "Acompanhe seus lances e disputas em andamento",
     icon: Gavel,
-    path: "/dashboard/active-auctions",
+    path: "/bidder/my-bids",
   },
   {
-    label: "Consultar resultados",
-    description: "Veja os lotes encerrados",
+    label: "Meus arremates",
+    description: "Consulte os lotes que você conquistou",
     icon: Trophy,
-    path: "/dashboard/results",
+    path: "/bidder/my-wins",
   },
 ];
 

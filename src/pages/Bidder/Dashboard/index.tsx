@@ -1,4 +1,3 @@
-import { AuctionPerformance } from "../../../components/domain/Bidder/dashboard/AuctionPerformance";
 import { DashboardHeader } from "../../../components/domain/Bidder/dashboard/DashboardHeader";
 import { DashboardStats } from "../../../components/domain/Bidder/dashboard/DashboardStats";
 import { QuickActions } from "../../../components/domain/Bidder/dashboard/QuickActions";
@@ -12,11 +11,7 @@ export function Dashboard() {
 
         <DashboardStats />
 
-        <section className="grid grid-cols-1 gap-5 xl:grid-cols-3">
-          <div className="xl:col-span-2">
-            <AuctionPerformance />
-          </div>
-
+        <section className="grid grid-cols-1 gap-5">
           <QuickActions />
         </section>
 
