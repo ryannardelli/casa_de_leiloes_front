@@ -5,6 +5,8 @@ import { MyWinsFilters } from "../MyWinsFilters";
 import { MyWinCard } from "../MyWinCard";
 
 import { useAwards } from "../../../../../hooks/useAwards";
+import { myWins } from "../../../../../mocks/bidder/myWins.mock";
+import { MyWinCardSkeleton } from "../../../../ui/shared/Loading/bidder/my-wins/MyWinCardSkeleton";
 
 export function MyWinsList() {
   const [search, setSearch] = useState("");
@@ -61,14 +63,11 @@ export function MyWinsList() {
       />
 
       {loadingMyAwards ? (
-        <div
-          className="flex flex-col items-center rounded-2xl border border-border bg-surface px-6 py-12 text-center"
-          role="status"
-        >
-          <p className="text-sm text-text-muted">
-            Carregando seus arremates...
-          </p>
-        </div>
+       <div className="space-y-5" aria-label="Carregando arremates" aria-busy="true">
+        {Array.from({ length: myWins.length }).map((_, index) => (
+          <MyWinCardSkeleton key={index} />
+        ))}
+      </div>
       ) : errorMyAwards ? (
         <div className="rounded-2xl border border-border bg-surface px-6 py-8 text-center">
           <p className="text-sm text-red-500">

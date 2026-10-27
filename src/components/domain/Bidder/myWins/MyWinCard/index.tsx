@@ -1,11 +1,8 @@
 import {
-  ArrowUpRight,
   CalendarDays,
   Share2,
   Trophy,
 } from "lucide-react";
-
-import { Link } from "react-router-dom";
 
 import type { Award } from "../../../../../models/Award";
 import { formatCurrency } from "../../../../../utils/formatCurrency";
@@ -124,14 +121,6 @@ export function MyWinCard({ win }: MyWinCardProps) {
           )}
 
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <Link
-              to={`/auctions/${win.lotId}`}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold transition-colors hover:bg-muted"
-            >
-              Ver lote
-              <ArrowUpRight size={16} />
-            </Link>
-
             <button
               type="button"
               onClick={handleShare}
