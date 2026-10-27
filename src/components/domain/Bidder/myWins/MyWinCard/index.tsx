@@ -8,12 +8,16 @@ import { Link } from "react-router-dom";
 
 import type { MyWin } from "../../mocks/my-wins.mock";
 import { formatCurrency } from "../../../../../utils/formatCurrency";
+import { useAwards } from "../../../../../hooks/useAwards";
 
 interface MyWinCardProps {
   win: MyWin;
 }
 
 export function MyWinCard({ win }: MyWinCardProps) {
+
+  const { stateAwards } = useAwards();
+  console.log(stateAwards);
 
   const endedAt = new Date(win.endedAt).toLocaleString("pt-BR", {
     day: "2-digit",
