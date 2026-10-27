@@ -2,7 +2,7 @@ import {
   Gavel,
   Trophy,
   ArrowRight,
-  Search,
+  Store,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const actions = [
   {
     label: "Vitrine de Lotes",
     description: "Explore as obras disponíveis para dar lances",
-    icon: Search,
+    icon: Store,
     path: "/bidder/lots",
   },
   {
