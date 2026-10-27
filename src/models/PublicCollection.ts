@@ -13,8 +13,18 @@ export interface MuseumCategory {
     name: string;
 }
 
+export interface FeaturedWorks {
+  externalItemId: number;
+  title: string;
+  artist: string;
+  category: string;
+  imageUrl: string;
+  objectDate: string;
+  department: string;
+}
+
 export interface PublicCollectionState {
-    featuredWorks: MuseumWork[];
+    featuredWorks: FeaturedWorks[];
     featuredJapanese: MuseumWork[];
     curatedWorks: MuseumWork[];
     categories: MuseumCategory[];

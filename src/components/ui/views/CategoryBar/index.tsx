@@ -6,7 +6,7 @@ const categories = [
   { id: "home", label: "Início", icon: House, router: "/" },
   { id: "auditoria", label: "Auditoria pública", icon: ShieldCheck, router: "/audit" },
   { id: "leilao-ao-vivo", label: "Leilão ao vivo", icon: Radio, router: "/auctions" },
-  { id: "destaques", label: "Destaques", icon: Flame, router: "/destaques" },
+  { id: "destaques", label: "Destaques", icon: Flame, router: "/highlight" },
 ];
 
 export function CategoryBar() {

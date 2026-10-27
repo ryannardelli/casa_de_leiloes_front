@@ -49,14 +49,10 @@ export function LiveAuctionRoom() {
   const lotId = Number(id);
 
   function joinLot() {
-    console.log("[Socket] Conectado:", socket.id);
-    console.log("[Socket] Entrando no lote:", lotId);
-
     socket.emit("lot:join", { lotId });
   }
 
   function handleBidUpdated(data: BidUpdatedEvent) {
-    console.log("[Socket] Evento recebido:", data);
 
     if (Number(data.bid.lotId) !== lotId) return;
 

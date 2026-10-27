@@ -23,6 +23,7 @@ import type { ProfileName } from "../../models/Profile";
 import { LiveAuctionRoom } from "../../pages/Public/AuctionRoom/LiveAuctionRoom";
 import { AuditLots } from "../../pages/Public/Audit/AuditLots";
 import { Audit } from "../../pages/Public/Audit";
+import { Highlight } from "../../pages/Public/Highlight";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -50,6 +51,11 @@ const publicRoutes: RouteObject[] = [
        {
         path: "/audit/:id/lots",
         element: <AuditLots />,
+      },
+
+      {
+        path: "/highlight",
+        element: <Highlight />,
       },
     ],
   },

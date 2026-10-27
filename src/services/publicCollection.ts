@@ -1,6 +1,7 @@
 import type {
     MuseumWork,
     MuseumCategory,
+    FeaturedWorks,
 } from "../models/PublicCollection";
 
 const API_URL = "/public/collections";
@@ -26,7 +27,7 @@ export const publicCollectionService = {
         return res.json() as Promise<MuseumWork[]>;
     },
 
-    getFeaturedWorks: async (): Promise<MuseumWork[]> => {
+    getFeaturedWorks: async (): Promise<FeaturedWorks[]> => {
     const res = await fetch(`${API_URL}/featured`);
 
     if (!res.ok) {
@@ -39,7 +40,7 @@ export const publicCollectionService = {
         );
     }
 
-    return res.json() as Promise<MuseumWork[]>;
+    return res.json() as Promise<FeaturedWorks[]>;
     },
 
     getCuratedWorks: async (): Promise<MuseumWork[]> => {
