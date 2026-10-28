@@ -191,7 +191,7 @@ export function AuditIntegrity({ bids }: AuditIntegrityProps) {
                               onClick={() => copyHash(bid.previousHash!)}
                               title="Copiar hash anterior"
                               aria-label="Copiar hash anterior"
-                              className="shrink-0 rounded-lg p-2 text-text-muted transition hover:bg-muted hover:text-accent"
+                              className="shrink-0 rounded-lg p-2 text-text-muted transition hover:bg-muted hover:text-accent cursor-pointer"
                             >
                               <Copy size={16} />
                             </button>
@@ -221,7 +221,7 @@ export function AuditIntegrity({ bids }: AuditIntegrityProps) {
                               onClick={() => copyHash(bid.hash!)}
                               title="Copiar hash do registro"
                               aria-label="Copiar hash do registro"
-                              className="shrink-0 rounded-lg p-2 text-text-muted transition hover:bg-muted hover:text-accent"
+                              className="shrink-0 rounded-lg p-2 text-text-muted transition hover:bg-muted hover:text-accent cursor-pointer"
                             >
                               <Copy size={16} />
                             </button>
