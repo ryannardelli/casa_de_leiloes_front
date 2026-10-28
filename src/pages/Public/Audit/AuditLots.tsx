@@ -1,16 +1,26 @@
 import { useParams } from "react-router-dom";
-import { auctionAuditMock } from "../../../mocks/home/audit.mock";
+import { usePublicLot } from "../../../hooks/usePublicLot";
+import { LoadingAuth } from "../../../components/ui/shared/Loading/general/LoadingAuth";
 import { AuditSummary } from "../../../components/domain/Home/Audit/Details/AuditSummary";
 import { AuditLotDetails } from "../../../components/domain/Home/Audit/Details/AuditLotDetails";
 import { AuditBidHistory } from "../../../components/domain/Home/Audit/Details/AuditBidHistory";
 import { AuditIntegrity } from "../../../components/domain/Home/Audit/Details/AuditIntegrity";
+import { BackButton } from "../../../components/ui/shared/Button/BackButton/index.tsx";
 
 export function AuditLots() {
   const { id } = useParams<{ id: string }>();
 
-  const audit = id === auctionAuditMock.lot.id ? auctionAuditMock : null;
+  const { statePublicLots } = usePublicLot();
+  const { lots, loadingLots } = statePublicLots;
 
-  if (!audit) {
+  const lot = lots.find((item) => item.id === Number(id));
+  console.log(lot);
+
+  if (loadingLots) {
+    return <LoadingAuth />;
+  }
+
+  if (!lot) {
     return (
       <div className="p-6 text-center">
         <h1 className="text-2xl font-bold text-gray-900">
@@ -26,13 +36,15 @@ export function AuditLots() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">
+      <BackButton />
+
       <div>
         <h1 className="text-3xl font-bold text-gray-900">
           Auditoria do lote
         </h1>
 
         <p className="mt-2 text-gray-500">
-          Lote: {id}
+          Lote: #{id}
         </p>
 
         <p className="mt-2 text-gray-500">
@@ -40,13 +52,16 @@ export function AuditLots() {
         </p>
       </div>
 
-      <AuditSummary integrity={audit.integrity} />
+      <AuditSummary />
 
-      <AuditLotDetails lot={audit.lot} />
+      <AuditLotDetails
+        lot={lot}
+        totalBids={lots.length}
+      />
 
-      <AuditBidHistory bids={audit.bids} />
+      <AuditBidHistory bids={lots} />
 
-      <AuditIntegrity integrity={audit.integrity} />
+      <AuditIntegrity />
     </div>
   );
 }

@@ -1,12 +1,16 @@
-import { CheckCircle2, Fingerprint } from "lucide-react";
-import type { AuctionAudit } from "../../../../../../mocks/home/audit.mock";
+import { Gavel } from "lucide-react";
 
 interface AuditBidHistoryProps {
-  bids: AuctionAudit["bids"];
+  bids: {
+    id: number;
+    bidderId: number;
+    amount: string | number;
+    createdAt: string;
+  }[];
 }
 
-const formatCurrency = (value: number) =>
-  value.toLocaleString("pt-BR", {
+const formatCurrency = (value: string | number) =>
+  Number(value).toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
@@ -18,78 +22,86 @@ const formatDate = (value: string) =>
   });
 
 export function AuditBidHistory({ bids }: AuditBidHistoryProps) {
+  const orderedBids = [...bids].sort(
+    (a, b) =>
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime()
+  );
+
   return (
-    <section className="rounded-2xl border border-gray-200 bg-white p-6">
+    <section className="rounded-2xl border border-border bg-surface p-6">
       <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-bold text-gray-900">
+          <h2 className="text-lg font-bold text-text">
             Histórico de lances
           </h2>
-          <p className="mt-1 text-sm text-gray-500">
-            Registros ordenados cronologicamente.
+          <p className="mt-1 text-sm text-text-muted">
+            Registros retornados pela API, ordenados cronologicamente.
           </p>
         </div>
 
-        <span className="w-fit rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-600">
+        <span className="w-fit rounded-full bg-muted px-3 py-1 text-sm font-medium text-text-muted">
           {bids.length} registros
         </span>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[700px] text-left text-sm">
-          <thead>
-            <tr className="border-b border-gray-200 text-xs uppercase tracking-wide text-gray-500">
-              <th className="px-3 py-3 font-semibold">Participante</th>
-              <th className="px-3 py-3 font-semibold">Valor</th>
-              <th className="px-3 py-3 font-semibold">Data e hora</th>
-              <th className="px-3 py-3 font-semibold">Integridade</th>
-              <th className="px-3 py-3 font-semibold">Hash</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {bids.map((bid) => (
-              <tr
-                key={bid.id}
-                className="border-b border-gray-100 last:border-0"
-              >
-                <td className="px-3 py-4">
-                  <p className="font-semibold text-gray-900">
-                    {bid.bidderName}
-                  </p>
-                  <p className="mt-1 text-xs text-gray-400">{bid.id}</p>
-                </td>
-
-                <td className="px-3 py-4 font-semibold text-gray-900">
-                  {formatCurrency(bid.amount)}
-                </td>
-
-                <td className="px-3 py-4 whitespace-nowrap text-gray-500">
-                  {formatDate(bid.createdAt)}
-                </td>
-
-                <td className="px-3 py-4">
-                  {bid.status === "VALID" ? (
-                    <span className="flex items-center gap-1.5 text-emerald-700">
-                      <CheckCircle2 size={16} />
-                      Válido
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-1.5 text-red-700">
-                      <Fingerprint size={16} />
-                      Inválido
-                    </span>
-                  )}
-                </td>
-
-                <td className="px-3 py-4 font-mono text-xs text-gray-500">
-                  {bid.hash}
-                </td>
+      {orderedBids.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-xl bg-muted/50 px-4 py-10 text-center">
+          <Gavel size={28} className="text-text-muted" />
+          <p className="mt-3 font-semibold text-text">
+            Nenhum lance registrado
+          </p>
+          <p className="mt-1 text-sm text-text-muted">
+            Não há lances disponíveis para consulta neste lote.
+          </p>
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[600px] text-left text-sm">
+            <thead>
+              <tr className="border-b border-border text-xs uppercase tracking-wide text-text-muted">
+                <th className="px-3 py-3 font-semibold">Participante</th>
+                <th className="px-3 py-3 font-semibold">Valor</th>
+                <th className="px-3 py-3 font-semibold">Data e hora</th>
+                <th className="px-3 py-3 font-semibold">Registro</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+
+            <tbody>
+              {orderedBids.map((bid) => (
+                <tr
+                  key={bid.id}
+                  className="border-b border-border last:border-0"
+                >
+                  <td className="px-3 py-4">
+                    <p className="font-semibold text-text">
+                      Licitante #{bid.bidderId}
+                    </p>
+                    <p className="mt-1 text-xs text-text-muted">
+                      Lance #{bid.id}
+                    </p>
+                  </td>
+
+                  <td className="px-3 py-4 font-semibold text-text">
+                    {formatCurrency(bid.amount)}
+                  </td>
+
+                  <td className="whitespace-nowrap px-3 py-4 text-text-muted">
+                    {formatDate(bid.createdAt)}
+                  </td>
+
+                  <td className="px-3 py-4">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-text-muted">
+                      <Gavel size={14} />
+                      Registrado
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   );
 }

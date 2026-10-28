@@ -6,7 +6,7 @@ import { AuditLotCard } from "../AuditLotCard";
 
 export function AuditLotList() {
    const { statePublicLots } = usePublicLot();
-    const { lots, loadingLots } = statePublicLots;
+   const { lots, loadingLots } = statePublicLots;
   
     if (loadingLots) {
       return (
