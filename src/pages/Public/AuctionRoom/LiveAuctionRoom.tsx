@@ -168,7 +168,7 @@ export function LiveAuctionRoom() {
             <LiveLotDetails
               lot={{
                 ...lot,
-                currentPrice: liveLot.currentPrice,
+                currentPrice: String(liveLot.currentPrice),
                 endAt: liveLot.endAt,
                 status: liveLot.status,
               }}
