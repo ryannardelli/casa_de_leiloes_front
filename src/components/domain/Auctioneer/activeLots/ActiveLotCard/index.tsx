@@ -1,19 +1,21 @@
 import { ArrowUpRight, Clock3, Gavel, History } from "lucide-react";
 import { Link } from "react-router-dom";
-import type { ActiveLot } from "../../../../../mocks/auctioneer/active-lots.mock";
+import type { AuctioneerLot } from "../../../../../models/AuctioneerLot";
 
 interface ActiveLotCardProps {
-  lot: ActiveLot;
+  lot: AuctioneerLot;
 }
 
-function formatCurrency(value: number) {
-  return value.toLocaleString("pt-BR", {
+function formatCurrency(value: number | string | null | undefined) {
+  const numericValue = Number(value) || 0;
+  return numericValue.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
 }
 
 function formatDate(value: string) {
+  if (!value) return "Data não informada";
   return new Date(value).toLocaleString("pt-BR", {
     day: "2-digit",
     month: "2-digit",
@@ -24,6 +26,9 @@ function formatDate(value: string) {
 }
 
 export function ActiveLotCard({ lot }: ActiveLotCardProps) {
+  const categoryLabel =
+    lot.attributes?.culture || lot.attributes?.department || "Arte";
+
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-surface transition hover:shadow-md">
       <div className="relative aspect-[16/9] overflow-hidden bg-muted">
@@ -36,19 +41,27 @@ export function ActiveLotCard({ lot }: ActiveLotCardProps) {
 
         <span className="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full bg-surface/95 px-3 py-1.5 text-xs font-semibold text-text">
           <span className="h-2 w-2 rounded-full bg-accent" />
-          Em andamento
+          {lot.status === "LIVE" ? "Em andamento" : lot.status}
         </span>
 
         <span className="absolute right-3 top-3 rounded-full bg-surface/95 px-3 py-1.5 text-xs font-medium text-text">
-          {lot.category}
+          {categoryLabel}
         </span>
       </div>
 
       <div className="space-y-4 p-5">
         <div>
-          <p className="text-xs text-text-muted">Código: {lot.id}</p>
+          <p className="text-xs text-text-muted">
+            Código: {lot.id} {lot.externalItemId && `(Ext: #${lot.externalItemId})`}
+          </p>
 
           <h3 className="mt-1 font-semibold leading-6">{lot.title}</h3>
+          
+          {lot.attributes?.artist && (
+            <p className="mt-0.5 text-xs text-text-muted">
+              {lot.attributes.artist}
+            </p>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -56,16 +69,16 @@ export function ActiveLotCard({ lot }: ActiveLotCardProps) {
             <p className="text-xs text-text-muted">Lance atual</p>
 
             <p className="mt-1 text-lg font-bold text-accent">
-              {formatCurrency(lot.currentBid)}
+              {formatCurrency(lot.currentPrice)}
             </p>
           </div>
 
           <div className="rounded-xl bg-background p-3">
-            <p className="text-xs text-text-muted">Total de lances</p>
+            <p className="text-xs text-text-muted">Status</p>
 
-            <p className="mt-1 flex items-center gap-2 text-lg font-bold">
+            <p className="mt-1 flex items-center gap-2 text-base font-bold">
               <Gavel size={17} className="text-text-muted" />
-              {lot.totalBids}
+              {lot.status}
             </p>
           </div>
         </div>
@@ -91,7 +104,7 @@ export function ActiveLotCard({ lot }: ActiveLotCardProps) {
             <div>
               <p className="text-xs">Data de encerramento</p>
               <p className="mt-1 text-sm font-medium text-text">
-                {formatDate(lot.endsAt)}
+                {formatDate(lot.endAt)}
               </p>
             </div>
           </div>

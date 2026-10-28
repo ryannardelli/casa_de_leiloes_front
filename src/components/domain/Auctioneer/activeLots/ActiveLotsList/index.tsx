@@ -1,13 +1,13 @@
 import { Gavel } from "lucide-react";
-import type { ActiveLot } from "../../../../../mocks/auctioneer/active-lots.mock";
 import { ActiveLotCard } from "../ActiveLotCard";
+import type { AuctioneerLot } from "../../../../../models/AuctioneerLot";
 
 interface ActiveLotsListProps {
-  lots: ActiveLot[];
+  lots: AuctioneerLot[];
 }
 
 export function ActiveLotsList({ lots }: ActiveLotsListProps) {
-  if (lots.length === 0) {
+  if (!lots || lots.length === 0) {
     return (
       <div className="flex flex-col items-center rounded-2xl border border-dashed border-border bg-surface px-6 py-14 text-center">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted text-text-muted">

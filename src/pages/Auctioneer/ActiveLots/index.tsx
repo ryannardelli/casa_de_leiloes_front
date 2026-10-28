@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
-import { ActiveLotsFilters, type ActiveLotsSort } from "../../../components/domain/Auctioneer/activeLots/ActiveLotsFilters";
-import { activeLotsMock } from "../../../mocks/auctioneer/active-lots.mock";
+import { ActiveLotsFilters } from "../../../components/domain/Auctioneer/activeLots/ActiveLotsFilters";
 import { ActiveLotsHeader } from "../../../components/domain/Auctioneer/activeLots/ActiveLotsHeader";
 import { ActiveLotsStats } from "../../../components/domain/Auctioneer/activeLots/ActiveLotsStats";
 import { ActiveLotsList } from "../../../components/domain/Auctioneer/activeLots/ActiveLotsList";
@@ -8,64 +7,44 @@ import { useAuctioneerLot } from "../../../hooks/useAuctioneerLot";
 
 export function ActiveLots() {
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("ALL");
-  const [sort, setSort] = useState<ActiveLotsSort>("ENDING_SOON");
   const { stateAuctioneerLot } = useAuctioneerLot();
-  console.log(stateAuctioneerLot);
-
-  const categories = useMemo(
-    () => [...new Set(activeLotsMock.map((lot) => lot.category))].sort(),
-    [],
-  );
+  const liveLots = stateAuctioneerLot?.liveLots ?? [];
 
   const filteredLots = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
 
-    const result = activeLotsMock.filter((lot) => {
-      const matchesSearch = [lot.title, lot.category, lot.id].some((value) =>
-        value.toLowerCase().includes(normalizedSearch),
+    return liveLots.filter((lot) => {
+      const categoryOrDepartment = lot.attributes?.culture || lot.attributes?.department || "";
+      
+      const matchesSearch = [
+        lot.title,
+        categoryOrDepartment,
+        lot.id,
+        lot.externalItemId
+      ].some((value) =>
+        String(value ?? "").toLowerCase().includes(normalizedSearch)
       );
 
-      const matchesCategory =
-        category === "ALL" || lot.category === category;
-
-      const isActive = new Date(lot.endsAt).getTime() > Date.now();
-
-      return matchesSearch && matchesCategory && isActive;
+      return matchesSearch;
     });
+  }, [liveLots, search]);
 
-    return [...result].sort((a, b) => {
-      if (sort === "MOST_BIDS") {
-        return b.totalBids - a.totalBids;
-      }
-
-      if (sort === "HIGHEST_BID") {
-        return b.currentBid - a.currentBid;
-      }
-
-      return (
-        new Date(a.endsAt).getTime() - new Date(b.endsAt).getTime()
-      );
-    });
-  }, [search, category, sort]);
+  const activeStatsLots = useMemo(() => {
+    return liveLots.filter(
+      (lot) => new Date(lot.endAt).getTime() > Date.now()
+    );
+  }, [liveLots]);
 
   return (
     <main className="min-h-screen bg-background px-4 py-6 text-text sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
         <ActiveLotsHeader />
 
-        <ActiveLotsStats lots={activeLotsMock.filter(
-          (lot) => new Date(lot.endsAt).getTime() > Date.now(),
-        )} />
+        <ActiveLotsStats lots={activeStatsLots} />
 
         <ActiveLotsFilters
           search={search}
-          category={category}
-          sort={sort}
-          categories={categories}
           onSearchChange={setSearch}
-          onCategoryChange={setCategory}
-          onSortChange={setSort}
         />
 
         <div className="flex flex-wrap items-center justify-between gap-3">

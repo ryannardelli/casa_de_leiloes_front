@@ -1,3 +1,5 @@
+import type { LotStatus } from "./LiveRoom";
+
 export interface AuctioneerLot {
   id: number;
   auctioneerId: number;
@@ -17,7 +19,7 @@ export interface AuctioneerLot {
   currentPrice: string;
   startAt: string;
   endAt: string;
-  status: "LIVE" | "SCHEDULED" | "ENDED" | "CANCELLED";
+  status: LotStatus;
   winnerId: number | null;
   finalPrice: string | null;
   settledAt: string | null;
