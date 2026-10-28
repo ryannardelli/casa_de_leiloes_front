@@ -1,4 +1,4 @@
-import { CheckCircle2, TrendingDown, MinusCircle } from "lucide-react";
+import { CheckCircle2, TrendingDown } from "lucide-react";
 import { useAuth } from "../../../../../../hooks/useAuth";
 
 export interface LiveUserStatusData {
@@ -23,19 +23,7 @@ export function LiveUserStatus({ currentUser }: LiveUserStatusProps) {
   }
 
   if (!hasBidded || highestBid === null || highestBid === undefined) {
-    return (
-      <div className="rounded-xl border border-gray-200 bg-gray-50 p-5">
-        <div className="flex items-center gap-3">
-          <MinusCircle className="text-gray-400" size={24} />
-          <div>
-            <p className="font-bold text-gray-700">Você ainda não deu lances</p>
-            <p className="text-sm text-gray-500">
-              Faça um lance para entrar na disputa.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   const formattedBid = highestBid.toLocaleString("pt-BR", {
