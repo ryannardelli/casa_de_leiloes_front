@@ -74,7 +74,7 @@ function AppRoutes() {
 
   const isAuth = state.isAuthenticated;
   const loading = state.loading;
-  const role: ProfileName | null = state.user?.profile?.name ?? null;
+  const role = (state.user?.profile?.name as ProfileName | undefined) ?? null;
 
   const element = useRoutes([
     ...publicRoutes,
