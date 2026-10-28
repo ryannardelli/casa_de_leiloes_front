@@ -18,6 +18,10 @@ type AuctioneerLotContextType = {
 
     loadLots: () => Promise<void>;
 
+    loadLiveLots: () => Promise<void>;
+
+    loadClosedLots: () => Promise<void>;
+
     createLot: (
         data: CreateAuctioneerLotPayload
     ) => Promise<AuctioneerLot>;
@@ -37,26 +41,26 @@ export const AuctioneerLotContext =
         dispatchAuctioneerLot: () => undefined,
 
         loadLots: async () => {
-            throw new Error(
-                "loadLots not implemented"
-            );
+            throw new Error("loadLots not implemented");
+        },
+
+        loadLiveLots: async () => {
+            throw new Error("loadLiveLots not implemented");
+        },
+
+        loadClosedLots: async () => {
+            throw new Error("loadClosedLots not implemented");
         },
 
         createLot: async () => {
-            throw new Error(
-                "createLot not implemented"
-            );
+            throw new Error("createLot not implemented");
         },
 
         updateLot: async () => {
-            throw new Error(
-                "updateLot not implemented"
-            );
+            throw new Error("updateLot not implemented");
         },
 
         cancelLot: async () => {
-            throw new Error(
-                "cancelLot not implemented"
-            );
+            throw new Error("cancelLot not implemented");
         },
     });

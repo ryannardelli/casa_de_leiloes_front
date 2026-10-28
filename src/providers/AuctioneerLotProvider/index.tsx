@@ -6,7 +6,10 @@ import {
 } from "react";
 
 import { AuctioneerLotContext } from "./AuctioneerLotContext";
-import { auctioneerLotReducer, initialStateAuctioneerLot } from "../../reducers/auctioneerLotReducer";
+import {
+    auctioneerLotReducer,
+    initialStateAuctioneerLot,
+} from "../../reducers/auctioneerLotReducer";
 import { auctioneerLotService } from "../../services/auctioneerLotService";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -40,15 +43,18 @@ export const AuctioneerLotProvider = ({
 
         try {
             const lots = await auctioneerLotService.getLots();
+
             dispatchAuctioneerLot({
                 type: "SET_LOTS",
                 payload: lots,
             });
-        } catch (error: any) {
-            console.error(error);
+        } catch (error: unknown) {
             dispatchAuctioneerLot({
                 type: "SET_ERROR_LOTS",
-                payload: error.message || "Erro ao carregar os lotes.",
+                payload:
+                    error instanceof Error
+                        ? error.message
+                        : "Erro ao carregar os lotes.",
             });
         } finally {
             dispatchAuctioneerLot({
@@ -58,31 +64,119 @@ export const AuctioneerLotProvider = ({
         }
     }, []);
 
+    const loadLiveLots = useCallback(async () => {
+        dispatchAuctioneerLot({
+            type: "SET_LOADING_LIVE_LOTS",
+            payload: true,
+        });
+
+        dispatchAuctioneerLot({
+            type: "SET_ERROR_LIVE_LOTS",
+            payload: null,
+        });
+
+        try {
+            const lots = await auctioneerLotService.getLots("LIVE");
+
+            dispatchAuctioneerLot({
+                type: "SET_LIVE_LOTS",
+                payload: lots,
+            });
+        } catch (error: unknown) {
+            dispatchAuctioneerLot({
+                type: "SET_ERROR_LIVE_LOTS",
+                payload:
+                    error instanceof Error
+                        ? error.message
+                        : "Erro ao carregar os lotes ao vivo.",
+            });
+        } finally {
+            dispatchAuctioneerLot({
+                type: "SET_LOADING_LIVE_LOTS",
+                payload: false,
+            });
+        }
+    }, []);
+
+    const loadClosedLots = useCallback(async () => {
+        dispatchAuctioneerLot({
+            type: "SET_LOADING_CLOSED_LOTS",
+            payload: true,
+        });
+
+        dispatchAuctioneerLot({
+            type: "SET_ERROR_CLOSED_LOTS",
+            payload: null,
+        });
+
+        try {
+            const lots = await auctioneerLotService.getLots("CLOSED");
+
+            dispatchAuctioneerLot({
+                type: "SET_CLOSED_LOTS",
+                payload: lots,
+            });
+        } catch (error: unknown) {
+            dispatchAuctioneerLot({
+                type: "SET_ERROR_CLOSED_LOTS",
+                payload:
+                    error instanceof Error
+                        ? error.message
+                        : "Erro ao carregar os lotes encerrados.",
+            });
+        } finally {
+            dispatchAuctioneerLot({
+                type: "SET_LOADING_CLOSED_LOTS",
+                payload: false,
+            });
+        }
+    }, []);
+
     const createLot = async (data: Record<string, any>) => {
         try {
             const newLot = await auctioneerLotService.createLot(data);
+
             dispatchAuctioneerLot({
                 type: "ADD_LOT",
                 payload: newLot,
             });
 
-            await loadLots();
+            await Promise.all([
+                loadLots(),
+                loadLiveLots(),
+                loadClosedLots(),
+            ]);
+
             return newLot;
-        } catch (error: any) {
+        } catch (error) {
             console.error(error);
             throw error;
         }
     };
 
-    const updateLot = async (id: string, data: Record<string, any>) => {
+    const updateLot = async (
+        id: string,
+        data: Record<string, any>
+    ) => {
         try {
-            const updatedLot = await auctioneerLotService.updateLot(id, data);
+            const updatedLot = await auctioneerLotService.updateLot(
+                id,
+                data
+            );
+
             dispatchAuctioneerLot({
                 type: "UPDATE_LOT",
                 payload: updatedLot,
             });
+
+            await Promise.all([
+                loadLots(),
+                loadLiveLots(),
+                loadClosedLots(),
+            ]);
+
             return updatedLot;
-        } catch (error: any) {
+        } catch (error) {
             console.error(error);
             throw error;
         }
@@ -91,21 +185,25 @@ export const AuctioneerLotProvider = ({
     const cancelLot = async (id: string) => {
         try {
             await auctioneerLotService.cancelLot(id);
-            dispatchAuctioneerLot({
-                type: "CANCEL_LOT",
-                payload: id,
-            });
-        } catch (error: any) {
+
+            await Promise.all([
+                loadLots(),
+                loadLiveLots(),
+                loadClosedLots(),
+            ]);
+        } catch (error) {
             console.error(error);
             throw error;
         }
     };
 
-   useEffect(() => {
-    if (state.user?.profile.name === "Leiloeiro") {
-        loadLots();
-    }
-}, [state.user, loadLots]);
+    useEffect(() => {
+        if (state.user?.profile.name === "Leiloeiro") {
+            loadLots();
+            loadLiveLots();
+            loadClosedLots();
+        }
+    }, [state.user, loadLots, loadLiveLots, loadClosedLots]);
 
     return (
         <AuctioneerLotContext.Provider
@@ -113,6 +211,8 @@ export const AuctioneerLotProvider = ({
                 stateAuctioneerLot,
                 dispatchAuctioneerLot,
                 loadLots,
+                loadLiveLots,
+                loadClosedLots,
                 createLot,
                 updateLot,
                 cancelLot,

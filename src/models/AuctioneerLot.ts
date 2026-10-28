@@ -17,7 +17,7 @@ export interface AuctioneerLot {
   currentPrice: string;
   startAt: string;
   endAt: string;
-  status: "LIVE" | "SCHEDULED" | "ENDED" | "CANCELED" | "CANCELLED";
+  status: "LIVE" | "SCHEDULED" | "ENDED" | "CANCELLED";
   winnerId: number | null;
   finalPrice: string | null;
   settledAt: string | null;
@@ -51,34 +51,30 @@ export interface UpdateAuctioneerLotPayload {
     reservePrice?: number;
 }
 
-export interface AuctioneerLotState {
+export type AuctioneerLotState = {
     lots: AuctioneerLot[];
+    liveLots: AuctioneerLot[];
+    closedLots: AuctioneerLot[];
+
     loadingLots: boolean;
+    loadingLiveLots: boolean;
+    loadingClosedLots: boolean;
+
     errorLots: string | null;
-}
+    errorLiveLots: string | null;
+    errorClosedLots: string | null;
+};
 
 export type AuctioneerLotAction =
-    | {
-          type: "SET_LOTS";
-          payload: AuctioneerLot[];
-      }
-    | {
-          type: "ADD_LOT";
-          payload: AuctioneerLot;
-      }
-    | {
-          type: "UPDATE_LOT";
-          payload: AuctioneerLot;
-      }
-    | {
-          type: "CANCEL_LOT";
-          payload: string;
-      }
-    | {
-          type: "SET_LOADING_LOTS";
-          payload: boolean;
-      }
-    | {
-          type: "SET_ERROR_LOTS";
-          payload: string | null;
-      };
+    | { type: "SET_LOTS"; payload: AuctioneerLot[] }
+    | { type: "ADD_LOT"; payload: AuctioneerLot }
+    | { type: "UPDATE_LOT"; payload: AuctioneerLot }
+    | { type: "CANCEL_LOT"; payload: string }
+    | { type: "SET_LOADING_LOTS"; payload: boolean }
+    | { type: "SET_ERROR_LOTS"; payload: string | null }
+    | { type: "SET_LIVE_LOTS"; payload: AuctioneerLot[] }
+    | { type: "SET_CLOSED_LOTS"; payload: AuctioneerLot[] }
+    | { type: "SET_LOADING_LIVE_LOTS"; payload: boolean }
+    | { type: "SET_LOADING_CLOSED_LOTS"; payload: boolean }
+    | { type: "SET_ERROR_LIVE_LOTS"; payload: string | null }
+    | { type: "SET_ERROR_CLOSED_LOTS"; payload: string | null };

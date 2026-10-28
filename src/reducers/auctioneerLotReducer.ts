@@ -1,23 +1,31 @@
-import type { AuctioneerLot } from "../models/AuctioneerLot";
+import type { AuctioneerLot, AuctioneerLotAction } from "../models/AuctioneerLot";
 
 export type AuctioneerLotState = {
     lots: AuctioneerLot[];
-    loadingLots: boolean;
-    errorLots: string | null;
-};
+    liveLots: AuctioneerLot[];
+    closedLots: AuctioneerLot[];
 
-export type AuctioneerLotAction =
-    | { type: "SET_LOTS"; payload: AuctioneerLot[] }
-    | { type: "ADD_LOT"; payload: AuctioneerLot }
-    | { type: "UPDATE_LOT"; payload: AuctioneerLot }
-    | { type: "CANCEL_LOT"; payload: string }
-    | { type: "SET_LOADING_LOTS"; payload: boolean }
-    | { type: "SET_ERROR_LOTS"; payload: string | null };
+    loadingLots: boolean;
+    loadingLiveLots: boolean;
+    loadingClosedLots: boolean;
+
+    errorLots: string | null;
+    errorLiveLots: string | null;
+    errorClosedLots: string | null;
+};
 
 export const initialStateAuctioneerLot: AuctioneerLotState = {
     lots: [],
+    liveLots: [],
+    closedLots: [],
+
     loadingLots: false,
+    loadingLiveLots: false,
+    loadingClosedLots: false,
+
     errorLots: null,
+    errorLiveLots: null,
+    errorClosedLots: null,
 };
 
 export function auctioneerLotReducer(
@@ -31,6 +39,18 @@ export function auctioneerLotReducer(
                 lots: action.payload,
             };
 
+        case "SET_LIVE_LOTS":
+            return {
+                ...state,
+                liveLots: action.payload,
+            };
+
+        case "SET_CLOSED_LOTS":
+            return {
+                ...state,
+                closedLots: action.payload,
+            };
+
         case "ADD_LOT":
             return {
                 ...state,
@@ -41,7 +61,9 @@ export function auctioneerLotReducer(
             return {
                 ...state,
                 lots: state.lots.map((lot) =>
-                    lot.id === action.payload.id ? action.payload : lot
+                    lot.id === action.payload.id
+                        ? action.payload
+                        : lot
                 ),
             };
 
@@ -49,7 +71,9 @@ export function auctioneerLotReducer(
             return {
                 ...state,
                 lots: state.lots.map((lot) =>
-                    lot.id === action.payload ? { ...lot, status: "CANCELLED" } : lot // Ajuste o status conforme sua API
+                    String(lot.id) === action.payload
+                        ? { ...lot, status: "CANCELLED" }
+                        : lot
                 ),
             };
 
@@ -59,10 +83,34 @@ export function auctioneerLotReducer(
                 loadingLots: action.payload,
             };
 
+        case "SET_LOADING_LIVE_LOTS":
+            return {
+                ...state,
+                loadingLiveLots: action.payload,
+            };
+
+        case "SET_LOADING_CLOSED_LOTS":
+            return {
+                ...state,
+                loadingClosedLots: action.payload,
+            };
+
         case "SET_ERROR_LOTS":
             return {
                 ...state,
-                errorLots: action.payload || null,
+                errorLots: action.payload,
+            };
+
+        case "SET_ERROR_LIVE_LOTS":
+            return {
+                ...state,
+                errorLiveLots: action.payload,
+            };
+
+        case "SET_ERROR_CLOSED_LOTS":
+            return {
+                ...state,
+                errorClosedLots: action.payload,
             };
 
         default:

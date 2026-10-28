@@ -8,30 +8,36 @@ import { userAuthentication } from "./auth";
 const API_URL = "/api/auctioneer/lots";
 
 export const auctioneerLotService = {
-    getLots: async (): Promise<AuctioneerLot[]> => {
-        const token = userAuthentication.getTokenFromStorage();
+    getLots: async (status?: string): Promise<AuctioneerLot[]> => {
+    const token = userAuthentication.getTokenFromStorage();
 
-        try {
-            const res = await fetch(`${API_URL}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+    try {
+        const url = status
+            ? `${API_URL}?status=${encodeURIComponent(status)}`
+            : API_URL;
 
-            if (!res.ok) {
-                const errorData = await res.json().catch(() => null);
-                throw new Error(errorData?.message ?? "Erro ao carregar os lotes do leiloeiro.");
-            }
+        const res = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
-            const lots: AuctioneerLot[] = await res.json();
-            return lots;
-        } catch (error) {
-            console.error(error);
-            throw error;
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => null);
+            throw new Error(
+                errorData?.message ?? "Erro ao carregar os lotes do leiloeiro."
+            );
         }
-    },
+
+        const lots: AuctioneerLot[] = await res.json();
+        return lots;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+},
 
     createLot: async (data: CreateAuctioneerLotPayload): Promise<AuctioneerLot> => {
         const token = userAuthentication.getTokenFromStorage();

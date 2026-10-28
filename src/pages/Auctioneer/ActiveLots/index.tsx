@@ -4,11 +4,14 @@ import { activeLotsMock } from "../../../mocks/auctioneer/active-lots.mock";
 import { ActiveLotsHeader } from "../../../components/domain/Auctioneer/activeLots/ActiveLotsHeader";
 import { ActiveLotsStats } from "../../../components/domain/Auctioneer/activeLots/ActiveLotsStats";
 import { ActiveLotsList } from "../../../components/domain/Auctioneer/activeLots/ActiveLotsList";
+import { useAuctioneerLot } from "../../../hooks/useAuctioneerLot";
 
 export function ActiveLots() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("ALL");
   const [sort, setSort] = useState<ActiveLotsSort>("ENDING_SOON");
+  const { stateAuctioneerLot } = useAuctioneerLot();
+  console.log(stateAuctioneerLot);
 
   const categories = useMemo(
     () => [...new Set(activeLotsMock.map((lot) => lot.category))].sort(),
