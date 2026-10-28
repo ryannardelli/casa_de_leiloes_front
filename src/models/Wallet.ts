@@ -1,3 +1,5 @@
+export type TransactionType = "DEPOSIT" | "COMMIT" | "RELEASE";
+
 export interface Wallet {
   total: number | string;
   committed: number | string;
@@ -6,7 +8,7 @@ export interface Wallet {
 
 export interface WalletTransaction {
   id: number;
-  type: string;
+  type: TransactionType;
   amount: number | string;
   createdAt: string;
 }

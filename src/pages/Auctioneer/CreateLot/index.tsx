@@ -1,16 +1,15 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { Artwork } from "../../../mocks/auctioneer/artworks.mock";
 import { usePublicCollection } from "../../../hooks/usePublicCollection";
 import {
   CreateLotForm,
-  type CreateLotData,
 } from "../../../components/domain/Auctioneer/createLots/CreateLotForm";
 import { CreateLotHeader } from "../../../components/domain/Auctioneer/createLots/CreateLotHeader";
 import { ArtworkSearch } from "../../../components/domain/Auctioneer/createLots/ArtworkSearch";
 import { SelectedArtwork } from "../../../components/domain/Auctioneer/createLots/SelectedArtwork";
 import { useAuctioneerLot } from "../../../hooks/useAuctioneerLot";
 import { showMessage } from "../../../components/ui/shared/Feedback/ShowMessage";
+import type { Artwork, CreateAuctioneerLotPayload } from "../../../models/AuctioneerLot";
 
 export function CreateLot() {
   const navigate = useNavigate();
@@ -35,14 +34,13 @@ export function CreateLot() {
         artwork.title,
         artwork.artist,
         artwork.department,
-        artwork.medium,
       ].some((value) =>
         String(value ?? "").toLowerCase().includes(normalizedSearch),
       ),
     );
   }, [search, featuredWorks]);
 
-  async function handleCreateLot(data: CreateLotData) {
+  async function handleCreateLot(data: CreateAuctioneerLotPayload) {
     try {
       const response = await createLot(data);
 
@@ -70,7 +68,7 @@ export function CreateLot() {
           artworks={filteredArtworks}
           search={search}
           selectedArtworkId={
-            selectedArtwork?.externalItemId ?? selectedArtwork?.id ?? null
+            selectedArtwork?.externalItemId ?? selectedArtwork?.externalItemId ?? null
           }
           onSearchChange={setSearch}
           onSelect={setSelectedArtwork}

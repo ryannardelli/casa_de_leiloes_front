@@ -60,47 +60,6 @@ async function handleAuthSubmit(data: AuthFormData) {
   }
 }
 
-
-  // async function handleAuthSubmit(data: AuthFormData) {
-  //   setError("");
-
-  //   showMessage.dismiss();
-
-  //   try {
-  //     if (data.mode === "login") {
-  //       const user = await login(data.email, data.password);
-
-  //        if (user.profile?.name === "Leiloeiro") {
-  //             navigate("/auctioneer/dashboard");
-  //         } else if (user.profile?.name === "Licitante") {
-  //             navigate("/bidder/dashboard");
-  //         } else {
-  //             navigate("/");
-  //         }
-
-  //     } else {
-  //       if (!data.name) {
-  //         throw new Error("O nome é obrigatório para o cadastro.");
-  //       }
-
-  //       await registerUser(
-  //         data.name,
-  //         data.email,
-  //         data.password
-  //       );
-  //     }
-
-  //     setIsAuthOpen(false);
-  //   } catch (err: unknown) {
-  //      if (err instanceof Error) {
-  //       console.error(err);
-  //       showMessage.error(
-  //         err.message || "Algo deu errado. Tente novamente mais tarde."
-  //       );
-  //     }
-  //   }
-  // }
-
   return (
     <>
       <button

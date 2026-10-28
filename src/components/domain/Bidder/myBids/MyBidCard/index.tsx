@@ -30,7 +30,7 @@ export function MyBidCard({ bid }: MyBidCardProps) {
     <article className="overflow-hidden rounded-2xl border border-border bg-surface transition-colors hover:border-accent/50">
       <div className="flex flex-col sm:flex-row">
         <img
-          src={lot.imageUrl}
+          src={lot.imageUrl ?? undefined}
           alt={lot.title}
           loading="lazy"
           className="h-48 w-full object-cover sm:h-auto sm:w-44"

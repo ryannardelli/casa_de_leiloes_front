@@ -4,7 +4,7 @@ import { SidebarHeader } from "./SidebarHeader";
 import { SidebarItem } from "./SidebarItem";
 import { useAuth } from "../../../hooks/useAuth";
 import { useProfile } from "../../../hooks/useProfile";
-import { AVAILABLE_ICONS } from "../../../constants/availableIcons";
+import { AVAILABLE_ICONS, type IconName } from "../../../constants/availableIcons";
 import { ThemeToggle } from "../../ui/shared/Button/ThemeToggle";
 import { MenuSkeletonList } from "../../ui/shared/Loading/menu/MenuSkeletonList";
 
@@ -17,10 +17,14 @@ export function Sidebar() {
     state.loading || stateProfile.loadingMenusByLoggedUser;
 
   const profileName = state.user?.profile?.name;
+  const role =
+  profileName === "Licitante" || profileName === "Leiloeiro"
+    ? profileName
+    : "Licitante";
 
   return (
     <aside className="fixed left-0 top-0 flex h-screen w-64 flex-col border-r border-border bg-surface">
-      <SidebarHeader role={profileName ?? ""} />
+      <SidebarHeader role={role ?? ""} />
 
       <nav className="flex-1 overflow-y-auto px-4 py-6">
         <div className="space-y-1">
@@ -33,7 +37,9 @@ export function Sidebar() {
           ) : (
             menus.map((menu) => {
               const Icon =
-                AVAILABLE_ICONS[menu.icon as IconName] || HelpCircle;
+                menu.icon in AVAILABLE_ICONS
+                  ? AVAILABLE_ICONS[menu.icon as IconName]
+                  : HelpCircle;
 
               return (
                 <SidebarItem

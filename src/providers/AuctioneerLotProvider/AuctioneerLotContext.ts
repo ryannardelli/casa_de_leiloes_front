@@ -5,6 +5,7 @@ import type {
     AuctioneerLotAction,
     AuctioneerLotState,
     CreateAuctioneerLotPayload,
+    CreateAuctioneerLotResponse,
     UpdateAuctioneerLotPayload,
 } from "../../models/AuctioneerLot";
 import { initialStateAuctioneerLot } from "../../reducers/auctioneerLotReducer";
@@ -24,7 +25,7 @@ type AuctioneerLotContextType = {
 
     createLot: (
         data: CreateAuctioneerLotPayload
-    ) => Promise<AuctioneerLot>;
+    ) => Promise<CreateAuctioneerLotResponse>;
 
     updateLot: (
         id: string,

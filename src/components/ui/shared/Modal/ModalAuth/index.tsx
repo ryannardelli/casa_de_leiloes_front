@@ -9,6 +9,7 @@ interface ModalAuthProps {
   onClose: () => void;
   onSubmit: (data: AuthFormData) => void;
   isLoading?: boolean;
+  error: string;
 }
 
 export interface AuthFormData {

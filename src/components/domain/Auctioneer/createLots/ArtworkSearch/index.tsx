@@ -1,10 +1,10 @@
 import { Search, Image as ImageIcon } from "lucide-react";
 import { usePublicCollection } from "../../../../../hooks/usePublicCollection";
 import { ArtworkCardSkeleton } from "../../../../ui/shared/Loading/ArtworkCardSkeleton";
-import type { Artwork } from "../../../../../models/AuctioneerLot";
+import type { FeaturedWorks } from "../../../../../models/PublicCollection";
 
 interface ArtworkSearchProps {
-  artworks?: Artwork[];
+  artworks?: FeaturedWorks[];
   search: string;
   selectedArtworkId: string | number | null;
   onSearchChange: (value: string) => void;

@@ -26,7 +26,6 @@ function formatDate(value: string) {
 }
 
 export function ResultCard({ result }: ResultCardProps) {
-  console.log(result);
   const wasSold =
     result.status === "CLOSED" || (result.winnerId !== null && result.winnerId !== undefined);
 

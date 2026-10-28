@@ -1,6 +1,7 @@
 import type { 
     AuctioneerLot, 
     CreateAuctioneerLotPayload, 
+    CreateAuctioneerLotResponse, 
     UpdateAuctioneerLotPayload 
 } from "../models/AuctioneerLot";
 import { userAuthentication } from "./auth";
@@ -39,7 +40,7 @@ export const auctioneerLotService = {
     }
 },
 
-    createLot: async (data: CreateAuctioneerLotPayload): Promise<AuctioneerLot> => {
+    createLot: async (data: CreateAuctioneerLotPayload): Promise<CreateAuctioneerLotResponse> => {
         const token = userAuthentication.getTokenFromStorage();
 
         try {
@@ -57,8 +58,7 @@ export const auctioneerLotService = {
                 throw new Error(errorData?.message ?? "Erro ao criar o lote.");
             }
 
-            const lot: AuctioneerLot = await res.json();
-            return lot;
+            return res.json();
         } catch (error) {
             console.error(error);
             throw error;

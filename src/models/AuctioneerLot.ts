@@ -39,11 +39,15 @@ export interface Artwork {
 }
 
 export interface CreateAuctioneerLotPayload {
-    itemId: string;
-    startingBid: number;
-    reservePrice?: number;
-    title?: string;
-    description?: string;
+  externalItemId: string;
+  startingPrice: number;
+  minimumIncrement: number;
+  startAt: string;
+  endAt: string;
+}
+
+export interface CreateAuctioneerLotResponse extends AuctioneerLot {
+  message: string;
 }
 
 export interface UpdateAuctioneerLotPayload {

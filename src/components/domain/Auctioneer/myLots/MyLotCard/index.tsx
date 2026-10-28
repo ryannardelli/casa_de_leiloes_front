@@ -177,7 +177,7 @@ export function MyLotCard({ lot, onCancel }: MyLotCardProps) {
               </button>
             )}
 
-            {lot.status === "ENDED" && (
+            {lot.status === "CLOSED" && (
               <Link
                 to={`/dashboard/results?lotId=${encodeURIComponent(String(lot.id))}`}
                 className="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-accent transition-colors hover:bg-muted"
