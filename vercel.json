@@ -5,6 +5,10 @@
       "destination": "https://casa-de-leiloes-back.onrender.com/:path*"
     },
     {
+      "source": "/public/:path*",
+      "destination": "https://casa-de-leiloes-back.onrender.com/public/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
