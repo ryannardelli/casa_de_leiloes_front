@@ -1,15 +1,19 @@
-import type { Profile } from "./Profile";
-
 export type UserRole = "user" | "admin";
 
-export type User = {
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: UserRole;
+  createdAt: string;
+  profile: {
     id: number;
     name: string;
-    email: string;
-    role: UserRole;
-    profile: Profile;
-    createdAt: string;
-};
+    description: string;
+    system: boolean;
+    active: boolean;
+  };
+}
 
 export type UserState = {
     users: User[];

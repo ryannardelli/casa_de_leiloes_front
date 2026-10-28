@@ -1,12 +1,11 @@
-import type { Profile } from "./Profile";
 import type { User } from "./User";
 
 export type AuthState = {
-    user: User | null;
-    token: string | null;
-    isAuthenticated: boolean;
-    loading: boolean;
-    error: string | null;
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
 };
 
 export type AuthAction =
@@ -15,9 +14,12 @@ export type AuthAction =
   | { type: "RESTORE_SESSION"; payload: { user: User | null; token: string } }
   | { type: "LOGOUT" }
   | { type: "SET_LOADING"; payload: boolean }
-  | { type: "SET_ERROR"; payload: string }
+  | { type: "SET_ERROR"; payload: string };
 
-export type AuthReducerType = (state: AuthState, action: AuthAction) => AuthState;
+export type AuthReducerType = (
+  state: AuthState,
+  action: AuthAction
+) => AuthState;
 
 export type State = {
   user: User | null;
@@ -27,30 +29,13 @@ export type State = {
 };
 
 export interface LoginResponse {
-    token: string;
-    user: {
-      id: number;
-      name: string;
-      email: string;
-      role: string;
-    };
+  token: string;
+  user: User;
 }
 
-export type AuthUser = {
-  id: number;
-  name: string;
-  email: string;
-  role: "user" | "admin";
-  createdAt: string;
-  profile: Profile;
-};
+export type AuthUser = User;
 
 export interface RegisterResponse {
   token: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-    role: string;
-  };
+  user: User;
 }
