@@ -1,6 +1,6 @@
 import type { PublicLot } from "../models/PublicLot";
 
-const API_URL = "/public-lots/lots";
+const API_URL = "/api/public-lots/lots";
 
 
 export const publicLotsService = {

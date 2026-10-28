@@ -4,7 +4,7 @@ import type {
     FeaturedWorks,
 } from "../models/PublicCollection";
 
-const API_URL = "/public/collections";
+const API_URL = "/api/public/collections";
 
 type ApiError = {
     message?: string;
