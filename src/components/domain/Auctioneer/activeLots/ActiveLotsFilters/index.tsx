@@ -11,8 +11,6 @@ export function ActiveLotsFilters({
 }: ActiveLotsFiltersProps) {
   return (
     <section className="space-y-4">
-      <h2 className="font-semibold">Gerenciar lotes ativos</h2>
-
       <div className="grid grid-cols-1 gap-3">
         <div className="flex items-center gap-3 rounded-xl border border-border bg-surface px-4">
           <Search size={19} className="shrink-0 text-text-muted" />

@@ -42,16 +42,6 @@ export function MyLotsList({
 
   return (
     <section className="space-y-5">
-      <div>
-        <h2 className="text-lg font-semibold">
-          Seus lotes cadastrados
-        </h2>
-
-        <p className="mt-1 text-sm text-text-muted">
-          Consulte os detalhes e acompanhe a situação de cada lote.
-        </p>
-      </div>
-
       <MyLotsFilters
         search={search}
         onSearchChange={setSearch}

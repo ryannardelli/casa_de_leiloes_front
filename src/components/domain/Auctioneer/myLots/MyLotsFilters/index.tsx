@@ -29,7 +29,7 @@ export function MyLotsFilters({
           type="search"
           value={search}
           onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="Buscar lote por nome ou categoria..."
+          placeholder="Buscar lote..."
           aria-label="Buscar lote"
           className="w-full bg-transparent py-3 text-sm text-text outline-none placeholder:text-text-muted"
         />
