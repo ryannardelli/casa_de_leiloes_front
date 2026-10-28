@@ -11,7 +11,7 @@ import { MyLotCardSkeleton } from "../../../../ui/shared/Loading/MyLotCardSkelet
 interface MyLotsListProps {
   lots: AuctioneerLot[];
   loading: boolean;
-  onCancel: (lotId: number | string) => void;
+  onCancel: (lotId: string) => Promise<void>;
 }
 
 export function MyLotsList({

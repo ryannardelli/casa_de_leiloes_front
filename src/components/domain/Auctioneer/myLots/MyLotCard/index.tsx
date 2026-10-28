@@ -13,7 +13,7 @@ import { RouterLinks } from "../../../../ui/shared/Links/RouterLinks";
 
 interface MyLotCardProps {
   lot: AuctioneerLot;
-  onCancel: (lotId: number) => void;
+  onCancel: (lotId: string) => Promise<void>;
 }
 
 const statusConfig = {
@@ -68,7 +68,7 @@ export function MyLotCard({ lot, onCancel }: MyLotCardProps) {
     );
 
     if (confirmed) {
-      onCancel(lot.id);
+      onCancel(lot.externalItemId);
     }
   }
 
