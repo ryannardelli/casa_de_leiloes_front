@@ -25,7 +25,7 @@ export function ArtworkSearch({
   return (
     <section className="rounded-2xl border border-border bg-surface p-5 sm:p-6">
       <div>
-        <h2 className="text-lg font-semibold">1. Escolha uma obra</h2>
+        <h2 className="text-lg font-semibold">Escolha uma obra</h2>
 
         <p className="mt-1 text-sm leading-6 text-text-muted">
           Pesquise no acervo de referência para selecionar a obra do seu lote.
@@ -39,7 +39,7 @@ export function ArtworkSearch({
           type="search"
           value={search}
           onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="Buscar por título, artista ou categoria..."
+          placeholder="Buscar obras..."
           aria-label="Buscar obras"
           className="w-full bg-transparent py-3.5 text-sm text-text outline-none placeholder:text-text-muted"
         />

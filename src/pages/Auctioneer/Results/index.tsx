@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { ResultsFilters, type ResultsStatusFilter } from "../../../components/domain/Auctioneer/results/ResultsFilters";
 import { resultsMock } from "../../../mocks/auctioneer/results.mock";
 import { ResultsHeader } from "../../../components/domain/Auctioneer/results/ResultsHeader";
-import { ResultsStats } from "../../../components/domain/Auctioneer/results/ResultsStats";
 import { ResultsList } from "../../../components/domain/Auctioneer/results/ResultsList";
 
 export function Results() {
@@ -40,8 +39,6 @@ export function Results() {
       <div className="mx-auto max-w-7xl space-y-8">
         <ResultsHeader />
 
-        <ResultsStats results={resultsMock} />
-
         <ResultsFilters
           search={search}
           status={status}
@@ -60,13 +57,6 @@ export function Results() {
               Consulte os lotes que já tiveram seu período de disputa encerrado.
             </p>
           </div>
-
-          <p className="text-sm text-text-muted">
-            {filteredResults.length}{" "}
-            {filteredResults.length === 1
-              ? "resultado encontrado"
-              : "resultados encontrados"}
-          </p>
         </div>
 
         <ResultsList results={filteredResults} />
