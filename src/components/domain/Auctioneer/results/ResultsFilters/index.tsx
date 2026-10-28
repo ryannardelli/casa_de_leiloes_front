@@ -1,7 +1,4 @@
 import { Search } from "lucide-react";
-import type { AuctionResultStatus } from "../../../../../mocks/auctioneer/results.mock";
-
-export type ResultsStatusFilter = "ALL" | AuctionResultStatus;
 
 interface ResultsFiltersProps {
   search: string;

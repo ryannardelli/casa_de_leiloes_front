@@ -1,38 +1,36 @@
 import { useMemo, useState } from "react";
-import { ResultsFilters, type ResultsStatusFilter } from "../../../components/domain/Auctioneer/results/ResultsFilters";
-import { resultsMock } from "../../../mocks/auctioneer/results.mock";
+import { ResultsFilters } from "../../../components/domain/Auctioneer/results/ResultsFilters";
 import { ResultsHeader } from "../../../components/domain/Auctioneer/results/ResultsHeader";
 import { ResultsList } from "../../../components/domain/Auctioneer/results/ResultsList";
+import { useAuctioneerLot } from "../../../hooks/useAuctioneerLot";
 
 export function Results() {
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<ResultsStatusFilter>("ALL");
-  const [category, setCategory] = useState("ALL");
-
-  const categories = useMemo(
-    () => [...new Set(resultsMock.map((result) => result.category))].sort(),
-    [],
-  );
+  const { stateAuctioneerLot } = useAuctioneerLot();
+  const closedLots = stateAuctioneerLot?.closedLots ?? [];
+  const loading = stateAuctioneerLot.loadingClosedLots;
 
   const filteredResults = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
 
-    return resultsMock.filter((result) => {
+    return closedLots.filter((lot) => {
+      const categoryLabel =
+        lot.attributes?.culture || lot.attributes?.department || "";
+      const artist = lot.attributes?.artist || "";
+
       const matchesSearch = [
-        result.title,
-        result.category,
-        result.id,
-      ].some((value) => value.toLowerCase().includes(normalizedSearch));
+        lot.title,
+        lot.id,
+        lot.externalItemId,
+        categoryLabel,
+        artist,
+      ].some((value) =>
+        String(value ?? "").toLowerCase().includes(normalizedSearch)
+      );
 
-      const matchesStatus =
-        status === "ALL" || result.status === status;
-
-      const matchesCategory =
-        category === "ALL" || result.category === category;
-
-      return matchesSearch && matchesStatus && matchesCategory;
+      return matchesSearch;
     });
-  }, [search, status, category]);
+  }, [closedLots, search]);
 
   return (
     <main className="min-h-screen bg-background px-4 py-6 text-text sm:px-6 lg:px-8">
@@ -41,12 +39,7 @@ export function Results() {
 
         <ResultsFilters
           search={search}
-          status={status}
-          category={category}
-          categories={categories}
           onSearchChange={setSearch}
-          onStatusChange={setStatus}
-          onCategoryChange={setCategory}
         />
 
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -59,7 +52,7 @@ export function Results() {
           </div>
         </div>
 
-        <ResultsList results={filteredResults} />
+        <ResultsList results={filteredResults} isLoading={loading} />
       </div>
     </main>
   );
