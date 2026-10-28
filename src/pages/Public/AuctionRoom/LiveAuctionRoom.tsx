@@ -32,6 +32,9 @@ export function LiveAuctionRoom() {
   const [liveLot, setLiveLot] = useState<LiveLot | null>(null);
   const [bidsList, setBidsList] = useState<any[]>([]);
 
+  const isLotLive = liveLot?.status === "LIVE";
+  console.log(isLotLive);
+
   useEffect(() => {
     if (!id || !Number.isInteger(Number(id)) || Number(id) <= 0) {
       return;
@@ -150,59 +153,66 @@ export function LiveAuctionRoom() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 p-6">
-      <BackButton />
+      <div className="mx-auto max-w-7xl space-y-6 p-6">
+        <BackButton />
 
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Sala do lote</h1>
-        <p className="mt-2 text-gray-500">
-          Acompanhe os detalhes deste lote e os lances disponíveis.
-        </p>
-      </div>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Sala do lote
+          </h1>
 
-      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
-          <LiveLotDetails
-            lot={{
-              ...lot,
-              currentPrice: liveLot.currentPrice,
-              endAt: liveLot.endAt,
-              status: liveLot.status,
-            }}
-          />
-
-          <LiveBidHistory
-            bids={bidsList.map((bid) => ({
-              id: bid.id,
-              bidderName: `Licitante #${bid.bidderId}`,
-              amount: Number(bid.amount),
-              createdAt: bid.createdAt,
-              isCurrentUser: Number(bid.bidderId) === currentUserId,
-            }))}
-          />
+          <p className="mt-2 text-gray-500">
+            Acompanhe os detalhes deste lote e os lances disponíveis.
+          </p>
         </div>
 
-        <div className="space-y-6">
-          <LiveCountdown endsAt={liveLot.endAt} />
-
-          <LiveUserStatus
-            currentUser={{
-              isWinning: isWinning,
-              position: isWinning ? 1 : userHighestBid ? 2 : null,
-              highestBid: userHighestBid,
-              hasBidded: currentUserBids.length > 0,
-            }}
-          />
-
-          {isAuth && profileName === "Licitante" && (
-            <LiveBidPanel
-              lotId={liveLot.id}
-              currentBid={liveLot.currentPrice}
-              minimumIncrement={liveLot.minimumIncrement}
+        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
+          <div className="space-y-6 lg:col-span-2">
+            <LiveLotDetails
+              lot={{
+                ...lot,
+                currentPrice: liveLot.currentPrice,
+                endAt: liveLot.endAt,
+                status: liveLot.status,
+              }}
             />
-          )}
-        </div>
+
+            <LiveBidHistory
+              bids={bidsList.map((bid) => ({
+                id: bid.id,
+                bidderName: `Licitante #${bid.bidderId}`,
+                amount: Number(bid.amount),
+                createdAt: bid.createdAt,
+                isCurrentUser: Number(bid.bidderId) === currentUserId,
+              }))}
+            />
+          </div>
+
+          <div className="space-y-6">
+          {liveLot.status === "LIVE" && (
+            <>
+              <LiveCountdown endsAt={liveLot.endAt} />
+
+              <LiveUserStatus
+                currentUser={{
+                  isWinning,
+                  position: isWinning ? 1 : userHighestBid ? 2 : null,
+                  highestBid: userHighestBid,
+                  hasBidded: currentUserBids.length > 0,
+                }}
+              />
+
+              {isAuth && profileName === "Licitante" && (
+                <LiveBidPanel
+                  lotId={liveLot.id}
+                  currentBid={liveLot.currentPrice}
+                  minimumIncrement={liveLot.minimumIncrement}
+                />
+              )}
+            </>
+        )}
       </div>
     </div>
-  );
+  </div>
+);
 }
