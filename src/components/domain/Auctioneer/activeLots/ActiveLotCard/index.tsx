@@ -51,10 +51,6 @@ export function ActiveLotCard({ lot }: ActiveLotCardProps) {
 
       <div className="space-y-4 p-5">
         <div>
-          <p className="text-xs text-text-muted">
-            Código: {lot.id} {lot.externalItemId && `(Ext: #${lot.externalItemId})`}
-          </p>
-
           <h3 className="mt-1 font-semibold leading-6">{lot.title}</h3>
           
           {lot.attributes?.artist && (

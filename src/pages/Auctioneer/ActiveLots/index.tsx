@@ -9,6 +9,7 @@ export function ActiveLots() {
   const [search, setSearch] = useState("");
   const { stateAuctioneerLot } = useAuctioneerLot();
   const liveLots = stateAuctioneerLot?.liveLots ?? [];
+  const loadingLiveLots = stateAuctioneerLot.loadingLiveLots;
 
   const filteredLots = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -55,16 +56,9 @@ export function ActiveLots() {
               Acompanhe os resultados parciais de cada disputa.
             </p>
           </div>
-
-          <p className="text-sm text-text-muted">
-            {filteredLots.length}{" "}
-            {filteredLots.length === 1
-              ? "lote encontrado"
-              : "lotes encontrados"}
-          </p>
         </div>
 
-        <ActiveLotsList lots={filteredLots} />
+        <ActiveLotsList lots={filteredLots} isLoading={loadingLiveLots}/>
       </div>
     </main>
   );
