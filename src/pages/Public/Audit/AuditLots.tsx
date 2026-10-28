@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom";
 import { usePublicLot } from "../../../hooks/usePublicLot";
 import { LoadingAuth } from "../../../components/ui/shared/Loading/general/LoadingAuth";
-import { AuditSummary } from "../../../components/domain/Home/Audit/Details/AuditSummary";
 import { AuditLotDetails } from "../../../components/domain/Home/Audit/Details/AuditLotDetails";
 import { AuditBidHistory } from "../../../components/domain/Home/Audit/Details/AuditBidHistory";
 import { AuditIntegrity } from "../../../components/domain/Home/Audit/Details/AuditIntegrity";
 import { BackButton } from "../../../components/ui/shared/Button/BackButton/index.tsx";
+import { useEffect } from "react";
+import { useBids } from "../../../hooks/useBids.ts";
 
 export function AuditLots() {
   const { id } = useParams<{ id: string }>();
@@ -13,10 +14,22 @@ export function AuditLots() {
   const { statePublicLots } = usePublicLot();
   const { lots, loadingLots } = statePublicLots;
 
-  const lot = lots.find((item) => item.id === Number(id));
-  console.log(lot);
+   const {
+    loadBidsById,
+    stateBids,
+  } = useBids();
 
-  if (loadingLots) {
+  const { selectedLot, loadingLotById } = stateBids;
+
+  useEffect(() => {
+    if (id) {
+      loadBidsById(Number(id)).catch(() => {});
+    }
+  }, [id, loadBidsById]);
+
+  const lot = lots.find((item) => item.id === Number(id));
+
+  if (loadingLots || loadingLotById) {
     return <LoadingAuth />;
   }
 
@@ -44,7 +57,7 @@ export function AuditLots() {
         </h1>
 
         <p className="mt-2 text-gray-500">
-          Lote: #{id}
+          Lote: {id}
         </p>
 
         <p className="mt-2 text-gray-500">
@@ -52,16 +65,14 @@ export function AuditLots() {
         </p>
       </div>
 
-      <AuditSummary />
-
       <AuditLotDetails
         lot={lot}
         totalBids={lots.length}
       />
 
-      <AuditBidHistory bids={lots} />
+      <AuditBidHistory bids={selectedLot ?? []} />
 
-      <AuditIntegrity />
+      <AuditIntegrity bids={selectedLot ?? []} />
     </div>
   );
 }

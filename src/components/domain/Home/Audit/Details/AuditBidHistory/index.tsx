@@ -1,14 +1,9 @@
 import { Gavel } from "lucide-react";
+import type { Bid } from "../../../../../../models/Bid";
 
 interface AuditBidHistoryProps {
-  bids: {
-    id: number;
-    bidderId: number;
-    amount: string | number;
-    createdAt: string;
-  }[];
+  bids: Bid[];
 }
-
 const formatCurrency = (value: string | number) =>
   Number(value).toLocaleString("pt-BR", {
     style: "currency",
@@ -36,7 +31,7 @@ export function AuditBidHistory({ bids }: AuditBidHistoryProps) {
             Histórico de lances
           </h2>
           <p className="mt-1 text-sm text-text-muted">
-            Registros retornados pela API, ordenados cronologicamente.
+            Histórico de lances do lote, com registros e hashes para verificação de integridade.
           </p>
         </div>
 
@@ -57,49 +52,70 @@ export function AuditBidHistory({ bids }: AuditBidHistoryProps) {
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[600px] text-left text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs uppercase tracking-wide text-text-muted">
-                <th className="px-3 py-3 font-semibold">Participante</th>
-                <th className="px-3 py-3 font-semibold">Valor</th>
-                <th className="px-3 py-3 font-semibold">Data e hora</th>
-                <th className="px-3 py-3 font-semibold">Registro</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {orderedBids.map((bid) => (
-                <tr
-                  key={bid.id}
-                  className="border-b border-border last:border-0"
-                >
-                  <td className="px-3 py-4">
-                    <p className="font-semibold text-text">
-                      Licitante #{bid.bidderId}
-                    </p>
-                    <p className="mt-1 text-xs text-text-muted">
-                      Lance #{bid.id}
-                    </p>
-                  </td>
-
-                  <td className="px-3 py-4 font-semibold text-text">
-                    {formatCurrency(bid.amount)}
-                  </td>
-
-                  <td className="whitespace-nowrap px-3 py-4 text-text-muted">
-                    {formatDate(bid.createdAt)}
-                  </td>
-
-                  <td className="px-3 py-4">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-text-muted">
-                      <Gavel size={14} />
-                      Registrado
-                    </span>
-                  </td>
+          <table className="w-full min-w-[900px] text-left text-sm">
+              <thead>
+                <tr className="border-b border-border text-xs uppercase tracking-wide text-text-muted">
+                  <th className="px-3 py-3 font-semibold">Participante</th>
+                  <th className="px-3 py-3 font-semibold">Valor</th>
+                  <th className="px-3 py-3 font-semibold">Data e hora</th>
+                  <th className="px-3 py-3 font-semibold">Hash do registro</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <thead>
+                <tr className="border-b border-border text-xs uppercase tracking-wide text-text-muted">
+                  <th className="px-3 py-3 font-semibold">Participante</th>
+                  <th className="px-3 py-3 font-semibold">Valor do lance</th>
+                  <th className="px-3 py-3 font-semibold">Data</th>
+                  <th className="px-3 py-3 font-semibold">Hash do registro (SHA-256)</th>
+                  <th className="px-3 py-3 font-semibold">Hash anterior</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {orderedBids.map((bid) => (
+                  <tr
+                    key={bid.id}
+                    className="border-b border-border last:border-0"
+                  >
+                    <td className="px-3 py-4">
+                      <p className="font-semibold text-text">
+                        Licitante #{bid.bidderId}
+                      </p>
+                      <p className="mt-1 text-xs text-text-muted">
+                        Lance #{bid.id}
+                      </p>
+                    </td>
+
+                    <td className="px-3 py-4 font-semibold text-text">
+                      {formatCurrency(bid.amount)}
+                    </td>
+
+                    <td className="whitespace-nowrap px-3 py-4 text-text-muted">
+                      {formatDate(bid.createdAt)}
+                    </td>
+
+                    <td className="min-w-[280px] px-3 py-4">
+                      <code
+                        title={bid.hash}
+                        className="block break-all font-mono text-xs text-text"
+                      >
+                        {bid.hash}
+                      </code>
+                    </td>
+
+                    <td className="min-w-[280px] px-3 py-4">
+                      <code
+                        title={bid.previousHash ?? "Não disponível"}
+                        className="block break-all font-mono text-xs text-text-muted"
+                      >
+                        {bid.previousHash ?? "Não disponível"}
+                      </code>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
         </div>
       )}
     </section>
