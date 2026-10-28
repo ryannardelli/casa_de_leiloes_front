@@ -12,6 +12,7 @@ import {
 } from "../../reducers/auctioneerLotReducer";
 import { auctioneerLotService } from "../../services/auctioneerLotService";
 import { useAuth } from "../../hooks/useAuth";
+import type { CreateAuctioneerLotPayload } from "../../models/AuctioneerLot";
 
 type AuctioneerLotProviderProps = {
     children: ReactNode;
@@ -132,7 +133,7 @@ export const AuctioneerLotProvider = ({
         }
     }, []);
 
-    const createLot = async (data: Record<string, any>) => {
+    const createLot = async (data: CreateAuctioneerLotPayload) => {
         try {
             const newLot = await auctioneerLotService.createLot(data);
 

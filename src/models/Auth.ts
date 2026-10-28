@@ -45,7 +45,12 @@ export type AuthUser = {
   profile: Profile;
 };
 
-export type RegisterResponse = {
+export interface RegisterResponse {
   token: string;
-  user: AuthUser;
-};
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    role: string;
+  };
+}

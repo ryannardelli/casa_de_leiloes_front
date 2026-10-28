@@ -1,5 +1,4 @@
 import { ShieldCheck } from "lucide-react";
-import { activeLotsMock } from "../../../mocks/auctioneer/active-lots.mock";
 import { AuditLotList } from "../../../components/domain/Home/Audit/List/AuditLotList";
 
 export function Audit() {    
@@ -24,7 +23,7 @@ export function Audit() {
         </p>
       </div>
 
-      <AuditLotList lots={activeLotsMock} />
+      <AuditLotList />
     </div>
   );
 }

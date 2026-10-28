@@ -1,6 +1,5 @@
 import { Radio } from "lucide-react";
 import { LiveLotList } from "../../../components/domain/Home/LiveRoom/List/LiveLotList";
-import { activeLotsMock } from "../../../mocks/auctioneer/active-lots.mock";
 
 export function AuctionRoom() {
   return (
@@ -23,7 +22,7 @@ export function AuctionRoom() {
         </p>
       </div>
 
-      <LiveLotList lots={activeLotsMock} />
+      <LiveLotList />
     </div>
   );
 }

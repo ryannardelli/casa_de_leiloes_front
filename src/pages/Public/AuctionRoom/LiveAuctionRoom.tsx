@@ -32,9 +32,6 @@ export function LiveAuctionRoom() {
   const [liveLot, setLiveLot] = useState<LiveLot | null>(null);
   const [bidsList, setBidsList] = useState<any[]>([]);
 
-  const isLotLive = liveLot?.status === "LIVE";
-  console.log(isLotLive);
-
   useEffect(() => {
     if (!id || !Number.isInteger(Number(id)) || Number(id) <= 0) {
       return;
@@ -74,7 +71,7 @@ export function LiveAuctionRoom() {
     }
 
     function handleBidUpdated(data: BidUpdatedEvent) {
-      if (Number(data.bid?.lotId ?? data.lot?.id) !== lotId) return;
+      if (Number(data.bid?.lotId) !== lotId) return;
 
       setLiveLot((current) => {
         if (!current) return current;

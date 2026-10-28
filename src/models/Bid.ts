@@ -1,4 +1,5 @@
 import type { LiveRoom } from "./LiveRoom";
+import type { PublicLotStatus } from "./PublicLot";
 
 export interface Bid {
   id: number;
@@ -30,7 +31,7 @@ export interface LiveLot {
   startingPrice: number;
   minimumIncrement: number;
   endAt: string;
-  status: string;
+  status: PublicLotStatus;
 }
 
 export interface LiveBid {
@@ -51,7 +52,7 @@ export interface BidUpdatedEvent {
     status: string;
   };
   lot: {
-    status: string;
+    status: PublicLotStatus;
     currentPrice: number;
     minimumNextBid: number;
     endAt: string;
