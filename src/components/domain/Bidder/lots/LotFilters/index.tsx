@@ -25,14 +25,8 @@ export function LotFilters({
   return (
     <>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <h2 className="text-xl font-semibold">Explore os lotes</h2>
-          <p className="mt-1 text-sm text-text-muted">
-            Encontre os itens disponíveis na vitrine.
-          </p>
-        </div>
 
-        <div className="relative w-full lg:max-w-sm">
+        <div className="relative w-full">
           <Search
             size={18}
             className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
@@ -40,7 +34,7 @@ export function LotFilters({
           <input
             value={search}
             onChange={(event) => onSearchChange(event.target.value)}
-            placeholder="Buscar por lote ou categoria..."
+            placeholder="Buscar por nome do lote..."
             className="w-full rounded-xl border border-border bg-surface py-3 pl-10 pr-4 text-sm text-text outline-none placeholder:text-text-muted focus:border-accent"
           />
         </div>

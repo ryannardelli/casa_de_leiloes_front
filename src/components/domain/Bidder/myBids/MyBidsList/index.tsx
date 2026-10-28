@@ -24,15 +24,6 @@ export function MyBidsList() {
 
   return (
     <section className="space-y-5">
-      <div>
-        <h2 className="text-lg font-semibold">
-          Histórico de participação
-        </h2>
-        <p className="mt-1 text-sm text-text-muted">
-          Consulte os leilões em andamento e os resultados anteriores.
-        </p>
-      </div>
-
       <MyBidsFilters
         search={search}
         onSearchChange={setSearch}

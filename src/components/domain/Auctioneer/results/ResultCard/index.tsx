@@ -92,7 +92,7 @@ export function ResultCard({ result }: ResultCardProps) {
 
         <div className="border-t border-border pt-4">
           <Link
-            to={`/auctions/${result.id}/audit`}
+            to={`/audit/${result.id}/lots`}
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold transition hover:bg-muted"
           >
             Consultar auditoria

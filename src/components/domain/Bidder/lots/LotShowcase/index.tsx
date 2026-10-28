@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import { LotFilters, type TabId } from "../LotFilters";
-import { LotStats } from "../LotStats";
 import { LotCard } from "../LotCard";
 import { usePublicLot } from "../../../../../hooks/usePublicLot";
 import { LotCardSkeleton } from "../../../../ui/shared/Loading/bidder/lot/LotCardSkeleton";
 import { LotSearchEmptyState } from "../LotSearchEmptyState";
+import { Store } from "lucide-react";
 
 export function LotShowcase() {
   const [activeTab, setActiveTab] = useState<TabId>("all");
@@ -33,19 +33,22 @@ export function LotShowcase() {
   return (
     <main className="min-h-screen bg-background p-4 text-text sm:p-6 lg:p-8">
       <div className="mx-auto max-w-7xl space-y-8">
-        <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              Vitrine de lotes
-            </h1>
+        <header>
+          <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-muted text-accent">
+                  <Store size={22} />
+                </div>
 
-            <p className="mt-2 max-w-2xl text-sm text-text-muted sm:text-base">
-              Acompanhe os lotes em disputa e confira os próximos leilões
-            </p>
-          </div>
+                <div>
+                  <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                    Meus lances
+                  </h1>
+              </div>
+        </div>
+         <p className="mt-2 max-w-2xl text-sm text-text-muted sm:text-base">
+                    Acompanhe os lotes em disputa e confira os próximos leilões
+         </p>
         </header>
-
-        <LotStats lots={lots} />
 
         <section className="space-y-5">
           <LotFilters

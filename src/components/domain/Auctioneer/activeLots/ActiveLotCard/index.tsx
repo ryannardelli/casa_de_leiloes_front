@@ -1,6 +1,7 @@
-import { ArrowUpRight, Clock3, Gavel, History } from "lucide-react";
+import { ArrowUpRight, Clock3, History, Radio } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { AuctioneerLot } from "../../../../../models/AuctioneerLot";
+import { getStatusConfig } from "../../../../../utils/statusConfig";
 
 interface ActiveLotCardProps {
   lot: AuctioneerLot;
@@ -28,6 +29,8 @@ function formatDate(value: string) {
 export function ActiveLotCard({ lot }: ActiveLotCardProps) {
   const categoryLabel =
     lot.attributes?.culture || lot.attributes?.department || "Arte";
+
+  const currentStatus = getStatusConfig(lot.status);
 
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-surface transition hover:shadow-md">
@@ -73,8 +76,8 @@ export function ActiveLotCard({ lot }: ActiveLotCardProps) {
             <p className="text-xs text-text-muted">Status</p>
 
             <p className="mt-1 flex items-center gap-2 text-base font-bold">
-              <Gavel size={17} className="text-text-muted" />
-              {lot.status}
+              <Radio size={17} className="text-text-muted" />
+              {currentStatus.label}
             </p>
           </div>
         </div>
@@ -116,7 +119,7 @@ export function ActiveLotCard({ lot }: ActiveLotCardProps) {
           </Link>
 
           <Link
-            to={`/auctions/${lot.id}/audit`}
+            to={`/audit/${lot.id}/lots`}
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-3 py-3 text-sm font-semibold transition hover:bg-muted"
           >
             <History size={16} />

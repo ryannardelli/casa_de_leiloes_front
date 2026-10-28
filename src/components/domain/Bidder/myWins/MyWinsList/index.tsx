@@ -47,16 +47,6 @@ export function MyWinsList() {
 
   return (
     <section className="space-y-5">
-      <div>
-        <h2 className="text-lg font-semibold">
-          Histórico de arremates
-        </h2>
-
-        <p className="mt-1 text-sm text-text-muted">
-          Consulte os lotes conquistados e acesse seus comprovantes.
-        </p>
-      </div>
-
       <MyWinsFilters
         search={search}
         onSearchChange={setSearch}

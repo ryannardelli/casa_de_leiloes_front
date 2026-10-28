@@ -1,27 +1,11 @@
 import { Clock3, Gavel, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Bid } from "../../../../../models/Bid";
+import { statusConfig } from "../../../../../utils/statusConfig";
 
 interface MyBidCardProps {
   bid: Bid;
 }
-
-const statusConfig = {
-  LIVE: {
-    label: "Leilão em andamento",
-    className: "bg-emerald-500/10 text-emerald-500",
-  },
-
-  CLOSED: {
-    label: "Leilão encerrado",
-    className: "bg-muted text-text-muted",
-  },
-
-  CANCELLED: {
-    label: "Leilão cancelado",
-    className: "bg-red-500/10 text-red-500",
-  },
-} as const;
 
 const formatCurrency = (value: number) =>
   value.toLocaleString("pt-BR", {
