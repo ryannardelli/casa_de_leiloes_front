@@ -23,7 +23,7 @@ type BidsContextType = {
   loadMyBids: () => Promise<Bid[]>;
   loadLiveRoom: (lotId: number) => Promise<LiveRoom>;
 
-  loadBidsById: (lotId: number) => Promise<Bid>;
+  loadBidsById: (lotId: number) => Promise<Bid[]>;
 };
 
 export const BidsContext = createContext<BidsContextType>({
@@ -46,7 +46,7 @@ export const BidsContext = createContext<BidsContextType>({
     throw new Error("loadLiveRoom not implemented");
   },
 
-  loadBidsById: async (): Promise<Bid> => {
+  loadBidsById: async (): Promise<Bid[]> => {
     throw new Error("loadLotById not implemented");
   },
 });

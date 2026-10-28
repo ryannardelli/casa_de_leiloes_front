@@ -76,7 +76,7 @@ export type BidsAction =
   | { type: "SET_ERROR_MY_BIDS"; payload: string | null }
   | { type: "SET_ERROR_LIVE_ROOM"; payload: string | null }
 
-  | { type: "SET_SELECTED_LOT"; payload: Bid | null }
+  | { type: "SET_SELECTED_LOT"; payload: Bid[] | null }
   | { type: "SET_LOADING_LOT_BY_ID"; payload: boolean }
   | { type: "SET_ERROR_LOT_BY_ID"; payload: string | null };
 

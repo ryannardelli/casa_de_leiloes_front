@@ -89,7 +89,7 @@ export const BidsProvider = ({
   );
 
   const loadBidsById = useCallback(
-    async (lotId: number): Promise<Bid> => {
+    async (lotId: number): Promise<Bid[]> => {
       try {
         dispatchBids({
           type: "SET_LOADING_LOT_BY_ID",

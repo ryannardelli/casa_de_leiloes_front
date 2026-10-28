@@ -56,15 +56,6 @@ export function AuditBidHistory({ bids }: AuditBidHistoryProps) {
               <thead>
                 <tr className="border-b border-border text-xs uppercase tracking-wide text-text-muted">
                   <th className="px-3 py-3 font-semibold">Participante</th>
-                  <th className="px-3 py-3 font-semibold">Valor</th>
-                  <th className="px-3 py-3 font-semibold">Data e hora</th>
-                  <th className="px-3 py-3 font-semibold">Hash do registro</th>
-                </tr>
-              </thead>
-
-              <thead>
-                <tr className="border-b border-border text-xs uppercase tracking-wide text-text-muted">
-                  <th className="px-3 py-3 font-semibold">Participante</th>
                   <th className="px-3 py-3 font-semibold">Valor do lance</th>
                   <th className="px-3 py-3 font-semibold">Data</th>
                   <th className="px-3 py-3 font-semibold">Hash do registro (SHA-256)</th>

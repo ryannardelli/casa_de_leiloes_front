@@ -13,7 +13,11 @@ export const initialStateProfile: ProfileState = {
 
 export function profileReducer(state: ProfileState, action: ProfileAction) {
   switch (action.type) {
-
+    case "SET_PROFILE":
+    return {
+        ...state,
+        profiles: action.payload,
+    };
     case "SET_LOADING_PROFILES":
       return { ...state, loadingProfiles: action.payload };
 

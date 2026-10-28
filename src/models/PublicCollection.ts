@@ -35,7 +35,7 @@ export interface PublicCollectionState {
 export type PublicCollectionAction =
     | {
           type: "SET_FEATURED_WORKS";
-          payload: MuseumWork[];
+          payload: FeaturedWorks[];
       }
     | {
           type: "SET_FEATURED_JAPANESE";

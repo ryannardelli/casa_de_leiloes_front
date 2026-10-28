@@ -59,14 +59,14 @@ export async function getLotBids(
 
 export async function getLotById(
   id: number
-): Promise<Bid> {
+): Promise<Bid[]> {
   const response = await fetch(`${API_URL}/lots/${id}`);
 
   if (!response.ok) {
     throw new Error("Erro ao buscar os detalhes do lote.");
   }
 
-  return response.json() as Promise<Bid>;
+  return response.json() as Promise<Bid[]>;
 }
 
 export async function getMyBids(): Promise<Bid[]> {
