@@ -322,6 +322,15 @@ A aplicação possui deploy público para permitir a avaliação dos fluxos do s
 
 Para utilizar as funcionalidades que dependem do back-end, a API deve estar acessível e as variáveis de ambiente devem apontar para o ambiente correspondente.
 
+## Limitações e Comportamentos Identificados
+
+Esta seção documenta as principais limitações identificadas durante o desenvolvimento e os testes do front-end.
+
+- **Dados mockados:** grande parte da aplicação está integrada ao back-end. No entanto, devido ao tempo limitado de desenvolvimento e à priorização das funcionalidades essenciais, algumas telas e componentes ainda podem utilizar dados fictícios.
+- **Integração e funcionalidades:** devido ao tempo limitado de desenvolvimento e à quantidade de testes realizados, podem existir inconsistências pontuais nas regras de negócio, na integração com o back-end e nos comportamentos visuais e funcionais da aplicação.
+- **Comunicação em tempo real:** a atualização de lances, preços e status dos lotes depende da conexão com o Socket.IO, podendo ser afetada por instabilidades na comunicação.
+- **Responsividade e experiência do usuário:** algumas telas podem necessitar de ajustes visuais ou de usabilidade em determinados tamanhos de tela e resoluções.
+
 ## Considerações Finais
 
 Este projeto foi desenvolvido como parte do teste técnico Elite Dev na Verzel, com o objetivo de construir uma plataforma de leilões online que reúna gerenciamento de lotes, disputas em tempo real, controle de carteira, consulta de arremates e auditoria pública.
