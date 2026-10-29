@@ -317,7 +317,7 @@ O comando `preview` permite verificar localmente a versão compilada da aplicaç
 
 A aplicação possui deploy público para permitir a avaliação dos fluxos do sistema sem necessidade de executar o projeto localmente.
 
-**Aplicação em produção:** [https://arremata-app.vercel.app/]
+**Aplicação em produção:** https://arremata-app.vercel.app
 
 Para utilizar as funcionalidades que dependem do back-end, a API deve estar acessível e as variáveis de ambiente devem apontar para o ambiente correspondente.
 
