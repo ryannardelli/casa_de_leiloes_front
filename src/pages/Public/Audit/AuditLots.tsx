@@ -57,17 +57,13 @@ export function AuditLots() {
         </h1>
 
         <p className="mt-2 text-gray-500">
-          Lote: {id}
-        </p>
-
-        <p className="mt-2 text-gray-500">
           Consulte o histórico completo de lances e as evidências de integridade.
         </p>
       </div>
 
       <AuditLotDetails
         lot={lot}
-        totalBids={lots.length}
+        totalBids={selectedLot?.length}
       />
 
       <AuditBidHistory bids={selectedLot ?? []} />

@@ -1,4 +1,5 @@
 import { CalendarDays, Gavel, Package } from "lucide-react";
+import { getStatusConfig } from "../../../../../../utils/statusConfig";
 
 interface AuditLotDetailsProps {
   lot: {
@@ -50,7 +51,9 @@ const formatDate = (value?: string | null) => {
 export function AuditLotDetails({
   lot,
   totalBids = 0,
-}: AuditLotDetailsProps) {
+}: AuditLotDetailsProps) {;
+  const currentStatus = getStatusConfig(lot.status);
+
   return (
     <section className="rounded-2xl border border-border bg-surface p-6">
       <div className="mb-5 flex items-center gap-3">
@@ -75,7 +78,7 @@ export function AuditLotDetails({
           </h3>
 
           <p className="mt-1 text-sm text-text-muted">
-            {lot.attributes?.department ?? "Departamento não informado"}
+            {lot.attributes?.department ?? ""}
           </p>
 
           <p className="mt-3 text-sm leading-6 text-text-muted">
@@ -147,7 +150,9 @@ export function AuditLotDetails({
             <p>Cultura: {lot.attributes?.culture ?? "Não informada"}</p>
             <p>Data da obra: {lot.attributes?.objectDate ?? "Não informada"}</p>
             <p>Início do leilão: {formatDate(lot.startAt)}</p>
-            <p>Status: {lot.status}</p>
+            <p>
+              Status: <span>{currentStatus.label}</span>
+            </p>
           </div>
         </div>
       </div>
