@@ -40,6 +40,7 @@ A estrutura abaixo representa uma visão geral das principais pastas do front-en
 ```bash
 src/
 ├── assets/             # Imagens, ícones e recursos estáticos
+│   ├── img/            # Imagens e favicon
 ├── components/         # Componentes da interface
 │   ├── domain/         # Componentes específicos do domínio de leilões
 │   ├── feedback/       # Notificações, loaders, alertas e mensagens
