@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { ArrowUpRight, MoreHorizontal } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 interface StatCardProps {
   label: string;
@@ -20,10 +20,6 @@ export function StatCard({
         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-muted text-accent">
           <Icon size={21} />
         </div>
-
-        <span className="rounded-lg bg-muted p-2 text-text-muted">
-          <MoreHorizontal size={18} />
-        </span>
       </div>
 
       <p className="mt-5 text-sm font-medium text-text-muted">

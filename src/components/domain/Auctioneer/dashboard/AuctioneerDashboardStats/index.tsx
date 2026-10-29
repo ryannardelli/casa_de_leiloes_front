@@ -1,51 +1,83 @@
 import {
-  Package,
-  Gavel,
-  Trophy,
-  Wallet,
+Package,
+Gavel,
+Trophy,
+Wallet,
 } from "lucide-react";
-import { auctioneerDashboardStats } from "../../../../../mocks/auctioneer/auctioneer-dashboard.mock";
-
-const icons = {
-  lots: Package,
-  bids: Gavel,
-  finished: Trophy,
-  revenue: Wallet,
-};
+import { useDashboard } from "../../../../../hooks/useDashboard";
+import { StatCard } from "../../../Bidder/dashboard/StatCard";
+import { DashboardStatsSkeleton } from "../../../../ui/shared/Loading/auctioneer/dashboard/DashboardStatsSkeleton";
 
 export function AuctioneerDashboardStats() {
-  return (
-    <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      {auctioneerDashboardStats.map((stat) => {
-        const Icon = icons[stat.icon];
+const { stateDashboard } = useDashboard();
 
-        return (
-          <article
-            key={stat.label}
-            className="rounded-2xl border border-border bg-surface p-5"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-sm text-text-muted">
-                  {stat.label}
-                </p>
+const {
+    auctioneerStats,
+    loadingAuctioneerStats,
+    errorAuctioneerStats,
+} = stateDashboard;
 
-                <p className="mt-2 text-2xl font-bold tracking-tight">
-                  {stat.value}
-                </p>
-              </div>
+const icons = {
+    lots: Package,
+    bids: Gavel,
+    finished: Trophy,
+    revenue: Wallet,
+};
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-muted text-accent">
-                <Icon size={21} />
-              </div>
-            </div>
+const dashboardStats = auctioneerStats
+    ? [
+          {
+              label: "Lotes ativos",
+              value: String(auctioneerStats.activeLots),
+              change: "Lotes disponíveis ou em andamento",
+              icon: icons.lots,
+          },
+          {
+              label: "Lances recebidos",
+              value: String(auctioneerStats.totalBids),
+              change: "Lances recebidos nos seus lotes",
+              icon: icons.bids,
+          },
+          {
+              label: "Leilões encerrados",
+              value: String(auctioneerStats.closedAuctions),
+              change: "Lotes finalizados",
+              icon: icons.finished,
+          },
+          {
+              label: "Total arrecadado",
+              value: auctioneerStats.totalAmountRaised.toLocaleString(
+                  "pt-BR",
+                  {
+                      style: "currency",
+                      currency: "BRL",
+                  }
+              ),
+              change: "Valor total dos arremates",
+              icon: icons.revenue,
+          },
+      ]
+    : [];
 
-            <p className="mt-3 text-xs text-text-muted">
-              {stat.description}
+return (
+    <section
+        aria-label="Indicadores do leiloeiro"
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
+    >
+        {loadingAuctioneerStats ? (
+            Array.from({ length: 4 }).map((_, index) => (
+                <DashboardStatsSkeleton key={index} />
+            ))
+        ) : errorAuctioneerStats ? (
+            <p className="col-span-full text-sm text-red-500">
+                {errorAuctioneerStats}
             </p>
-          </article>
-        );
-      })}
+        ) : (
+            dashboardStats.map((stat) => (
+                <StatCard key={stat.label} {...stat} />
+            ))
+        )}
     </section>
-  );
+);
+
 }
