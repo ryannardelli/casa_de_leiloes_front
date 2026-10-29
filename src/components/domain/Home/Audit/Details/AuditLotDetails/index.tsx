@@ -93,12 +93,14 @@ export function AuditLotDetails({
               </p>
             </div>
 
-            <div>
-              <p className="text-sm text-text-muted">Valor final</p>
-              <p className="mt-1 font-semibold text-text">
-                {formatCurrency(lot.finalPrice)}
-              </p>
-            </div>
+            {lot.finalPrice != null && (
+              <div>
+                <p className="text-sm text-text-muted">Valor final</p>
+                <p className="mt-1 font-semibold text-text">
+                  {formatCurrency(lot.finalPrice)}
+                </p>
+              </div>
+            )}
 
             <div>
               <p className="text-sm text-text-muted">Valor atual registrado</p>
@@ -135,14 +137,14 @@ export function AuditLotDetails({
             </div>
           </div>
 
-          <div className="mt-5 rounded-lg bg-muted p-3">
-            <p className="text-sm text-text-muted">Arrematante</p>
-            <p className="mt-1 font-semibold text-text">
-              {lot.winnerId !== null
-                ? `Licitante #${lot.winnerId}`
-                : "Não registrado"}
-            </p>
-          </div>
+          {lot.winnerId != null && (
+            <div className="mt-5 rounded-lg bg-muted p-3">
+              <p className="text-sm text-text-muted">Arrematante</p>
+              <p className="mt-1 font-semibold text-text">
+                Licitante #{lot.winnerId}
+              </p>
+            </div>
+          )}
 
           <div className="mt-4 space-y-1 text-sm text-text-muted">
             <p>Artista: {lot.attributes?.artist ?? "Não informado"}</p>

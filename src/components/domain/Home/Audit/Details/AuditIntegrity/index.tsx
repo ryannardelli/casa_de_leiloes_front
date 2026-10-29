@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
+  Check,
   Copy,
   Fingerprint,
   ShieldAlert,
@@ -26,6 +27,8 @@ export function AuditIntegrity({ bids }: AuditIntegrityProps) {
       return "Não disponível";
     }
 
+    console.log(bids);
+
     return new Date(value).toLocaleString("pt-BR", {
       dateStyle: "short",
       timeStyle: "medium",
@@ -38,9 +41,19 @@ export function AuditIntegrity({ bids }: AuditIntegrityProps) {
       currency: "BRL",
     }).format(value);
 
-  const copyHash = (hash: string) => {
-    void navigator.clipboard.writeText(hash);
-  };
+    const [copiedHash, setCopiedHash] = useState<string | null>(null);
+    const copyHash = async (hash: string) => {
+      try {
+        await navigator.clipboard.writeText(hash);
+        setCopiedHash(hash);
+
+        setTimeout(() => {
+          setCopiedHash(null);
+        }, 2000);
+      } catch {
+        setCopiedHash(null);
+      }
+    };
 
   const orderedBids = useMemo(
     () =>
@@ -189,11 +202,15 @@ export function AuditIntegrity({ bids }: AuditIntegrityProps) {
                             <button
                               type="button"
                               onClick={() => copyHash(bid.previousHash!)}
-                              title="Copiar hash anterior"
-                              aria-label="Copiar hash anterior"
+                              title={copiedHash === bid.previousHash ? "Copiado!" : "Copiar hash anterior"}
+                              aria-label={copiedHash === bid.previousHash ? "Hash anterior copiado" : "Copiar hash anterior"}
                               className="shrink-0 rounded-lg p-2 text-text-muted transition hover:bg-muted hover:text-accent cursor-pointer"
                             >
-                              <Copy size={16} />
+                              {copiedHash === bid.previousHash ? (
+                                <Check size={16} className="text-emerald-600" />
+                              ) : (
+                                <Copy size={16} />
+                              )}
                             </button>
                           )}
                         </div>
@@ -219,12 +236,25 @@ export function AuditIntegrity({ bids }: AuditIntegrityProps) {
                             <button
                               type="button"
                               onClick={() => copyHash(bid.hash!)}
-                              title="Copiar hash do registro"
-                              aria-label="Copiar hash do registro"
+                              title={copiedHash === bid.hash ? "Copiado!" : "Copiar hash do registro"}
+                              aria-label={copiedHash === bid.hash ? "Hash do registro copiado" : "Copiar hash do registro"}
                               className="shrink-0 rounded-lg p-2 text-text-muted transition hover:bg-muted hover:text-accent cursor-pointer"
                             >
-                              <Copy size={16} />
+                              {copiedHash === bid.hash ? (
+                                <Check size={16} className="text-emerald-600" />
+                              ) : (
+                                <Copy size={16} />
+                              )}
                             </button>
+                            // <button
+                            //   type="button"
+                            //   onClick={() => copyHash(bid.hash!)}
+                            //   title="Copiar hash do registro"
+                            //   aria-label="Copiar hash do registro"
+                            //   className="shrink-0 rounded-lg p-2 text-text-muted transition hover:bg-muted hover:text-accent cursor-pointer"
+                            // >
+                            //   <Copy size={16} />
+                            // </button>
                           )}
                         </div>
 
