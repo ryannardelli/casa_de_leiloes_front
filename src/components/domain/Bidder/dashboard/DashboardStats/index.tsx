@@ -1,7 +1,10 @@
+import { useDashboard } from "../../../../../hooks/useDashboard";
 import { dashboardStats } from "../../../../../mocks/bidder/dashboard.mock";
 import { StatCard } from "../StatCard";
 
 export function DashboardStats() {
+  const { stateDashboard } = useDashboard();
+  console.log(stateDashboard);
   return (
     <section
       aria-label="Indicadores do negócio"

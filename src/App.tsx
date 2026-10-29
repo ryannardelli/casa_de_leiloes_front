@@ -3,6 +3,7 @@ import { AuctioneerLotProvider } from "./providers/AuctioneerLotProvider";
 import { AuthProvider } from "./providers/AuthProvider";
 import { AwardsProvider } from "./providers/AwardsProvider";
 import { BidsProvider } from "./providers/BidsProvider";
+import { DashboardProvider } from "./providers/DashboardProvider";
 import { ProfileProvider } from "./providers/ProfileProvider";
 import { PublicCollectionProvider } from "./providers/PublicCollectionProvider";
 import { PublicLotsProvider } from "./providers/PublicLotProvider";
@@ -16,6 +17,7 @@ function App() {
       <UserProvider>
         <ProfileProvider>
           <PublicLotsProvider>
+            <DashboardProvider>
           <PublicCollectionProvider>
             <AuctioneerLotProvider>
               <AwardsProvider>
@@ -29,6 +31,7 @@ function App() {
               </AwardsProvider>
             </AuctioneerLotProvider>
           </PublicCollectionProvider>
+          </DashboardProvider>
           </PublicLotsProvider>
         </ProfileProvider>
       </UserProvider>
