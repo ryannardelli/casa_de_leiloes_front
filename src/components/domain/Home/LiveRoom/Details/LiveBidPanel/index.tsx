@@ -7,16 +7,21 @@ interface LiveBidPanelProps {
   lotId: number;
   currentBid: number;
   minimumIncrement: number;
+  startingPrice: number;
 }
 
 export function LiveBidPanel({
   lotId,
   currentBid,
   minimumIncrement,
+  startingPrice,
 }: LiveBidPanelProps) {
   const { stateBids, createBid } = useBids();
 
-  const minimumBid = currentBid + minimumIncrement;
+  const minimumBid =
+  currentBid > 0
+    ? currentBid + minimumIncrement
+    : startingPrice;
 
   const [amount, setAmount] = useState(String(minimumBid));
   const [submitting, setSubmitting] = useState(false);
@@ -27,16 +32,6 @@ export function LiveBidPanel({
 
   async function handleBid() {
     const bidAmount = Number(amount);
-
-    if (!Number.isFinite(bidAmount) || bidAmount < minimumBid) {
-      showMessage.error(
-        `O lance mínimo permitido é ${minimumBid.toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        })}.`,
-      );
-      return;
-    }
 
     showMessage.dismiss();
 

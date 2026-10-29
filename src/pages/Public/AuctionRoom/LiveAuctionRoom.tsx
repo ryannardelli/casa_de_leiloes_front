@@ -204,6 +204,7 @@ export function LiveAuctionRoom() {
                   lotId={liveLot.id}
                   currentBid={liveLot.currentPrice}
                   minimumIncrement={liveLot.minimumIncrement}
+                  startingPrice={liveLot.startingPrice}
                 />
               )}
             </>
