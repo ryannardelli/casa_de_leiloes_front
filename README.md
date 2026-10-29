@@ -1,6 +1,6 @@
-# Casa de Leilões Arremata - Front-End
+# Casa de Leilões Online Arremata - Front-End
 
-Aplicação web desenvolvida para uma Casa de Leilões, permitindo que leiloeiros gerenciem lotes e que licitantes acompanhem disputas em tempo real, realizem lances e gerenciem seus saldos. O sistema também oferece consulta pública ao histórico de lances e verificação da integridade das informações dos leilões.
+Aplicação web desenvolvida para uma Casa de Leilões Online, permitindo que leiloeiros gerenciem lotes e que licitantes acompanhem disputas em tempo real, realizem lances e gerenciem seus saldos. O sistema também oferece consulta pública ao histórico de lances e verificação da integridade das informações dos leilões.
 
 O projeto foi desenvolvido como parte do teste técnico **Elite Dev na Verzel**, com foco em organização do código, experiência do usuário, atualização de dados em tempo real e integração com uma API de back-end.
 
