@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
-import type { LotStatus } from "../../../../../mocks/bidder/lots-mock";
+import type { BidStatusFilter } from "../../myBids/MyBidsFilters";
 
-export type TabId = "all" | LotStatus;
+export type TabId = "ALL" | BidStatusFilter;
 
 interface LotFiltersProps {
   activeTab: TabId;
@@ -11,9 +11,10 @@ interface LotFiltersProps {
 }
 
 const tabs: { id: TabId; label: string }[] = [
-  { id: "all", label: "Todos" },
-  { id: "live", label: "Ao vivo" },
-  { id: "scheduled", label: "Agendados" },
+  { id: "ALL", label: "Todos" },
+  { id: "LIVE", label: "Ao vivo" },
+  { id: "SCHEDULED", label: "Agendados" },
+  { id: "CLOSED", label: "Encerrados" },
 ];
 
 export function LotFilters({

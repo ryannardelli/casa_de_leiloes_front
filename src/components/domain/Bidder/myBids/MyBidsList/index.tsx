@@ -1,37 +1,55 @@
 import { useMemo, useState } from "react";
 import { Gavel } from "lucide-react";
 
-import { MyBidsFilters } from "../MyBidsFilters";
+import { MyBidsFilters, type BidStatusFilter } from "../MyBidsFilters";
 import { MyBidCard } from "../MyBidCard";
 import { useBids } from "../../../../../hooks/useBids";
 import { MyBidCardSkeleton } from "../../../../ui/shared/Loading/bidder/my-bids/MyBidCardSkeleton";
 
 export function MyBidsList() {
   const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<BidStatusFilter>("ALL");
+
   const { stateBids } = useBids();
   const myBids = stateBids.myBids;
   const loading = stateBids.loadingMyBids;
 
-  const filteredBids = useMemo(() => {
-    return myBids.filter((bid) => {
-      const title = bid.lot?.title ?? "";
+  
+const filteredBids = useMemo(() => {
+  return myBids.filter((bid) => {
+    const title = bid.lot?.title ?? "";
+    const lotStatus = bid.lot?.status?.toUpperCase().trim();
 
-      return title
-        .toLowerCase()
-        .includes(search.trim().toLowerCase());
-    });
-  }, [myBids, search]);
+    const matchesSearch = title
+      .toLowerCase()
+      .includes(search.trim().toLowerCase());
+
+    const matchesStatus =
+      status === "ALL" || lotStatus === status;
+
+    return matchesSearch && matchesStatus;
+  });
+}, [myBids, search, status]);
+
+console.log(
+  myBids.map((bid) => ({
+    title: bid.lot?.title,
+    status: bid.lot?.status,
+  }))
+);
 
   return (
     <section className="space-y-5">
       <MyBidsFilters
         search={search}
+        status={status}
         onSearchChange={setSearch}
+        onStatusChange={setStatus}
       />
 
-     {loading ? (
+      {loading ? (
         <div className="space-y-4">
-          {Array.from({ length: myBids.length }).map((_, index) => (
+          {Array.from({ length: 4 }).map((_, index) => (
             <MyBidCardSkeleton key={index} />
           ))}
         </div>
