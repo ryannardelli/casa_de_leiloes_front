@@ -1,5 +1,5 @@
 import { Gavel } from "lucide-react";
-import type { LiveBid } from "../../../../../../mocks/home/live-room.mock";
+import type { LiveBid } from "../../../../../../models/Bid";
 
 interface LiveBidHistoryProps {
   bids: LiveBid[];

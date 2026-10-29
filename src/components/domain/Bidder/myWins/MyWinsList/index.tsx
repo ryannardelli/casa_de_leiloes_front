@@ -5,7 +5,7 @@ import { MyWinsFilters } from "../MyWinsFilters";
 import { MyWinCard } from "../MyWinCard";
 
 import { useAwards } from "../../../../../hooks/useAwards";
-import { myWins } from "../../../../../mocks/bidder/myWins.mock";
+
 import { MyWinCardSkeleton } from "../../../../ui/shared/Loading/bidder/my-wins/MyWinCardSkeleton";
 
 export function MyWinsList() {
@@ -54,7 +54,7 @@ export function MyWinsList() {
 
       {loadingMyAwards ? (
        <div className="space-y-5" aria-label="Carregando arremates" aria-busy="true">
-        {Array.from({ length: myWins.length }).map((_, index) => (
+        {Array.from({ length: myAwards.length }).map((_, index) => (
           <MyWinCardSkeleton key={index} />
         ))}
       </div>

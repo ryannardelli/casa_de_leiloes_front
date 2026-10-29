@@ -31,13 +31,6 @@ const filteredBids = useMemo(() => {
   });
 }, [myBids, search, status]);
 
-console.log(
-  myBids.map((bid) => ({
-    title: bid.lot?.title,
-    status: bid.lot?.status,
-  }))
-);
-
   return (
     <section className="space-y-5">
       <MyBidsFilters

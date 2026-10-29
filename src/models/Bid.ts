@@ -101,3 +101,11 @@ export type BidsState = {
   errorMyBids: string | null;
   errorLiveRoom: string | null;
 };
+
+export interface LiveBid {
+  id: number;
+  bidderName: string;
+  amount: number;
+  createdAt: string;
+  isCurrentUser: boolean;
+}
