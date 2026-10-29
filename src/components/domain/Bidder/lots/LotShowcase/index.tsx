@@ -18,8 +18,8 @@ export function LotShowcase() {
       if (lot.status === "CANCELLED") return false;
 
       const matchesTab =
-        activeTab === "ALL" ||
-        lot.status.toLowerCase() === activeTab;
+          activeTab === "ALL" ||
+          lot.status?.toUpperCase().trim() === activeTab;
 
       const matchesSearch =
         `${lot.title} ${lot.attributes?.department ?? ""}`
