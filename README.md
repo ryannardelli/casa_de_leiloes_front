@@ -336,3 +336,15 @@ Esta seção documenta as principais limitações identificadas durante o desenv
 Este projeto foi desenvolvido como parte do teste técnico Elite Dev na Verzel, com o objetivo de construir uma plataforma de leilões online que reúna gerenciamento de lotes, disputas em tempo real, controle de carteira, consulta de arremates e auditoria pública.
 
 A organização do front-end busca favorecer a manutenção do código, a reutilização de componentes, a segurança dos fluxos de acesso e a integração com os serviços responsáveis pelas regras de negócio do sistema.
+
+## Credenciais de Acesso para Avaliação
+
+A aplicação possui usuários previamente cadastrados para facilitar a avaliação das funcionalidades, permitindo percorrer os fluxos de leiloeiro e licitante sem a necessidade de realizar todos os cadastros manualmente.
+
+### Usuários de Teste
+
+| Perfil | E-mail | Senha |
+|---|---|---|
+| Leiloeiro | gabriel.oliveira.teste@example.com | gabriel@123 |
+| Licitante | lucas.martins.teste@example.com | lucas@123 |
+| Licitante | pedro.mendes.teste@example.com | pedro@123 |
