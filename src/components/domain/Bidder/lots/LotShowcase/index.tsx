@@ -7,7 +7,7 @@ import { LotSearchEmptyState } from "../LotSearchEmptyState";
 import { Store } from "lucide-react";
 
 export function LotShowcase() {
-  const [activeTab, setActiveTab] = useState<TabId>("all");
+  const [activeTab, setActiveTab] = useState<TabId>("ALL");
   const [search, setSearch] = useState("");
 
   const { statePublicLots } = usePublicLot();
@@ -18,7 +18,7 @@ export function LotShowcase() {
       if (lot.status === "CANCELLED") return false;
 
       const matchesTab =
-        activeTab === "all" ||
+        activeTab === "ALL" ||
         lot.status.toLowerCase() === activeTab;
 
       const matchesSearch =
@@ -76,7 +76,7 @@ export function LotShowcase() {
             <LotSearchEmptyState
               onClear={() => {
                 setSearch("");
-                setActiveTab("all");
+                setActiveTab("ALL");
               }}
             />
           )}
