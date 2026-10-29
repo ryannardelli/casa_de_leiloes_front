@@ -1,7 +1,7 @@
 import { DashboardHeader } from "../../../components/domain/Bidder/dashboard/DashboardHeader";
 import { DashboardStats } from "../../../components/domain/Bidder/dashboard/DashboardStats";
 import { QuickActions } from "../../../components/domain/Bidder/dashboard/QuickActions";
-import { RecentLots } from "../../../components/domain/Bidder/dashboard/RecentLots";
+import { RecentBids } from "../../../components/domain/Bidder/dashboard/RecentBids";
 
 export function Dashboard() {
   return (
@@ -15,7 +15,7 @@ export function Dashboard() {
           <QuickActions />
         </section>
 
-        <RecentLots />
+        <RecentBids />
       </div>
     </main>
   );
